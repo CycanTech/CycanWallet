@@ -12,13 +12,16 @@ later...
 
 ALLToken is an open source,cross-platform wallet, built with [Flutter](https://flutter.dev/),now it is support bitcoin,ethereum,polkadot,more chain well be support in the future.
 
-<img src="docs/main.png" alt="main" />
+<img src="docs/main.png" alt="main" style="zoom:25%;" /><img src="docs/manager.png" alt="manager" style="zoom:25%;" /><img src="docs/history.png" alt="history" style="zoom:25%;" />
 
-<img src="docs/manager.png" alt="manager" />
+### Features
 
-<img src="docs/history.png" alt="history" />
-
-
+- Create account with Mnemonics, HD Derivation supported.
+- Import account with Mnemonics, Private key and Keystore.
+- Token transfer/receive
+- Transaction History
+- Basic account settings: changing name/password/language/remote node.
+- more...
 
 ## Getting Started
 
@@ -39,4 +42,4 @@ Thank you for considering to help out with the source code! We welcome contribut
 
 ## License
 
-The ALLToken wallet is licensed under the [GPL 3.0 licensed](https://github.com/paritytech/polkadot/blob/master/LICENSE).
+The ALLToken wallet is licensed under the [GPL 3.0 licensed](https://github.com/CycanTech/ALLToken/blob/master/LICENSE).
