@@ -1,0 +1,89 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_coinid/public.dart';
+
+//封装视图view
+// ignore: must_be_immutable
+class CustomPageView extends StatelessWidget {
+  CustomPageView({
+    Key key,
+    @required this.child,
+    this.title,
+    this.hiddenScrollView,
+    this.bottom,
+    this.hiddenAppBar,
+    this.hiddenLeading,
+    this.bottomNavigationBar,
+    this.leadBack,
+    this.actions,
+    this.leading,
+    this.hiddenResizeToAvoidBottomInset = true,
+  }) : super(key: key);
+
+  Widget child;
+  Widget title;
+  final PreferredSizeWidget bottom;
+  final bool hiddenAppBar;
+  final bool hiddenScrollView;
+  final bool hiddenLeading;
+  final bool hiddenResizeToAvoidBottomInset; //是否弹出软键盘压缩界面
+  final Widget bottomNavigationBar;
+  final VoidCallback leadBack;
+  final List<Widget> actions;
+  final Widget leading;
+
+  @override
+  Widget build(BuildContext context) {
+    OffsetWidget.screenInit(context, 360);
+    //全局拦截键盘处理
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).requestFocus(FocusNode());
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: hiddenResizeToAvoidBottomInset,
+        appBar: hiddenAppBar == true
+            ? null
+            : AppBar(
+                title: title,
+                centerTitle: true,
+                elevation: 0,
+                bottom: bottom,
+                backgroundColor: Colors.white,
+                actions: actions,
+                leading: hiddenLeading == true
+                    ? (leading != null ? leading : Text(""))
+                    : Routers.canGoPop(context) == true
+                        ? GestureDetector(
+                            onTap: () => {
+                              if (leadBack != null)
+                                {
+                                  leadBack(),
+                                }
+                              else
+                                {
+                                  Routers.goBackWithParams(context, null),
+                                }
+                            },
+                            child: Center(
+                              child: Image.asset(
+                                Constant.ASSETS_IMG + "icon/icon_goback.png",
+                                scale: 2,
+                                width: 45,
+                                height: 45,
+                              ),
+                            ),
+                          )
+                        : Text("")),
+        backgroundColor: Color(Constant.main_color),
+        bottomNavigationBar: this.bottomNavigationBar,
+        body: SafeArea(
+          child: hiddenScrollView == true
+              ? child
+              : SingleChildScrollView(
+                  child: child,
+                ),
+        ),
+      ),
+    );
+  }
+}
