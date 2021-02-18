@@ -1,0 +1,514 @@
+/* 
+  UserVC.strings
+  Runner
+
+  Created by MWT on 29/12/2020.
+  
+*/
+"bancormaner_exchange" = "兑换" ;
+"test1" = "哈哈";
+"tabbar_title" = "钱包" ;
+"request_state_failere" = "请求失败" ;
+"progresshud_state_addressinvalid" = "网址无效";
+"progresshud_state_networkerr" = "网络异常～";
+"progresshud_state_requesttimeout" = "网络请求超时";
+//-----------------------启动页
+
+"GuidancePageVC_page1" = "全网交易，一目了然";
+"GuidancePageVC_page2" = "银行密级，永不触网";
+"GuidancePageVC_page3" = "行情信息，应有尽有";
+"GuidancePageVC_page4" = "立即体验 ";
+
+//-----------------------备份
+"backupwordvc_backworld" = "备份助记词";
+"backupwordvc_choosetypemoneysale" = "请选择助记词类型，并做好物理备份！保证资金安全" ;
+"backupwordvc_chzhsremberworld" = "中文助记词" ;
+"backupwordvc_enremberworld" = "英文助记词" ;
+"backupwordvc_complation" = "确认" ;
+"backupwordvc_createworldfailere" = "生成助记词失败" ;
+"backupwordvc_donotscreenshot" = "请勿截图" ;
+"backupwordvc_pleasesalebackupworld" = "如果别人知道你的助记词，意味着可以操纵你的资产，请安全备份。" ;
+"backupwordvc_iknowit" = "知道了" ;
+"backupwordvc_pleaserightnowbackupworld" = "请尽快在【我的】栏目备份助记词，避免造成资产丢失" ;
+
+//-----------------------创建
+"CurrencyUnitVC_Create" = "创建钱包" ;
+"CurrencyUnitVC_Recover" = "恢复钱包" ;
+
+"creationidvc_tipplaeasefirstinputname" = "请您先输入身份名";
+"creationidvc_tipnameistoolong" = "身份名长度不能超过12位字符，请您重新设置";
+"creationidvc_tippleasefirstinputpwd" = "请您先输入密码";
+"creationidvc_tippwdistooshort" = "密码长度不合适，请您重新设置";
+"creationidvc_tippwdiswrongpleasetryagain" = "密码不一致，请您重新输入" ;
+"creationidvc_tippwddescistoolongpleasetryagain" = "密码提示符不能超过20位，请您重新输入" ;
+"creationidvc_tippleasefirstcheckagreementinfo" = "请您先阅读服务及隐私条款" ;
+"creationidvc_tipcontentcontainsemoji" = "输入的内容不能包含表情～" ;
+"creationidvc_passwordNubAndChar" = "密码长度8位数以上，建议使用英文字母、数字和标点符号组成，不采用特殊字符" ;
+
+"CurrencyUnitVC_IdName" = "钱包名" ;
+"CurrencyUnitVC_createInput" = "密码用于保护私钥和交易授权，强度非常重要\nCoinID Pro不存储密码，也无法帮您找回，请务必牢记" ;
+"CurrencyUnitVC_IdInput" = "1~12位字符，可包含中文、英文字符";
+"CurrencyUnitVC_password" = "密码";
+"CurrencyUnitVC_repetitionPassword" = "重复密码";
+"CurrencyUnitVC_lengthAstrict" = "密码长度8位数以上，建议使用英文字母、数字和标点符号组成，不采用特殊字符。" ;
+"CurrencyUnitVC_service" = "我已经仔细阅读并同意";
+"CurrencyUnitVC_servicname" = "服务及隐私条款" ;
+"CreationIdentityVC_Create" = "创建" ;
+"CreationIdentityVC_Recover" = "恢复" ;
+"CreationIdentityVC_selectInfo" = "密码提示（选填）" ;
+
+
+//----------------------恢复
+"recovervc_tippleasefirstinputremberworld" = "请您先输入助记词" ;
+"recovervc_tipremberkeyisnotrules" = "助记词不规范" ;
+"recovervc_tipremberkeyiswrong" = "输入的助记词不正确" ;
+"recovervc_tiprequesting" = "加载中...";
+"recovervc_tiprecoveridfailere" = "恢复身份失败" ;
+
+//---------------------确认
+"affirmwordvc_affirmword" = "确认助记词" ;
+"affirmwordvc_pleaseclickonthequeue" = "请按顺序点击助记词，以确认您已正确备份。" ;
+"affirmwordvc_done" = "完成" ;
+"affirmwordvc_remberworldisright" = "助记词顺序正确" ;
+"affirmwordvc_remberworldiswrongpleasecheck" = "助记词顺序不正确，请校对" ;
+"affirmwordvc_tipbackupsuccess" = "备份成功" ;
+"affirmwordvc_tipcreatefailere" = "创建失败" ;
+
+//--------------------选择助记词
+"rememberword_nextstep" = "下一步" ;
+"rememberword_sendfailere" = "发送失败" ;
+"rememberword_mnemonic" = "选择助记词位数" ;
+"rememberword_mnemonic12" = "12位型" ;
+"rememberword_mnemonic18" = "18位型" ;
+"rememberword_mnemonic24" = "24位型" ;
+"rememberword_mnemonic24" = "24位型" ;
+"rememberword_theMnemonic" = "助记词是什么？" ;
+"rememberword_GeneratingMnemonic" = "生成助记词" ;
+//------------------view组件
+"updateview_needupdatenotif" = "检测到更新" ;
+"updateview_versions" = "版本号" ;
+"updateview_rightnowupdate" = "立即更新" ;
+"updateview_cancle" = "取消" ;
+"updateview_updatecontents" = "内容：" ;
+"walletmanagercell_eosnotreg" = "您还未注册账户..." ;
+"marketcell_ranking" = "排名" ;
+"marketcell_volume24h" = "24h成交量" ;
+"networkcell_buy" = "买入" ;
+"networkcell_sale" = "卖出" ;
+"usertailcell_track" = "跟踪 >" ;
+"buyorsaleromcell_servicefree" = "手续费" ;
+"buyorsaleromcell_buyram" = "买入RAM" ;
+"buyorsaleromcell_saleram" = "卖出RAM" ;
+"transferparticell_chainnotes" = "链上记录" ;
+"netandcpucell_pledge" =  "抵押" ;
+
+//----------------------钱包管理
+"uservc_nodata" = "暂时没有数据喔～" ;
+"uservc_networkiswrong" = "网络出错了～" ;
+"uservc_tipcopysuccess" = "复制成功！";
+"uservc_pleaseinputpwd" = "请输入密码" ;
+"uservc_pwdiswrong" = "密码输入错误" ;
+
+//---------------------总资产
+"headpropertyvc_mywallets" = "我的钱包" ;
+"headpropertyvc_upmoney" = "涨跌金额" ;
+"headpropertyvc_upperscent" = "涨跌比" ;
+"headpropertyvc_rightnowimport" = "快去导入资产吧" ;
+"headpropertyvc_allmoney" = "详细资产" ;
+"headpropertyvc_otherschainpercent" = "各主链资产占比" ;
+"headpropertyvc_assetnumber" = "资产值" ;
+"headpropertyvc_cointype" = "币种" ;
+"headpropertyvc_coinnumber" = "数量" ;
+
+//--------------------二维码
+"gatherqrcodevc_transeos" = "请转入EOS" ;
+"gatherqrcodevc_transbtc" = "请转入BTC" ;
+"gatherqrcodevc_transeth" = "请转入ETH" ;
+"gatherqrcodevc_transvns" = "请转入VNS" ;
+
+
+//---------------------密码提示信息
+"passwordhintvc_passwordtip" = "密码提示信息" ;
+"passwordhintvc_changesuccess" = "修改成功" ;
+
+//---------------------交易列表
+"transfervc_bluestatetip" = "请重新打开冷钱包，并与手机APP保持蓝牙连接状态" ;
+"transfervc_coldwalletinvalid" = "设备验证失败" ;
+"transfervc_partnercode" = "配对码" ;
+"transfervc_partnercodeiswrong" = "配对码错误" ;
+"transfervc_currentwalletisempty" = "当前钱包数据为空" ;
+"transfervc_sure" = "确定" ;
+"transfervc_pleaseinputpincode" = "请输入PIN码" ;
+"transfervc_unlocksuccess" = "解锁pin成功" ;
+"transfervc_piniswrong" = "pin码输入错误" ;
+"transfervc_nomoredata" = "没有更多数据了～" ;
+"transfervc_currentnoregeos" = "当前未注册EOS账户" ;
+"transfervc_currentnoregeosgoreg" = "您还未注册账户，请先前往注册" ;
+
+//---------------------转账
+"transferopratevc_transfer" = "转账" ;
+"transferopratevc_gaserfee" = "矿工费：" ;
+"transferopratevc_coinbalance" = "余额" ;
+"transferopratevc_thisnamewasreg" = "该用户名已注册" ;
+"transferopratevc_transfersuccess" = "交易成功" ;
+"transferopratevc_transferfailere" = "转账失败" ;
+"transferopratevc_iknow" = "知道了"  ;
+"transferopratevc_thecustom" = "自定义"  ;
+"transferopratevc_thedefault" = "默认"  ;
+"transferopratevc_receivable" = "收款账户" ;
+"transferopratevc_transferamount" = "转账金额" ;
+"transferopratevc_Estimated" = "预计到账时间：10分钟" ;
+"transferopratevc_Slow" = "慢" ;
+"transferopratevc_Quick" = "快" ;
+"transferopratevc_pleaseoutname" = "请输入转账地址" ;
+"transferopratevc_pleaseoutmoney" = "请您先输入转账金额" ;
+"transferopratevc_outputmoneycantzero" = "转账金额不能为0" ;
+"transferopratevc_outputmaneylessthanbalance" = "转账金额需要小于余额" ;
+"transferopratevc_momotextlessthan" = "备注字符不能超过256位，请删减" ;
+"transferopratevc_outputnamedontyourself" = "不能给自己转账" ;
+"transferopratevc_plaseinputgasfree" = "请您先输入矿工费用" ;
+"transferopratevc_pwdiswrong" = "密码验证失败" ;
+"transferopratevc_signtransfailere" = "签名失败" ;
+
+//--------------------------------------交易详细
+"transferdetailvc_transferdetail" = "交易详情" ;
+"transferdetailvc_inputname" = "发款账号" ;
+"transferdetailvc_outputname" = "收款账号" ;
+"transferdetailvc_memotext" = "备注" ;
+"transferdetailvc_transtime" = "交易时间" ;
+"transferdetailvc_blockheight" = "区块高度" ;
+"transferdetailvc_input" = "转入" ;
+"transferdetailvc_output" = "转出" ;
+"transferdetailvc_Receiving" = "收款" ;
+"transferdetailvc_all" = "全部" ;
+"transferdetailvc_Failedl" = "失败" ;
+"transferdetailvc_nodata" = "暂无数据" ;
+
+"ETHtransactionInfoView_Transaction" = "交易信息" ;
+"ETHtransactionInfoView_type" = "交易类型" ;
+"ETHtransactionInfoView_Receiving" = "付款地址" ;
+"ETHtransactionInfoView_Sending" = "收款地址" ;
+"ETHtransactionInfoView_Amount" = "金额" ;
+
+"AffirmTransferInfoView_Transfer" = "转入账户" ;
+"AffirmTransferInfoView_to" = "转出账户" ;
+
+//---------------------------------eth 交易
+"ethtransferdetailvc_inputaddress" = "付款地址" ;
+"ethtransferdetailvc_outputaddress" = "收款地址" ;
+"ethtransferdetailvc_gasfree" = "矿工费" ;
+"ethtransferdetailvc_comfirmnumber" = "确认数" ;
+
+//-------------------------------导出公钥
+"checkkeyvc_higersetting" = "高级设置" ;
+"checkkeyvc_ownerkeyiscopy" = "管理公钥复制成功！" ;
+"checkkeyvc_activekeyiscopy" = "普通公钥复制成功！" ;
+
+// ----------------------------导出私钥
+"deriveprivatevc_exportkey" = "导出私钥" ;
+"deriveprivatevc_copysuccess" = "复制成功！" ;
+
+//----------------------------导入钱包
+"leadwalletvc_leadeoswallet" = "导入EOS钱包" ;
+"leadwalletvc_leadethwallet" = "导入ETH钱包" ;
+"leadwalletvc_leadbtcwallet" = "导入BTC钱包" ;
+"leadwalletvc_remberkeysspace" = "助记词，按空格分隔" ;
+"leadwalletvc_plaintextprivatekey" = "明文私钥" ;
+"leadwalletvc_pleaseinputprivatekey" = "请您先输入秘钥" ;
+"leadwalletvc_walletisexist" = "钱包已导入，请勿重复导入" ;
+"leadwalletvc_importsuccess" = "导入成功" ;
+"leadwalletvc_privatekeyisvalid" = "您输入的秘钥无效" ;
+"leadwalletvc_walletisvalid" = "当前钱包不存在" ;
+"leadwalletvc_fetchpermissionfailere" = "获取权限信息失败" ;
+"leadwalletvc_Import" = "开始导入" ;
+"leadwalletvc_mnemonics" = "助记词" ;
+"leadwalletvc_privatekey" = "私钥" ;
+
+//---------------------------我的钱包
+"walletmanagermentvc_mywallet" = "我的钱包" ;
+"walletmanagermentvc_allcost" = "总资产" ;
+"walletmanagermentvc_requesting" = "正在加载中...." ;
+"walletmanagermentvc_currentidwallet" = "当前身份下的钱包" ;
+"walletmanagermentvc_leadinwallet" = "创建单链钱包" ;
+"walletmanagermentvc_appwallet" = "APP钱包" ;
+"walletmanagermentvc_safecoldwallet" = "安全冷钱包" ;
+"walletmanagermentvc_walletsmaxnumber" = "您最多只能导入10个钱包喔～" ;
+"walletmanagermentvc_inputpartnervalue" = "请输入配对码" ;
+
+//--------------------------mywallet
+"mywalletvc_backwallet" = "备份钱包" ;
+"mywalletvc_pinchange" = "PIN码修改" ;
+"mywalletvc_devicechange" = "修改钱包名" ;
+"mywalletvc_allclean" = "擦除数据" ;
+"mywalletvc_seepubkey" = "查看公钥" ;
+"mywalletvc_pwdtip" = "密码提示" ;
+"mywalletvc_exportprivate" = "导出私钥" ;
+"mywalletvc_addressman" = "切换地址" ;
+"mywalletvc_suredeletewallet" = "确定删除钱包吗？" ;
+"mywalletvc_deletesuccess" = "删除成功" ;
+"mywalletvc_deleteWallet" = "删除钱包" ;
+"mywalletvc_pleaseunlockwallet" = "请先解锁冷钱包" ;
+"mywalletvc_requestfailere" = "请求链接失败" ;
+"mywalletvc_inputname" = "请输入新冷钱包名称" ;
+"mywalletvc_allcleansucc" = "擦除完毕" ;
+"mywalletvc_inputoldpin" = "请输入原PIN码" ;
+"mywalletvc_setpinfailere" = "请求设置pin失败" ;
+"mywalletvc_setpin" = "设置冷钱包PIN码" ;
+"mywalletvc_canclepinsuccess" = "取消设置pin成功" ;
+"mywalletvc_inputagainpin" = "请再次输入PIN码" ;
+"mywalletvc_pinwaswrongpleaseagain" = "两次PIN码不一致，请重新设置" ;
+//-------------------------wallettype
+"wallettypevc_choosewallettype" = "选择钱包类型" ;
+"wallettypevc_eoswallet" = "EOS 钱包" ;
+"wallettypevc_ethwallet" = "ETH 钱包" ;
+"wallettypevc_btcwallet" = "BTC 钱包" ;
+
+//-----------------------添加币种
+"addcurrencyvc_add" = "收藏成功" ;
+"addcurrencyvc_cancle" = "取消收藏" ;
+
+//----------------------二维码扫描
+"scanvc_startscan" = "扫码" ;
+"scanvc_unfondcode" = "未发现二维码/条形码" ;
+"scanvc_scanbtccode" = "请扫描BTC收款码" ;
+"scanvc_scanethcode" = "请扫描ETH收款码" ;
+"scanvc_scaneoscode" = "请扫描EOS收款码" ;
+"scanvc_scanvnscode" = "请扫描VNS收款码" ;
+
+"scanvc_scancontentnottrans" = "扫描的二维码不是收款码" ;
+"scanvc_autoscan" = "请将镜头对准二维码进行扫描" ;
+"scanvc_flashlight" = "打开手电筒" ;
+
+// --------------------EOSZ注册
+"cuurrencyvc_regeosaccount" = "注册EOS账户" ;
+"cuurrencyvc_createqrcode" = "生成专属二维码" ;
+"cuurrencyvc_inputaccount" = "请输入账户名" ;
+"cuurrencyvc_accountiswrong" = "格式不正确" ;
+"cuurrencyvc_accountwasreg" = "已注册" ;
+
+// ---------------------eos 付款
+"payvc_waspay" = "我已付款" ;
+"payvc_hoverpay" = "您是否已完成支付" ;
+"payvc_yes" = "是" ;
+"payvc_false" = "否" ;
+
+// --------------------验证EOS
+"verifyeosvc_inputmobile" = "请输入手机号" ;
+"verifyeosvc_inputrealmobile" = "请输入正确的手机号" ;
+"verifyeosvc_verificodesend" = "验证码发送成功" ;
+"verifyeosvc_holdon" = "请稍等" ;
+"verifyeosvc_againsend" = "重新发送" ;
+"verifyeosvc_codesendfailere" = "验证码发送失败" ;
+"verifyeosvc_inputvercode" = "请输入验证码" ;
+"verifyeosvc_verfailereagain" = "验证失败，请重新输入" ;
+//---------------------管理公钥
+"CheckKeyVC_Owner" = "管理公钥（Owner Key）" ;
+"CheckKeyVC_Ordinary" = "普通公钥（Active Key）" ;
+"CheckKeyVC_Description" = "说明：\n*点击文本框即可复制；\nOwner权限是账户最高权限，可新增或修改其它权限。\n*Active权限默认可以进行转账等操作，但不能修改权限。" ;
+
+//---------------------导出私钥
+"DerivePrivateKeyVC_storage" = "离线保存" ;
+"DerivePrivateKeyVC_recommended" = "建议使用密码管理工具管理" ;
+"DerivePrivateKeyVC_surrounding" = "在安全环境下使用" ;
+"DerivePrivateKeyVC_computer" = "切勿保存至邮箱、记事本、网盘、聊天工具等，非常危险" ;
+"DerivePrivateKeyVC_Show" = "显示二维码" ;
+"DerivePrivateKeyVC_QRCode" = "二维码" ;
+"DerivePrivateKeyVC_management" = "密码管理工具保存" ;
+"DerivePrivateKeyVC_support" = "仅供直接扫描" ;
+"DerivePrivateKeyVC_ensuring" = "请在确保四周无人及无摄像头的情况下使用，二维码一旦被他人获取将可能造成不可挽回的资产损失" ;
+"DerivePrivateKeyVC_network" = "请勿使用网络传输" ;
+"DerivePrivateKeyVC_screenshots" = "二维码请勿直接在手机本地进行保存、截图或网络传输，仅供用户在安全的离线环境下使用端对端扫描，以便离线传输进行备份与导入。" ;
+"DerivePrivateKeyVC_Private" = "私钥" ;
+"DerivePrivateKeyVC_Copy" = "复制Private Key" ;
+"DerivePrivateKeyVC_transfer" = "请勿通过网络工具传输，一旦被黑客获取将可能造成不可挽回的资产 损失。（建议离线设备通过扫二维码方式传输）" ;
+
+//---------------------注册EOS
+"WaitLoginVC_input" = "您将通过支付宝付款注册EOS账户，也可以生成EOS账户二维码请EOS老用户帮您注册。" ;
+"WaitLoginVC_inputA" = "您需要通过已生成的两把公钥去注册EOS账户（12位字符），\n注册过程将消耗EOS代币。\n请想好账户名，找个EOS老用户帮您注册。" ;
+
+"WaitLoginVC_Help" = "找人注册" ;
+//xin
+"wallettypevc_vnswallet" = "导入VNS钱包" ;
+"walletmanagmentvc_notsupport" = "当前冷钱包不支持" ;
+"mywalletvc_resetpin" = "重置PIN码" ;
+//---------------------帮人注册
+"HelpLoginVC_helloSign" = "Hello，帮我注册一下EOS账户" ;
+"HelpLoginVC_Share" = "分享二维码" ;
+//---------------------EOS起名字
+"CurrencyNameVC_name" = "请给您的EOS账户起个名字" ;
+"CurrencyNameVC_explainT" = "• CoinID Pro将通过短信的方式通知您账户创建进度。" ;
+"CurrencyNameVC_explain" = "• EOS账账户名允许的字符包括12345abcdefghijklmnopqr stuvwxyz，你可以在这个范围内选择你喜欢的账户名，长度为12位字符。\n" ;
+"CurrencyNameVC_next" = "下一步" ;
+"mywalletvc_resetpinsuccess" = "重置PIN码成功" ;
+"importwordvc_inputnewpin" = "请输入新PIN码" ;
+"CurrencyNameVC_mobile" = "请输入手机号" ;
+"CurrencyNameVC_verification" = "获取验证码" ;
+"CurrencyNameVC_Enterverification" = "请输入验证码" ;
+"CurrencyNameVC_Myself" = "自己注册" ;
+//---------------------添加货币收藏
+"AddCurrencyVC_addCurrency" = "输入Token或合约地址" ;
+"AddCurrencyVC_myAsset" = "我的资产" ;
+//
+"userVC_Asset" = "资产" ;
+"DeepColdChooseTypeVC_chooseTypeMobile" = "在手机端输入" ;//
+"DeepColdChooseTypeVC_chooseTypeCold" = "在冷钱包录入" ;
+"DeepColdChooseTypeVC_securitynormal" = "安全性一般" ;
+"DeepColdChooseTypeVC_securityhigh" = "安全性极高" ;
+"DeepColdChooseTypeVC_mobileDesc" = "在手机输入‘助记词’以完成校验。" ;
+"DeepColdChooseTypeVC_coldDesc" = "在冷钱包录入‘助记词代码’以完成校验。" ;
+
+"wallettypevc_btmwallet" = "导入BTM钱包" ;
+"wallettypevc_ltcwallet" = "导入LTC钱包" ;
+"wallettypevc_gpswallet" = "导入GPS钱包" ;
+"leadwalletvc_keystore" = "Keystore" ;
+//---------------------冷端
+"ColdWalletNameVC_characters" = "不多于12位字符，不包含符号" ;
+"ColdWalletNameVC_Please" = "请为您的冷钱包起个名字" ;
+"HintPasswordSuccessfulView_PIN" = "PIN码设置成功" ;
+"MonitorBluetoothView_bluetooth" = "蓝牙未开启，请您先打开蓝牙" ;
+"HintBluetoothInterruptView_bluetooth" = "蓝牙已中断，请重新连接" ;
+"BeBeingConnectView_Connectiing" = "正在连接..." ;
+"RefuseConnectView_rejected" = "拒绝了您的链接请求" ;
+"TransferVC_turn" = "请先打开冷钱包,并保持蓝牙连接状态" ;
+"TransferVC_Got" = "知道了" ;
+"DeepModeTipViewController_Mnemonic" = "是否未准确备份助记词，需要重新浏览？" ;
+"DeepModeTipViewController_Yes" = "是" ;
+"DeepModeTipViewController_No" = "否" ;
+"ImportWordVC_again" = "再看一遍助记词" ;
+"ImportWordVC_sequence" = "请依照冷钱包显示的序列，在对应位置输入。" ;
+"ImportWordVC_enter" = "请输入助记词" ;
+
+"leadwalletvc_keystoredescstring1" = "复制粘贴" ;
+"leadwalletvc_keystoredescstring2" = "钱包KeyStore文件内容至输入框，或者通过扫描keyStore二维码录入" ;
+"leadwalletvc_keystoredescstring3" = "Keystore文件内容" ;
+"gatherqrcodevc_transvns" = "请转入VNS" ;
+"gatherqrcodevc_transbtm" = "请转入 BTM" ;
+"scanvc_scanbtmcode" = "请扫描BTM收款码" ;
+"mywalletvc_exportkeystore" = "导出Keystore" ;
+"DeriveKeystoreVC_Copy" = "复制Keystore" ;
+"leadwalletvc_pleaseinputkeystore" = "请您先输入Keystore" ;
+"leadwalletvc_pleasekeystorewrong" = "Keystore或密码不匹配" ;
+"leadwalletvc_importwrong" = "导入失败" ;
+
+"CustomNameVC_Custom" = "自定义名称" ;
+"wallettypevc_wallettitle" = "钱包" ;
+"gatherqrcodevc_pleasetrans" = "请转入" ;
+"scanvc_pleasescanthe" = "请扫描" ;
+"scanvc_receiptcode" = "收款码";
+
+"wmwalletManagement_display" = "需创建身份才能显示～";
+"wmwalletManagement_add" = "快去添加钱包吧";
+"wmwalletManagement_hidden" = "所有主链已隐藏";
+"walletmanagermentvc_carry" = "完成" ;
+"walletmanagermentvc_noneed" = "APP钱包已创建，无需重复创建" ;
+"walletmanagermentvc_chainhidingt" = "隐藏钱包" ;
+"walletmanagermentvc_Addwallett" = "新增钱包" ;
+"walletmanagermentvc_add" = "添加" ;
+"selectwallettype_createhotwallet" = "创建APP热钱包" ;
+"selectwallettype_insertsecuritywallet" = "添加硬件钱包" ;
+
+
+
+"walletmanagermentvc_Hardware" = "添加蓝牙Key钱包" ;
+"walletmanagermentvc_Hotwallet" = "创建HD多链钱包" ;
+"walletmanagermentvc_clicktoadd" = "点击添加" ;
+"mywalletaddresschange" = "切换地址失败" ;
+"transferoperatvc_decimalwrong" = "币种精度暂无数据" ;
+"registereos_free" = "费用" ;
+"registereos_accountname" = "账户名";
+"registereos_payeos" = "支付EOS" ;
+"registereos_dealresource" = "消耗资源" ;
+"registereos_ram" = "内存";
+"walletmanagermentvc_costpercent" = "资产配比";
+"transferdetailvc_receivertime" = "到账时间" ;
+"transferdetailvc_starttime" = "发起时间" ;
+"uservc_masterchain" = "主链";
+"stackcell_clickconnect" = "点击卡片可重新连接";
+"transfer_clickicoconnect" = "点击图标重新连接";
+
+//---------------------GPS
+"YPayCreateWalletVC_length" = "账号名由小写字母和1-5组成的长度为12" ;
+"YPayCreateWalletVC_username" = "用户名" ;
+"YPublicSystemVC_public" = "选择公链体系" ;
+"TransferOprateVC_Recharge" = "充值账户" ;
+"TransferOprateVC_Target" = "目标账户" ;
+"TransferOprateVC_Coin" = "提币金额" ;
+"TransferOprateVC_enterVNS" = "请输入VNS钱包地址" ;
+"YSetAmountVC_SetAmount" = "设置金额" ;
+"MyWallet_gpsAdreess" = "绑定/查看GPS network账户" ;
+"PasswordHint_gpsAdreess" = "GPS网络链上地址" ;
+"transferVC_payBtn" = "支付" ;
+"YPayToMerchantsVC_payBtn" = "付款码" ;
+"YPayToMerchantsVC_code" = "扫码付" ;
+"YPayToMerchantsVC_merchants" = "向商家付款" ;
+"GatheringQRcodeVC_gpsScan" = "GPS扫一扫，向我付钱" ;
+"transferoperatvc_decimalwrong" = "币种精度暂无数据" ;
+"registereos_free" = "费用" ;
+"registereos_accountname" = "账户名";
+"registereos_payeos" = "支付EOS" ;
+"registereos_dealresource" = "消耗资源" ;
+"registereos_ram" = "内存";
+"YPayCreateWalletVC_accountName" = "账号名" ;
+"CrossChainTransferVC_CrossChainTransfer" = "跨链转账" ;
+"CrossChainTransferVC_chainRecord" = "跨链记录" ;
+"CrossChainTransferVC_SelectCurrency" = "选择币种：" ;
+"CrossChainTransferVC_sender" = "发送方：" ;
+"CrossChainTransferVC_chain" = "链" ;
+"CrossChainTransferVC_ThisWalletAddress" = "本钱包地址" ;
+"CrossChainTransferVC_receiver" = "接收方：" ;
+"CrossChainTransferVC_OtherGPSWallet" = "其他GPS钱包" ;
+"CrossChainTransferVC_vnsWallet" = "请您先导入VNS钱包" ;
+"WMPayCreateWalletVC_Mainnet" = "主网账号注册" ;
+"WMPayCreateWalletVC_Mobile" = "手机号绑定注册" ;
+"WMPayCreateWalletVC_Register" = "注册账号" ;
+"WMPayCreateWalletVC_Complete" = "注册成功" ;
+"YPayToMerchantsVC_collectionCode" = "收款码" ;
+"YPayToMerchantsVC_ordinaryTransfer" = "账户间普通转账" ;
+"YPayToMerchantsVC_pOnly" = "仅供POS机扫码" ;
+"transferopratevc_addressvalid" = "地址无效";
+"YGpsNetWorkChain_main" = "主网账户：";
+"YGpsNetWorkChain_Binding" = "绑定功能敬请期待";
+"YGpsNetWorkChain_Phone" = "手机号：";
+"YGpsNetWorkChain_Recommended" = "推荐矿工费 (根据区块链网络波动)";
+"SelectWalletTypeCell_hotwallat" = "HD Wallets的全称是Hierachical Deterministic Wallets，对应中文是“分层确定性钱包”。根据比特币可信开发者Gregory Maxwell的原始描述和讨论，Pieter Wuille在2012年02月11日整理完善提交BIP32。";
+"RecoverVC_General" = "此助记词可以在多个钱包使用，包括imtoken等等...";
+"RecoverVC_dedicated" = "此助记词通过CoinID专业加密，只能在CoinID使用";
+"RecoverVC_Universal" = "通用助记词";
+"RecoverVC_DedicatedMnemonic" = "CoinID专用助记词";
+"YPayCreateWalletVC_Signup" = "立即注册";
+"YPayCreateWalletVC_All" = "由于链上转账需要一定的矿工费，因此全部转出后收到的数额是扣除矿工费之后的数额，实际收到会比实际数额少一些";
+"coinidvc_importwallet" = "导入钱包" ;
+"coinidvc_PrivacyPolicy" = "隐私政策" ;
+"coinidvc_service" = "coinid服务协议" ;
+"SelectEquipmentVC_click" = "请在APP端点击配对后，在蓝牙钱包端确认" ;
+"SelectEquipmentVC_Afterclicking" = "点击下一步按钮后，请在蓝牙钱包端同步确认" ;
+"Ethtansferparticularsvc_success" = "成功" ;
+"Ethtansferparticularsvc_failure" = "失败" ;
+"Ethtansferparticularsvc_recommendValue" = "推荐" ;
+"bancormanager_contractaddress" = "合约地址";
+
+"bancormanager_registrationSuccess" = "注册成功";
+"bancormanager_registrationFailed" = "注册失败";
+"bancormanager_paymentinfo" = "支付信息" ;
+"bancormanager_btnsure" = "允许" ;
+"bancormanager_getdidaddress" = "获取您的DID去中心化身份地址信息" ;
+"bancormanager_dabancorname" = "UP帮客智能积分兑换系统   申请";
+
+"transferopratevc_Thiscurrencyis" = "此币为";
+"transferopratevc_pointson" = "主链上的token积分";
+"transferopratevc_Consumption" = "故消耗";
+"transferopratevc_Asafee" = "作为手续费";
+"mywallet_device" = "设备详情";
+"mywallet_productName" = "产品名称";
+"mywallet_version" = "固件版本";
+"bancormanager_functiontype1" = "注册" ;
+"bancormanager_functiontype2" = "转让" ;
+"bancormanager_functiontype3" = "续费" ;
+"bancormanager_functiondesc" = "域名" ;
+"bancormanager_vdnsbancorname" = "VDNS分布式域名系统 申请";
+"bancormanager_renewdomainname" = "续费域名";
+"bancormanager_deldomainname" = "删除域名";
+"bancormanager_regdomainname" = "注册域名";
+"bancormanager_convertdomainname" = "转让域名";
+"transferopratevc_waitingpacking" = "等待打包" ;
+"bancormanager_dabancorname_vdai" = "VDAI平台   申请";

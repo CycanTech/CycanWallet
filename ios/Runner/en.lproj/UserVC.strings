@@ -1,0 +1,514 @@
+/* 
+  UserVC.strings
+  Runner
+
+  Created by MWT on 29/12/2020.
+  
+*/
+"bancormaner_exchange" = "Exchange" ;
+"test1" = "哈哈";
+"tabbar_title" = "Wallet" ;
+//-----------------------启动页
+
+"GuidancePageVC_page1" = "Accepts all cryptocurrencies and user-friendly interface";
+"GuidancePageVC_page2" = "Bank-level encryption with offline authentication";
+"GuidancePageVC_page3" = "Great coverage of market information";
+"GuidancePageVC_page4" = "Try it now";
+
+"request_state_failere" = "Request failed" ;
+"progresshud_state_addressinvalid" = "Invalid URL";
+"progresshud_state_networkerr" = "Network abnormality~";
+"progresshud_state_requesttimeout" = "Network request timeout";
+//-----------------------Backup
+"backupwordvc_backworld" = "Backup Recovery code";
+"backupwordvc_choosetypemoneysale" = "Please select the Recovery code type and make a physical backup to encure fund are secure" ;
+"backupwordvc_chzhsremberworld" = "Chinese Recovery code" ;
+"backupwordvc_enremberworld" = "English mnemnic" ;
+"backupwordvc_complation" = "Confirm" ;
+"backupwordvc_createworldfailere" = "Failed to generate Recovery code" ;
+"backupwordvc_donotscreenshot" = "Do not take a screenshot" ;
+"backupwordvc_pleasesalebackupworld" = "If someone knows your Recovery code, it mean your backup can be manipulated, please backup safely." ;
+"backupwordvc_iknowit" = "Got it" ;
+"backupwordvc_pleaserightnowbackupworld" = "Please backup the Recovery code in the [My] section as soon as possible to avoid asset loss." ;
+
+//-----------------------Create
+"CurrencyUnitVC_Create" = "Create wallet" ;
+"CurrencyUnitVC_Recover" = "Recover wallet" ;
+
+"creationidvc_tipplaeasefirstinputname" = "Please enter identity name";
+"creationidvc_tipnameistoolong" = "The name cannot be longer than 12 characters. Please try again.";
+"creationidvc_tippleasefirstinputpwd" = "Please enter password";
+"creationidvc_tippwdistooshort" = "Password length is incorrect, please try again";
+"creationidvc_tippwdiswrongpleasetryagain" = "Password do not match, please try again" ;
+"creationidvc_tippwddescistoolongpleasetryagain" = "Password hint cannot exceed 20 characters, please try again" ;
+"creationidvc_tippleasefirstcheckagreementinfo" = "Please read the service and privacy policy." ;
+"creationidvc_tipcontentcontainsemoji" = "The input content cannot contain an expression~" ;
+"creationidvc_passwordNubAndChar" = "The password is longer than 8 digits. It is recommended to use English letters, numbers and punctuation. No special characters are used." ;
+"CurrencyUnitVC_IdName" = "Wallet name" ;
+"CurrencyUnitVC_createInput" = "The password is used to protect the private key and transaction authorization, please create a strong password\nCoinID ProPlease keep the password in a safe place,  CoinID Pro cannot store the password and unable to help you retrieve it" ;
+"CurrencyUnitVC_IdInput" = "1~12 characters, can contain Chinese and English characters" ;
+"CurrencyUnitVC_password" = "password" ;
+"CurrencyUnitVC_repetitionPassword" = "Repeat the password" ;
+"CurrencyUnitVC_lengthAstrict" = "The password is longer than 8 digits. It is recommended to use English letters, numbers and punctuation. No special characters are used." ;
+"CurrencyUnitVC_service" = "I have carefully read and I agree";
+"CurrencyUnitVC_servicname" = "service and Privacy Policy" ;
+"CreationIdentityVC_Create" = "Create" ;
+"CreationIdentityVC_Recover" = "Recover" ;
+"CreationIdentityVC_selectInfo" = "Password hit(optional)" ;
+//----------------------Recover
+"recovervc_tippleasefirstinputremberworld" = "Please enter the Recovery code" ;
+"recovervc_tipremberkeyisnotrules" = "Recovery code is not in sequence" ;
+"recovervc_tipremberkeyiswrong" = "Recovery code entered is not correct" ;
+"recovervc_tiprequesting" = "Loading...";
+"recovervc_tiprecoveridfailere" = "Identity recovery failed" ;
+
+//---------------------Confirm
+"affirmwordvc_affirmword" = "Confirm Recovery code" ;
+"affirmwordvc_pleaseclickonthequeue" = "Please click on the Recovery code in order to confirm that you have backed up correctly." ;
+"affirmwordvc_done" = "Completed" ;
+"affirmwordvc_remberworldisright" = "Recovery code sequence is correct" ;
+"affirmwordvc_remberworldiswrongpleasecheck" = "Recovery code sequence is incorrect, please verify" ;
+"affirmwordvc_tipbackupsuccess" = "Backup completed" ;
+"affirmwordvc_tipcreatefailere" = "Failed to create" ;
+
+//--------------------Select mnemonic
+"rememberword_nextstep" = "Next" ;
+"rememberword_sendfailere" = "Failed to send" ;
+"rememberword_mnemonic" = "Select Recovery code digits" ;
+"rememberword_mnemonic12" = "12 Digits" ;
+"rememberword_mnemonic18" = "18 Digits" ;
+"rememberword_mnemonic24" = "24 Digits" ;
+"rememberword_theMnemonic" = "What is the Recovery code?" ;
+"rememberword_GeneratingMnemonic" = "Generating Recovery code" ;
+
+//------------------view module
+"updateview_needupdatenotif" = "Update detected" ;
+"updateview_versions" = "Version Number" ;
+"updateview_rightnowupdate" = "Update now" ;
+"updateview_cancle" = "Cancel" ;
+"updateview_updatecontents" = "content：" ;
+"walletmanagercell_eosnotreg" = "You have not registered an account yet..." ;
+"marketcell_ranking" = "Ranking" ;
+"marketcell_volume24h" = "24h Volume" ;
+"networkcell_buy" = "Buy" ;
+"networkcell_sale" = "Sell" ;
+"usertailcell_track" = "v" ;
+"buyorsaleromcell_servicefree" = "Handling fee" ;
+"buyorsaleromcell_buyram" = "Buy RAM" ;
+"buyorsaleromcell_saleram" = "Sell RAM" ;
+"transferparticell_chainnotes" = "Chain record" ;
+"netandcpucell_pledge" =  "guaranty" ;
+
+//----------------------Wallet Management
+"uservc_nodata" = "Data temporarily unavaliable~" ;
+"uservc_networkiswrong" = "Network error~" ;
+"uservc_tipcopysuccess" = "Successful copy!";
+"uservc_pleaseinputpwd" = "Please enter your password" ;
+"uservc_pwdiswrong" = "Incorrect password" ;
+
+//---------------------Total assets
+"headpropertyvc_mywallets" = "My Wallet" ;
+"headpropertyvc_upmoney" = "Ups and downs" ;
+"headpropertyvc_upperscent" = "Ups and downs percentage" ;
+"headpropertyvc_rightnowimport" = "Quickly import asset" ;
+"headpropertyvc_allmoney" = "Asset details" ;
+"headpropertyvc_otherschainpercent" = "Percentage of assets in each chain" ;
+"headpropertyvc_assetnumber" = "Asset value" ;
+"headpropertyvc_cointype" = "Coin type" ;
+"headpropertyvc_coinnumber" = "Quantity" ;
+
+//--------------------QR Code
+"gatherqrcodevc_transeos" = "Please transfer EOS" ;
+"gatherqrcodevc_transbtc" = "Please transfer BTC" ;
+"gatherqrcodevc_transeth" = "Please transfer ETH" ;
+"gatherqrcodevc_transvns" = "Please transfer VNS" ;
+
+
+//---------------------Password hint
+"passwordhintvc_passwordtip" = "Password hit" ;
+"passwordhintvc_changesuccess" = "Successfully modified" ;
+
+//---------------------Transaction list
+"transfervc_bluestatetip" = "Please re-open the cold Wallet and do not disconnect bluetooth." ;
+"transfervc_coldwalletinvalid" = "Device verification failed" ;
+"transfervc_partnercode" = "Pairing code" ;
+"transfervc_partnercodeiswrong" = "Pairing code incorrect" ;
+"transfervc_currentwalletisempty" = "Wallet is currectly empty" ;
+"transfervc_sure" = "Confirm" ;
+"transfervc_pleaseinputpincode" = "Please enter PIN code" ;
+"transfervc_unlocksuccess" = "Successfully Unlock" ;
+"transfervc_piniswrong" = "Entered PIN is incorrect" ;
+"transfervc_nomoredata" = "No more data～" ;
+"transfervc_currentnoregeos" = "Currently not registered EOS account" ;
+"transfervc_currentnoregeosgoreg" = "You have not registered an account yet, please go to registration first." ;
+
+//---------------------Transfer
+"transferopratevc_transfer" = "Transfer" ;
+"transferopratevc_gaserfee" = "Miner fee：" ;
+"transferopratevc_coinbalance" = "available balance" ;
+"transferopratevc_thisnamewasreg" = "Username is already registered" ;
+"transferopratevc_transfersuccess" = "Successful transaction" ;
+"transferopratevc_transferfailere" = "Transaction failed" ;
+"transferopratevc_iknow" = "Got it"  ;
+"transferopratevc_thecustom" = "Customize"  ;
+"transferopratevc_thedefault" = "Default"  ;
+"transferopratevc_receivable" = "Accounts receivable" ;
+"transferopratevc_transferamount" = "transfer amount" ;
+"transferopratevc_Estimated" = "Estimated transaction time: 10 minutes" ;
+"transferopratevc_Slow" = "Slow" ;
+"transferopratevc_Quick" = "Quick" ;
+"transferopratevc_pleaseoutname" = "Please enter the payment account" ;
+"transferopratevc_pleaseoutmoney" = "Please enter the transfer amount" ;
+"transferopratevc_outputmoneycantzero" = "Transfer amount cannot be 0" ;
+"transferopratevc_outputmaneylessthanbalance" = "Transfer amount cannot be higher than available balance" ;
+"transferopratevc_momotextlessthan" = "Remarks characters cannot exceed 256 digits" ;
+"transferopratevc_outputnamedontyourself" = "Can't transfer money to yourself" ;
+"transferopratevc_plaseinputgasfree" = "Please enter miner's fee" ;
+"transferopratevc_pwdiswrong" = "Failed to verify password" ;
+"transferopratevc_signtransfailere" = "Signature failed" ;
+
+//--------------------------------------Transaction details
+"transferdetailvc_transferdetail" = "Transaction Details" ;
+"transferdetailvc_inputname" = "Sending account" ;
+"transferdetailvc_outputname" = "Accounts receivable" ;
+"transferdetailvc_memotext" = "Remarks" ;
+"transferdetailvc_transtime" = "Transaction Time" ;
+"transferdetailvc_blockheight" = "Block height" ;
+"transferdetailvc_input" = "Transfer In" ;
+"transferdetailvc_output" = "Transfer out" ;
+"transferdetailvc_all" = "All" ;
+"transferdetailvc_Receiving" = "Receiving" ;
+"transferdetailvc_Failedl" = "Failed" ;
+"transferdetailvc_nodata" = "Data currently unavaliable" ;
+
+"ETHtransactionInfoView_Transaction" = "Transaction info" ;
+"ETHtransactionInfoView_type" = "Transaction type" ;
+"ETHtransactionInfoView_Receiving" = "Receiving address" ;
+"ETHtransactionInfoView_Sending" = "Sending address" ;
+"ETHtransactionInfoView_Amount" = "Amount" ;
+
+"AffirmTransferInfoView_Transfer" = "Transfer to account" ;
+"AffirmTransferInfoView_Transfer" = "Transfer Transfer" ;
+
+
+//---------------------------------eth transaction
+"ethtransferdetailvc_inputaddress" = "Payment address" ;
+"ethtransferdetailvc_outputaddress" = "Receiving address" ;
+"ethtransferdetailvc_gasfree" = "Miner's Fee" ;
+"ethtransferdetailvc_comfirmnumber" = "Confirmation number" ;
+
+//-------------------------------Export public key
+"checkkeyvc_higersetting" = "Advance setting" ;
+"checkkeyvc_ownerkeyiscopy" = "Public key successfully copied！" ;
+"checkkeyvc_activekeyiscopy" = "Ordinary public key successfully copied！" ;
+
+// ----------------------------Export private key
+"deriveprivatevc_exportkey" = "Export private key" ;
+"deriveprivatevc_copysuccess" = "Successfully copied！" ;
+
+//----------------------------Import Wallet
+"leadwalletvc_leadeoswallet" = "Import EOSWallet" ;
+"leadwalletvc_leadethwallet" = "Import ETHWallet" ;
+"leadwalletvc_leadbtcwallet" = "Import BTCWallet" ;
+"leadwalletvc_remberkeysspace" = "Recovery code should be separated by spaces" ;
+"leadwalletvc_plaintextprivatekey" = "Plain text private key" ;
+"leadwalletvc_pleaseinputprivatekey" = "Please enter private key" ;
+"leadwalletvc_walletisexist" = "Wallet has been imported, please do not import again" ;
+"leadwalletvc_importsuccess" = "Successfully imported" ;
+"leadwalletvc_privatekeyisvalid" = "The key you entered is invalid" ;
+"leadwalletvc_walletisvalid" = "The current Wallet does not exist" ;
+"leadwalletvc_fetchpermissionfailere" = "Failed to get permission information" ;
+"leadwalletvc_Import" = "Import started" ;
+"leadwalletvc_mnemonics" = "Recovery code" ;
+"leadwalletvc_privatekey" = "Private key" ;
+
+//---------------------------My Wallet
+"walletmanagermentvc_mywallet" = "My Wallet" ;
+"walletmanagermentvc_allcost" = "Total assets" ;
+"walletmanagermentvc_requesting" = "Loading..." ;
+"walletmanagermentvc_currentidwallet" = "Wallet under current identity" ;
+"walletmanagermentvc_leadinwallet" = "Imported Wallet" ;
+"walletmanagermentvc_safecoldwallet" = "Safe cold Wallet" ;
+"walletmanagermentvc_walletsmaxnumber" = "You can only import up to 10 Wallets~" ;
+"'walletmanagermentvc_inputpartnervalue" = "Please enter pairing code" ;
+
+//--------------------------mywallet
+"mywalletvc_backwallet" = "Backup Wallet" ;
+"mywalletvc_pinchange" = "Modify PIN" ;
+"mywalletvc_devicechange" = "Modify wallet name" ;
+"mywalletvc_allclean" = "Erase data" ;
+"mywalletvc_seepubkey" = "View public key" ;
+"mywalletvc_pwdtip" = "password hint" ;
+"mywalletvc_exportprivate" = "Export private key" ;
+"mywalletvc_addressman"= "Switch address" ;
+"mywalletvc_suredeletewallet" = "Are you sure you want to delete Wallet?" ;
+"mywalletvc_deletesuccess" = "successfully deleted" ;
+"mywalletvc_deleteWallet" = "Delete wallet" ;
+"mywalletvc_pleaseunlockwallet" = "Please unlock the cold Wallet " ;
+"mywalletvc_requestfailere" = "Request link failed" ;
+"mywalletvc_inputname" = "Please enter name for new cold wallet" ;
+"mywalletvc_allcleansucc" = "Erase completed" ;
+"mywalletvc_inputoldpin" = "Please enter original PIN code" ;
+"mywalletvc_setpinfailere" = "Failed to set PIN" ;
+"mywalletvc_setpin" = "Set PIN for cold wallet" ;
+"mywalletvc_canclepinsuccess" = "Successfully cancel PIN setup" ;
+"mywalletvc_inputagainpin" = "Please enter PIN again" ;
+"mywalletvc_pinwaswrongpleaseagain" = "The PIN code is inconsistent , please re-enter." ;
+//-------------------------wallettype
+"wallettypevc_choosewallettype" = "Select Wallet Type" ;
+"wallettypevc_eoswallet" = "EOS Wallet" ;
+"wallettypevc_ethwallet" = "ETH Wallet" ;
+"wallettypevc_btcwallet" = "BTC Wallet" ;
+
+//-----------------------Add Coin Type
+"addcurrencyvc_add" = "Added to Favourites" ;
+"addcurrencyvc_cancle" = "Deleted from Favourites" ;
+
+//----------------------Scan QR Code
+"scanvc_startscan" = "Scan Code" ;
+"scanvc_unfondcode" = "No QR code/barcode found" ;
+"scanvc_scanbtccode" = "Please scan the BTC receipt code" ;
+"scanvc_scanethcode" = "Please scan the ETH receipt code" ;
+"scanvc_scaneoscode" = "Please scan the EOS receipt code" ;
+"scanvc_scanvnscode" = "Please scan the VNS receipt code" ;
+"scanvc_scancontentnottrans" = "Scanned QR code is not a receipt code" ;
+"scanvc_autoscan" = "Please aim the lens at the QR code for scanning." ;
+"scanvc_flashlight" = "Turn on the flashlight" ;
+
+// --------------------EOSZ Registration
+"cuurrencyvc_regeosaccount" = "Register an EOS account" ;
+"cuurrencyvc_createqrcode" = "Generate a unique QR code" ;
+"cuurrencyvc_inputaccount" = "please enter your username" ;
+"cuurrencyvc_accountiswrong" = "Incorrect format" ;
+"cuurrencyvc_accountwasreg" = "Registered" ;
+
+// ---------------------eos payment
+"payvc_waspay" = "Payment made" ;
+"payvc_hoverpay" = "Has payment been made?" ;
+"payvc_yes" = "Yes" ;
+"payvc_false" = "No" ;
+
+// --------------------Verify EOS
+"verifyeosvc_inputmobile" = "Please enter mobile number" ;
+"verifyeosvc_inputrealmobile" = "Please enter correct mobile number" ;
+"verifyeosvc_verificodesend" = "Verification code has been sent" ;
+"verifyeosvc_holdon" = "Please wait" ;
+"verifyeosvc_againsend" = "Re-send" ;
+"verifyeosvc_codesendfailere" = "Failed to send verification code" ;
+"verifyeosvc_inputvercode" = "Please enter verification code" ;
+"verifyeosvc_verfailereagain" = "Verification failed, please enter again" ;
+
+
+"wallettypevc_vnswallet" = "VNS Wallet" ;
+
+//---------------------管理公钥
+"CheckKeyVC_Owner" = "Public Key Management（Owner Key）" ;
+"CheckKeyVC_Ordinary" = "Ordinary public key（Active Key) " ;
+"CheckKeyVC_Description" = "Description：\n*Click here to copy；\n*The Owner privilege is the highest privilege of the account, it can add or modify other permissions.\n*Active Default privilege can make transactions, but cannot change privilege settings." ;
+
+
+//---------------------导出私钥
+"DerivePrivateKeyVC_storage" = "Offine storage" ;
+"DerivePrivateKeyVC_recommended" = "Use of password management tool is recommended" ;
+"DerivePrivateKeyVC_surrounding" = "Ensure surrounding is safe before using" ;
+"DerivePrivateKeyVC_computer" = "Don't save to email, computer, web drive or communication tools" ;
+"DerivePrivateKeyVC_Show" = "Show QR Code" ;
+"DerivePrivateKeyVC_QRCode" = "QR Code" ;
+"DerivePrivateKeyVC_management" = "Save by password management tool" ;
+"DerivePrivateKeyVC_support" = "Only support direct scanning" ;
+"DerivePrivateKeyVC_ensuring" = "Please use it while ensuring that no one is around and no camera. If the QR code is acquired by others asset may be lost" ;
+"DerivePrivateKeyVC_network" = "Do not use network to transfer" ;
+"DerivePrivateKeyVC_screenshots" = "Do not save, take screenshots, and take photos of QR code. Only use in a secure surround for the purpose of importing wallets" ;
+"DerivePrivateKeyVC_Private" = "Private key" ;
+"DerivePrivateKeyVC_Copy" = "Copy Private Key" ;
+"DerivePrivateKeyVC_transfer" = "Do not transfer through network tools, once it is acquired by hackers, it will cause irreparable asset losses. (Offline devices transfer is recommended by scanning QR code)" ;
+
+
+//---------------------注册EOS
+"WaitLoginVC_input" = "You will register your EOS account through Alipay payment, or you can generate an EOS account QR code. Please register with EOS old users." ;
+"WaitLoginVC_inputA" = "You need to register the EOS account (12 characters) with the two public keys that have been generated. \nThe registration process will consume the EOS token. \nPlease think of the account name and find an EOS old user to help you register." ;
+"WaitLoginVC_Help" = "Seek Assistance" ;
+"HelpLoginVC_helloSign" = "Hello，Please help me sign up for an EOS account" ;
+"HelpLoginVC_Share" = "Share QR code" ;
+"walletmanagmentvc_notsupport" = "Current cold wallet does not support" ;
+"mywalletvc_resetpin" = "Reset PIN" ;
+"mywalletvc_resetpinsuccess" = "Successfully Reset PIN" ;
+"importwordvc_inputnewpin" = "Please enter a new PIN" ;
+"CurrencyNameVC_mobile" = "Please enter mobile number" ;
+"CurrencyNameVC_verification" = "Obtain verification code" ;
+"CurrencyNameVC_Enterverification" = "Enter verification code" ;
+"CurrencyNameVC_Myself" = "Register by Myself" ;
+
+//---------------------EOS起名字
+"CurrencyNameVC_name" = "Please create a name for your EOS account" ;
+"CurrencyNameVC_explainT" = "• CoinID Pro will notify you of the account creation progress by SMS." ;
+"CurrencyNameVC_explain" = "• EOS account name can only inculde these characters 12345abcdefghijklmnopqr stuvwxyz，You can choose your preferred account name within this range, should only include 12 characters.\n" ;
+"CurrencyNameVC_next" = "Next" ;
+
+//---------------------添加货币收藏
+"AddCurrencyVC_addCurrency" = "Enter the Token or contract address" ;
+"AddCurrencyVC_myAsset" = "My asset" ;
+//
+"userVC_Asset" = "Asset" ;
+"DeepColdChooseTypeVC_chooseTypeMobile" = "Enter on the mobile phone" ;//
+"DeepColdChooseTypeVC_chooseTypeCold" = "Entering in the cold wallet" ;
+"DeepColdChooseTypeVC_securitynormal" = "Moderate security level\n\n" ;
+"DeepColdChooseTypeVC_securityhigh" = "Extremely safe\n\n" ;
+"DeepColdChooseTypeVC_mobileDesc" = "Enter the 'Recovery code code' on the phone to complete the verification." ;
+"DeepColdChooseTypeVC_coldDesc" = "Enter the 'Recovery code code' in the cold wallet to complete the verification." ;
+
+"wallettypevc_btmwallet" = "BTM Wallet" ;
+"wallettypevc_ltcwallet" = "LTC Wallet" ;
+"wallettypevc_gpswallet" = "GPS Wallet" ;
+"leadwalletvc_keystore" = "Keystore" ;
+//---------------------冷端
+"ColdWalletNameVC_characters" = "No more than 12 characters, no symbols" ;
+"ColdWalletNameVC_Please" = "Please create a name for your cold wallet" ;
+"HintPasswordSuccessfulView_PIN" = "PIN code successfully set" ;
+"MonitorBluetoothView_bluetooth" = "Please turn on bluetooth" ;
+"HintBluetoothInterruptView_bluetooth" = "Bluetooth disconnect, please reconnect" ;
+"BeBeingConnectView_Connectiing" = "Connectiing" ;
+"RefuseConnectView_rejected" = "connection request has been rejected" ;
+"TransferVC_turn" = "Please turn on cold wallet,do not disconnect bluetooth" ;
+"TransferVC_Got" = "Got it" ;
+"DeepModeTipViewController_Mnemonic" = "Recovery code has not been backuped and need to revisit?" ;
+"DeepModeTipViewController_Yes" = "Yes" ;
+"DeepModeTipViewController_No" = "No" ;
+"ImportWordVC_again" = "See the Recovery code again" ;
+"ImportWordVC_sequence" = "Please follow the sequence shown in the cold wallet and enter in the corresponding position." ;
+"ImportWordVC_enter" = "Please enter the Recovery code" ;
+
+"leadwalletvc_keystoredescstring1" = "Copy and paste" ;
+"leadwalletvc_keystoredescstring2" = "Wallet KeyStore file content to the input box, or by scanning the keyStore QR code to enter" ;
+"leadwalletvc_keystoredescstring3" = "Keystore file content" ;
+"gatherqrcodevc_transbtm" = "Please transfer BTM" ;
+"scanvc_scanbtmcode" = "Please scan the BTM receipt code" ;
+"mywalletvc_exportkeystore" = "Export Keystore" ;
+"DeriveKeystoreVC_Copy" = "Copy Keystore" ;
+"leadwalletvc_pleaseinputkeystore" = "Please enter Keystore" ;
+"leadwalletvc_pleasekeystorewrong" = "Keystore or password does not match" ;
+"leadwalletvc_importwrong" = "Import failed" ;
+
+"CustomNameVC_Custom" = "Custom Name" ;
+"wallettypevc_wallettitle" = "Wallet" ;
+"gatherqrcodevc_pleasetrans" = "Please transfer" ;
+"scanvc_pleasescanthe" = "Please scan the" ;
+"scanvc_receiptcode" = "receipt code";
+
+"wmwalletManagement_display" = "Need to create an identity to display ~";
+"wmwalletManagement_add" = "Go and add a wallet";
+"wmwalletManagement_hidden" = "All main chains are hidden";
+"walletmanagermentvc_appwallet" = "APP wallet" ;
+
+"walletmanagermentvc_carry" = "carry out" ;
+"walletmanagermentvc_noneed" = "APP wallet has been created, no need to create it again" ;
+"walletmanagermentvc_chainhidingt" = "Hide wallet" ;
+"walletmanagermentvc_Addwallett" = "Add wallet" ;
+"walletmanagermentvc_add" = "Add to" ;
+"selectwallettype_createhotwallet" = "Create an APP Hot Wallet" ;
+"selectwallettype_insertsecuritywallet" = "Add a security wallet" ;
+
+"walletmanagermentvc_Hardware" = "Import Hardware Wallet" ;
+"walletmanagermentvc_Hotwallet" = "Create APP Hotwallet" ;
+"walletmanagermentvc_clicktoadd" = "Click to add" ;
+"mywalletaddresschange" = "Switching address failed" ;
+"transferoperatvc_decimalwrong" = "Currency accuracy has no data yet" ;
+"registereos_free" = "free" ;
+"registereos_accountname" = "Account name";
+"registereos_payeos" = "Pay EOS" ;
+"registereos_dealresource" = "Consume resources" ;
+"registereos_ram" = "ram";
+"walletmanagermentvc_costpercent" = "Asset ratio";
+"transferdetailvc_receivertime" = "Time of arrival" ;
+"transferdetailvc_starttime" = "Time of arrival" ;
+"uservc_masterchain"="Starting time";
+"stackcell_clickconnect" = "Click on the card to reconnect";
+"transfer_clickicoconnect" = "Click the icon to reconnect";
+
+//---------------------GPS
+"YPayCreateWalletVC_length" = "Account Name must include: lower case letters, numeric 1-5; 12 characters in length" ;
+"YPayCreateWalletVC_username" = "Username" ;
+"YPublicSystemVC_public" = "Select Public Chain" ;
+"TransferOprateVC_Recharge" = "Top Up Account" ;
+"TransferOprateVC_Target" = "Target Account" ;
+"TransferOprateVC_Coin" = "Withdraw Ammount" ;
+"TransferOprateVC_enterVNS" = "Enter VNS Wallet Address" ;
+"YSetAmountVC_SetAmount" = "Set Ammount" ;
+"MyWallet_gpsAdreess" = "Link/View GPS Network Account" ;
+"PasswordHint_gpsAdreess" = "GPS Network Address" ;
+"transferVC_payBtn" = "Payment" ;
+"YPayToMerchantsVC_payBtn" = "Payment Code" ;
+"YPayToMerchantsVC_code" = "Scan Code" ;
+"YPayToMerchantsVC_merchants" = "Pay Merchant" ;
+"GatheringQRcodeVC_gpsScan" = "Scan Code to Make Payment" ;
+"transferoperatvc_decimalwrong" = "Currency accuracy has no data yet" ;
+"registereos_free" = "free" ;
+"registereos_accountname" = "Account name";
+"registereos_payeos" = "Pay EOS" ;
+"registereos_dealresource" = "Consume resources" ;
+"registereos_ram" = "ram";
+"YPayCreateWalletVC_accountName" = "Account Name" ;
+"CrossChainTransferVC_CrossChainTransfer" = "Inter-blockchain Transfer" ;
+"CrossChainTransferVC_chainRecord" = "Inter-blockchain Record" ;
+"CrossChainTransferVC_SelectCurrency" = "Select currency：" ;
+"CrossChainTransferVC_sender" = "Sender：" ;
+"CrossChainTransferVC_chain" = "Chain" ;
+"CrossChainTransferVC_ThisWalletAddress" = "Current Wallet Address" ;
+"CrossChainTransferVC_receiver" = "Receiver：" ;
+"CrossChainTransferVC_OtherGPSWallet" = "Other GPS Wallets" ;
+"CrossChainTransferVC_vnsWallet" = "Please Import VNS Wallet" ;
+"WMPayCreateWalletVC_Mainnet" = "Register Mainnet Account" ;
+"WMPayCreateWalletVC_Mobile" = "Register via Mobile Number" ;
+"WMPayCreateWalletVC_Register" = "Register Account" ;
+"WMPayCreateWalletVC_Complete" = "Registration Complete" ;
+"YPayToMerchantsVC_collectionCode" = "Collection Code" ;
+"YPayToMerchantsVC_ordinaryTransfer" = "General Transfer Between Accounts" ;
+"YPayToMerchantsVC_pOnly" = "POS Machine Scan Code Only" ;
+"transferopratevc_addressvalid" = "Invalid Address";
+"YGpsNetWorkChain_main" = "Main Network Account:";
+"YGpsNetWorkChain_Binding" = "Binding Function, Please Look Forward To";
+"YGpsNetWorkChain_Phone" = "Phone Number:";
+"YGpsNetWorkChain_Recommended" = "Recommended miners' fees (according to blockchain network fluctuations)";
+"SelectWalletTypeCell_hotwallat" = "The full name of HD Wallets is Hierachical Deterministic Wallets, which corresponds to Chinese as “layered deterministic wallet”. According to the original description and discussion of Bitcoin trusted developer Gregory Maxwell, Pieter Wuille completed and submitted BIP32 on February 11, 2012.";
+"RecoverVC_General" = "This mnemonic can be used in multiple wallets, including imtoken, etc...";
+"RecoverVC_dedicated" = "This mnemonic is encrypted by CoinID Professional and can only be used in CoinID.";
+"RecoverVC_Universal" = "Universal Mnemonic";
+"RecoverVC_DedicatedMnemonic" = "CoinID Dedicated Mnemonic";
+"YPayCreateWalletVC_Signup" = "Sign up now";
+"YPayCreateWalletVC_All" = "Since the transfer of the chain requires a certain amount of miners' fees, the amount received after the transfer is all the amount after deducting the miner's fee, the actual receipt will be less than the actual amount.";
+"coinidvc_importwallet" = "Imported Wallet" ;
+"coinidvc_PrivacyPolicy" = "Privacy Policy" ;
+"coinidvc_service" = "Coinid service agreement" ;
+
+"SelectEquipmentVC_click" = "Please click on the pair on the APP and confirm on the Bluetooth wallet." ;
+"SelectEquipmentVC_Afterclicking" = "After clicking the Next button, please confirm it on the Bluetooth wallet side." ;
+"Ethtansferparticularsvc_success" = "success" ;
+"Ethtansferparticularsvc_failure" = "failure" ;
+"Ethtansferparticularsvc_recommendValue" = "recommend" ;
+"bancormanager_contractaddress" = "Contract address";
+
+"bancormanager_registrationSuccess" = "registration success";
+"bancormanager_registrationFailed" = "registration failed";
+"bancormanager_paymentinfo" = "Payment Information" ;
+"bancormanager_btnsure" = "Allow" ;
+"bancormanager_getdidaddress" = "Get your DID to decentralize your identity address information" ;
+"bancormanager_dabancorname" = "UP Bancor Intelligent point redemption system   Application ";
+
+"transferopratevc_Thiscurrencyis" = "This currency is";
+"transferopratevc_pointson" = "Token points on the main chain";
+"transferopratevc_Consumption" = "Consumption";
+"transferopratevc_Asafee" = "as a fee";
+"mywallet_device" = "Device details";
+"mywallet_productName" = "product name";
+"mywallet_version" = "Firmware version";
+"bancormanager_functiontype1" = "注册" ;
+"bancormanager_functiontype2" = "转让" ;
+"bancormanager_functiontype3" = "续费" ;
+"bancormanager_functiondesc" = "域名" ;
+"bancormanager_vdnsbancorname" = "VDNS distributed domain name system Application";
+"bancormanager_renewdomainname" = "Renew Domain Name";
+"bancormanager_deldomainname" = "Delete Domain Name";
+"bancormanager_regdomainname" = "Registeration Domain Name";
+"bancormanager_convertdomainname" = "Transfer Domain Name";
+"transferopratevc_waitingpacking" = "Waiting" ;
+"bancormanager_dabancorname_vdai" = "VDAI platform   Application ";

@@ -1,0 +1,143 @@
+PODS:
+  - AFNetworking (4.0.1):
+    - AFNetworking/NSURLSession (= 4.0.1)
+    - AFNetworking/Reachability (= 4.0.1)
+    - AFNetworking/Security (= 4.0.1)
+    - AFNetworking/Serialization (= 4.0.1)
+    - AFNetworking/UIKit (= 4.0.1)
+  - AFNetworking/NSURLSession (4.0.1):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (4.0.1)
+  - AFNetworking/Security (4.0.1)
+  - AFNetworking/Serialization (4.0.1)
+  - AFNetworking/UIKit (4.0.1):
+    - AFNetworking/NSURLSession
+  - DZNEmptyDataSet (1.8.1)
+  - Flutter (1.0.0)
+  - flutter_full_pdf_viewer (1.0.1):
+    - Flutter
+  - FMDB (2.7.5):
+    - FMDB/standard (= 2.7.5)
+  - FMDB/standard (2.7.5)
+  - image_gallery_saver (1.5.0):
+    - Flutter
+  - Masonry (1.1.0)
+  - MJExtension (3.0.15.1)
+  - path_provider (0.0.1):
+    - Flutter
+  - "permission_handler (5.0.1+1)":
+    - Flutter
+  - shared_preferences (0.0.1):
+    - Flutter
+  - sqflite (0.0.2):
+    - Flutter
+    - FMDB (>= 2.7.5)
+  - SVProgressHUD (2.2.5)
+  - UMAPM (1.1.0)
+  - UMCCommon (7.2.5):
+    - UMAPM
+    - UMDevice
+  - UMCSecurityPlugins (1.0.6)
+  - UMCShare/Core (6.10.1):
+    - UMCCommon
+  - UMCShare/Social/ReducedQQ (6.10.1):
+    - UMCCommon
+    - UMCShare/Core
+  - UMCShare/Social/ReducedSina (6.10.1):
+    - UMCCommon
+    - UMCShare/Core
+  - UMCShare/Social/ReducedWeChat (6.10.1):
+    - UMCCommon
+    - UMCShare/Core
+  - UMDevice (1.1.0)
+  - umengshare (0.0.1):
+    - Flutter
+    - UMCCommon
+    - UMCSecurityPlugins
+    - UMCShare/Social/ReducedQQ
+    - UMCShare/Social/ReducedSina
+    - UMCShare/Social/ReducedWeChat
+  - url_launcher (0.0.1):
+    - Flutter
+  - zhPopupController (1.0.3)
+
+DEPENDENCIES:
+  - AFNetworking (~> 4.0.1)
+  - DZNEmptyDataSet
+  - Flutter (from `Flutter`)
+  - flutter_full_pdf_viewer (from `.symlinks/plugins/flutter_full_pdf_viewer/ios`)
+  - image_gallery_saver (from `.symlinks/plugins/image_gallery_saver/ios`)
+  - Masonry (~> 1.1.0)
+  - MJExtension (~> 3.0.15.1)
+  - path_provider (from `.symlinks/plugins/path_provider/ios`)
+  - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
+  - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
+  - sqflite (from `.symlinks/plugins/sqflite/ios`)
+  - SVProgressHUD (~> 2.2.5)
+  - umengshare (from `.symlinks/plugins/umengshare/ios`)
+  - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
+  - zhPopupController (~> 1.0.3)
+
+SPEC REPOS:
+  trunk:
+    - AFNetworking
+    - DZNEmptyDataSet
+    - FMDB
+    - Masonry
+    - MJExtension
+    - SVProgressHUD
+    - UMAPM
+    - UMCCommon
+    - UMCSecurityPlugins
+    - UMCShare
+    - UMDevice
+    - zhPopupController
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  flutter_full_pdf_viewer:
+    :path: ".symlinks/plugins/flutter_full_pdf_viewer/ios"
+  image_gallery_saver:
+    :path: ".symlinks/plugins/image_gallery_saver/ios"
+  path_provider:
+    :path: ".symlinks/plugins/path_provider/ios"
+  permission_handler:
+    :path: ".symlinks/plugins/permission_handler/ios"
+  shared_preferences:
+    :path: ".symlinks/plugins/shared_preferences/ios"
+  sqflite:
+    :path: ".symlinks/plugins/sqflite/ios"
+  umengshare:
+    :path: ".symlinks/plugins/umengshare/ios"
+  url_launcher:
+    :path: ".symlinks/plugins/url_launcher/ios"
+
+SPEC CHECKSUMS:
+  AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
+  DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  flutter_full_pdf_viewer: 1b65139fc3236cde300ba6bea2a72669cb07f2e6
+  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
+  image_gallery_saver: 259eab68fb271cfd57d599904f7acdc7832e7ef2
+  Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
+  MJExtension: 19bc33ce2eee2d319760f5622562cf581a6ff756
+  path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
+  permission_handler: eac8e15b4a1a3fba55b761d19f3f4e6b005d15b6
+  shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
+  sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
+  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
+  UMAPM: 2b966cff744dccdd9e2ed99efafce280be30833c
+  UMCCommon: f7480d316381612f90cdde3a3c0f39a7e2c0a788
+  UMCSecurityPlugins: 0831a08f3988f3cea9f1d3a7626cd9bee4fef150
+  UMCShare: 0846449c689e8bf6793a941b97f51f9afff927ef
+  UMDevice: 28d21a568c8e8322e5a03bbd53b138d0c098d3b3
+  umengshare: 8dd88fd80fc9fee643215dd085fbafc3be5c8497
+  url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
+  zhPopupController: 4e6bd734062cb9c7ebe8113568550bade168bed7
+
+PODFILE CHECKSUM: b2109f587dc60e111e7b62854481da1bba93940a
+
+COCOAPODS: 1.9.1
