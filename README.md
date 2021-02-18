@@ -12,7 +12,7 @@ later...
 
 ALLToken is an open source,cross-platform wallet, built with [Flutter](https://flutter.dev/),now it is support bitcoin,ethereum,polkadot,more chain well be support in the future.
 
-<img src="docs/main.png" alt="main" style="zoom:25%;" /><img src="docs/manager.png" alt="manager" style="zoom:25%;" /><img src="docs/history.png" alt="history" style="zoom:25%;" />
+<img src="docs/main.png" alt="main" width = "200" height = "300"/><img src="docs/manager.png" alt="manager" width = "200" height = "300" /><img src="docs/history.png" alt="history" width = "200" height = "300" />
 
 ### Features
 
