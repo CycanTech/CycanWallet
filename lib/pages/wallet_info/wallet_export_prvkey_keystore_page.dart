@@ -78,6 +78,7 @@ class _WalletExportPrikeyKeystorePageState
                       fontSize: OffsetWidget.setSp(12),
                       color: Color(0xFF586883)),
                 ),
+                OffsetWidget.vGap(5),
                 Text(
                   "export_tip2".local(),
                   style: TextStyle(
@@ -89,8 +90,9 @@ class _WalletExportPrikeyKeystorePageState
                   "export_tip3".local(),
                   style: TextStyle(
                       fontSize: OffsetWidget.setSp(12),
-                      color: Color(0xFFACBBCF)),
+                      color: Color(0xFF586883)),
                 ),
+                OffsetWidget.vGap(5),
                 Text(
                   "export_tip4".local(),
                   style: TextStyle(
@@ -102,8 +104,9 @@ class _WalletExportPrikeyKeystorePageState
                   "export_tip5".local(),
                   style: TextStyle(
                       fontSize: OffsetWidget.setSp(12),
-                      color: Color(0xFFACBBCF)),
+                      color: Color(0xFF586883)),
                 ),
+                OffsetWidget.vGap(5),
                 Text(
                   "export_tip6".local(),
                   style: TextStyle(
