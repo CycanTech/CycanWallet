@@ -49,6 +49,7 @@
 		82A0A0D725E49BB30092B21E /* libboost_system.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 82A0A0D525E49BB20092B21E /* libboost_system.a */; };
 		82A0A0D825E49BB30092B21E /* libboost_thread.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 82A0A0D625E49BB20092B21E /* libboost_thread.a */; };
 		82A12DB02589B37F001D14DB /* SwiftFlutterAppUpgradePlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82A12DAF2589B37F001D14DB /* SwiftFlutterAppUpgradePlugin.swift */; };
+		82A5927425E613A200545248 /* libCoinIDLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 82A5927325E613A200545248 /* libCoinIDLib.a */; };
 		82B03A512493884E00A77308 /* BigNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 82B03A302493884D00A77308 /* BigNumber.m */; };
 		82B03A522493884E00A77308 /* mpi.c in Sources */ = {isa = PBXBuildFile; fileRef = 82B03A372493884D00A77308 /* mpi.c */; };
 		82B03A532493884E00A77308 /* RegEx.m in Sources */ = {isa = PBXBuildFile; fileRef = 82B03A382493884D00A77308 /* RegEx.m */; };
@@ -186,6 +187,7 @@
 		82A0A0D525E49BB20092B21E /* libboost_system.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libboost_system.a; sourceTree = "<group>"; };
 		82A0A0D625E49BB20092B21E /* libboost_thread.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libboost_thread.a; sourceTree = "<group>"; };
 		82A12DAF2589B37F001D14DB /* SwiftFlutterAppUpgradePlugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftFlutterAppUpgradePlugin.swift; sourceTree = "<group>"; };
+		82A5927325E613A200545248 /* libCoinIDLib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libCoinIDLib.a; sourceTree = "<group>"; };
 		82B03A302493884D00A77308 /* BigNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BigNumber.m; sourceTree = "<group>"; };
 		82B03A322493884D00A77308 /* tommath_private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tommath_private.h; sourceTree = "<group>"; };
 		82B03A332493884D00A77308 /* RegEx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegEx.h; sourceTree = "<group>"; };
@@ -248,6 +250,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				82A0A0D725E49BB30092B21E /* libboost_system.a in Frameworks */,
+				82A5927425E613A200545248 /* libCoinIDLib.a in Frameworks */,
 				A43CE8240B73C7A4D543874B /* Pods_Runner.framework in Frameworks */,
 				82A0A0D825E49BB30092B21E /* libboost_thread.a in Frameworks */,
 			);
@@ -436,6 +439,7 @@
 		82B03A4B2493884D00A77308 /* IOS_lib_V3.0.4 */ = {
 			isa = PBXGroup;
 			children = (
+				82A5927325E613A200545248 /* libCoinIDLib.a */,
 				8272307625C94A8A008F2C54 /* CoinIDLIBInterface.h */,
 				82B03A4F2493884D00A77308 /* DataTypeDefine.h */,
 				82A0A0D525E49BB20092B21E /* libboost_system.a */,
@@ -939,6 +943,7 @@
 					"$(PROJECT_DIR)/Runner/OpenSouces/IOS_lib_V3.0.0",
 					"$(PROJECT_DIR)/Runner/OpenSouces/IOS_lib_V3.0.2",
 					"$(PROJECT_DIR)/Runner/OpenSouces/IOS_lib_V3.0.3",
+					"$(PROJECT_DIR)/Runner/OpenSouces/IOS_lib_V3.0.4",
 				);
 				MARKETING_VERSION = 1.0.0;
 				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
@@ -953,6 +958,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Profile;
@@ -1185,6 +1191,7 @@
 					"$(PROJECT_DIR)/Runner/OpenSouces/IOS_lib_V3.0.0",
 					"$(PROJECT_DIR)/Runner/OpenSouces/IOS_lib_V3.0.2",
 					"$(PROJECT_DIR)/Runner/OpenSouces/IOS_lib_V3.0.3",
+					"$(PROJECT_DIR)/Runner/OpenSouces/IOS_lib_V3.0.4",
 				);
 				MARKETING_VERSION = 1.0.0;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1201,6 +1208,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1236,6 +1244,7 @@
 					"$(PROJECT_DIR)/Runner/OpenSouces/IOS_lib_V3.0.0",
 					"$(PROJECT_DIR)/Runner/OpenSouces/IOS_lib_V3.0.2",
 					"$(PROJECT_DIR)/Runner/OpenSouces/IOS_lib_V3.0.3",
+					"$(PROJECT_DIR)/Runner/OpenSouces/IOS_lib_V3.0.4",
 				);
 				MARKETING_VERSION = 1.0.0;
 				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
@@ -1250,6 +1259,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

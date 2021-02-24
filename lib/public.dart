@@ -11,6 +11,7 @@ export './net/request_url.dart';
 export 'package:flutter_coinid/db/database_config.dart';
 export 'package:flutter_coinid/utils/date_util.dart';
 export './utils/string_util.dart';
+export './services/change_notifier.dart';
 
 //widgets
 export 'package:flutter_coinid/widgets/custom_toast.dart';

@@ -102,6 +102,11 @@ enum MButtonState {
   ButtonState_Bottom,
 }
 
+enum MCurrencyType {
+  CNY,
+  USD,
+}
+
 class Constant {
   static const bool inProduction = kReleaseMode;
   static bool isDriverTest = false;

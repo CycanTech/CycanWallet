@@ -1,4 +1,3 @@
-
 //flutter emulators --launch Pixel XL API 24
 //flutter run -d emulator-5554
 import 'package:easy_localization/easy_localization.dart';
@@ -7,10 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_coinid/models/assets/currency_asset.dart';
 import 'package:flutter_coinid/pages/app.dart';
+import 'package:flutter_coinid/public.dart';
 import 'package:flutter_coinid/routers/app_routers.dart';
 import 'package:flutter_coinid/routers/routers.dart';
+import 'package:flutter_coinid/utils/sharedPrefer.dart';
+import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
   final router = FluroRouter();
   Routers.configureRoutes(router);
   AppRouters.router = router;
@@ -20,9 +22,17 @@ void main() {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown
   ]);
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
   CurrencyAssetModel.configCurrencyTokens();
+  int a = await getAmountValue();
+
   runApp(EasyLocalization(
-    child: MyApp(),
+    child: MultiProvider(providers: [
+      ChangeNotifierProvider(
+          create: (context) =>
+              CurrencyTypeState(a == 0 ? MCurrencyType.CNY : MCurrencyType.USD))
+    ], child: MyApp()),
+
     // 支持的语言
     supportedLocales: [Locale('zh', 'CN'), Locale('en', 'US')],
     // 语言资源包目录
