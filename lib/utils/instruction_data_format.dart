@@ -41,7 +41,17 @@ class InstructionDataFormat {
     return list;
   }
 
- 
+  static int littleConvertBigEndian(String string) {
+    string = string.replaceAll("0x", "");
+    // int nonce = ((nonceCode >> 8)) | (((nonceCode & 0x00ff) << 8));
+    String bigeEndian = "";
+    for (int i = string.length; i > 0; i -= 2) {
+      String a = string.substring(i - 2, i);
+      bigeEndian += a;
+    }
+    return int.tryParse(bigeEndian, radix: 16);
+  }
+
   //10进制数组转换成字符串
   static String intToString(List<int> value) {
     String result = "";

@@ -387,7 +387,7 @@
 				8292825624CEB1B600190C0C /* CoinIDHelper+ETHSign.mm */,
 				82EFF7EA25C011AB00282E14 /* CoinIDHelper+DotSign.h */,
 				82EFF7EB25C011AB00282E14 /* CoinIDHelper+DotSign.mm */,
-				82B03A4B2493884D00A77308 /* IOS_lib_V3.0.3 */,
+				82B03A4B2493884D00A77308 /* IOS_lib_V3.0.4 */,
 				82B03A412493884D00A77308 /* bip-0039 */,
 				82B03A2F2493884D00A77308 /* BigNumber */,
 			);
@@ -433,7 +433,7 @@
 			path = "bip-0039";
 			sourceTree = "<group>";
 		};
-		82B03A4B2493884D00A77308 /* IOS_lib_V3.0.3 */ = {
+		82B03A4B2493884D00A77308 /* IOS_lib_V3.0.4 */ = {
 			isa = PBXGroup;
 			children = (
 				8272307625C94A8A008F2C54 /* CoinIDLIBInterface.h */,
@@ -441,7 +441,7 @@
 				82A0A0D525E49BB20092B21E /* libboost_system.a */,
 				82A0A0D625E49BB20092B21E /* libboost_thread.a */,
 			);
-			path = IOS_lib_V3.0.3;
+			path = IOS_lib_V3.0.4;
 			sourceTree = "<group>";
 		};
 		82D2210625946C54009E74F8 /* UI */ = {

@@ -245,12 +245,12 @@ class _MinePageState extends State<MinePage> {
                         ),
                         OffsetWidget.hGap(9),
                         Text(
-                            map[_kContent],
-                            style: TextStyle(
-                              color: Color(0xFF444444),
-                              fontSize: OffsetWidget.setSp(12),
-                            ),
+                          map[_kContent],
+                          style: TextStyle(
+                            color: Color(0xFF444444),
+                            fontSize: OffsetWidget.setSp(12),
                           ),
+                        ),
                       ],
                     ),
                     Image.asset(
@@ -318,6 +318,7 @@ class _MinePageState extends State<MinePage> {
     OffsetWidget.screenInit(context, 360);
     return CustomPageView(
       hiddenScrollView: true,
+      hiddenAppBar: true,
       hiddenResizeToAvoidBottomInset: false,
       child: ListView.builder(
         itemCount: _datas.length,

@@ -56,8 +56,7 @@ extension MDOTSign on MHWallet {
           "dotsign jsonTrans $jsonTrans this.pubKey ${this.pubKey} prvKey $prvKey");
       String sign = await ChannelNative.sigPolkadotTransaction(
           jsonTrans, prvStr, this.pubKey);
-      sign = "0x" + sign;
-      return sign;
+      return sign.isValid() ? "0x" + sign : null;
     } catch (e) {
       LogUtil.v("dotsign交易失败\n");
       LogUtil.v(e);

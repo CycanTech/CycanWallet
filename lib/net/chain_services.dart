@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter_coinid/channel/channel_native.dart';
 import 'package:flutter_coinid/models/transrecord/trans_record.dart';
 import 'package:flutter_coinid/net/request_method.dart';
+import 'package:flutter_coinid/utils/instruction_data_format.dart';
 import 'package:flutter_coinid/utils/json_util.dart';
 import '../public.dart';
 
@@ -450,8 +451,8 @@ class ChainServices {
               String value = item["result"] as String;
               value ??= "0000000000000000";
               String nonceStr = value.replaceAll("0x", "").substring(0, 16);
-              int nonceCode = int.tryParse(nonceStr, radix: 16);
-              int nonce = ((nonceCode >> 8)) | (((nonceCode & 0x00ff) << 8));
+              int nonce =
+                  InstructionDataFormat.littleConvertBigEndian(nonceStr);
               LogUtil.v("nonce $nonce");
               objects["nonce"] = nonce;
             }
@@ -683,7 +684,7 @@ class ChainServices {
 
   static Future<dynamic> _requestDotAssets(
       String from, bool neePrice, complationBlock block) async {
-    Map<String, dynamic> assetResult = {"c": "0", "p": "0", "up": "0"};
+    Map<String, dynamic> assetResult = {"c": "100", "p": "0", "up": "0"};
     String url = "https://polkadot.subscan.io/api/scan/search";
     Map<String, dynamic> balanceParams = Map();
     // from = "13GkDCmf2pxLW1mDCTkSezQF541Ksy6MsZfAEhw5vfTdPsxE";
