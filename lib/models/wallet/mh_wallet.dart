@@ -440,6 +440,23 @@ class MHWallet extends BaseModel {
     }
   }
 
+  //导出keystore
+  Future<String> exportKeystore({String pin}) async {
+    assert(pin != null, "pin为空");
+    try {
+      String prv = this.prvKey;
+      if (prv.isValid() == false) {
+        prv = this.subPrvKey;
+      }
+      WalletObject object =
+          await ChannelWallet.exportKeyStoreFrom(prv, pin, this.chainType);
+      return object.keyStore;
+    } catch (e) {
+      LogUtil.v("keyStore出错" + e.toString());
+      return null;
+    }
+  }
+
   //生成方法
   static Future<MStatusCode> importWallet(
       {String content = "",

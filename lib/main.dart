@@ -24,15 +24,8 @@ void main() async {
   ]);
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
   CurrencyAssetModel.configCurrencyTokens();
-  int a = await getAmountValue();
-
   runApp(EasyLocalization(
-    child: MultiProvider(providers: [
-      ChangeNotifierProvider(
-          create: (context) =>
-              CurrencyTypeState(a == 0 ? MCurrencyType.CNY : MCurrencyType.USD))
-    ], child: MyApp()),
-
+    child: MyApp(),
     // 支持的语言
     supportedLocales: [Locale('zh', 'CN'), Locale('en', 'US')],
     // 语言资源包目录

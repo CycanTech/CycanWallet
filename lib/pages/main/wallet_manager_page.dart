@@ -1,3 +1,4 @@
+import 'package:flutter/rendering.dart';
 import 'package:flutter_coinid/channel/channel_dapp.dart';
 import 'package:flutter_coinid/models/assets/currency_asset.dart';
 import 'package:flutter_coinid/models/wallet/mh_wallet.dart';
@@ -13,160 +14,122 @@ class WalletManager extends StatefulWidget {
 }
 
 class _WalletManagerState extends State<WalletManager> {
-  List<MHWallet> appWalletsLists = [];
-  List<MHWallet> leadInWalletsLists = [];
-  List<MHWallet> firmWalletLists = [];
-  List<MHWallet> nfcWalletsLists = [];
-  int currentPage = 0;
-  final List<Tab> _myTabs = <Tab>[
-    Tab(text: 'wallet_appgroup'.local()),
-    Tab(text: 'wallet_leadin'.local()),
-    // Tab(text: 'wallet_harewallet'.local()),
+  final List<MCoinType> coinDatas = [
+    MCoinType.MCoinType_All,
+    MCoinType.MCoinType_BTC,
+    MCoinType.MCoinType_ETH,
+    MCoinType.MCoinType_DOT
   ];
-
-  String allAssetsValue = "0.00";
-  int amountType = 0;
-  String originAssets = "0";
-
+  List<MHWallet> datas = [];
+  MCoinType currentType = MCoinType.MCoinType_All;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     initData();
-    _findWalletsWithDB(currentPage);
+    _findWalletsWithDB(MCoinType.MCoinType_All);
   }
 
-  initData() async {
-    int amount = await getAmountValue();
-    String assets = await CurrencyAssetModel.fetchAllChainAssetsValue(
-        isCny: amount == 0 ? true : false);
-    originAssets = await getOriginMoney(amount == 0 ? true : false);
-    setState(() {
-      amountType = amount;
-      allAssetsValue = assets;
-    });
-    CurrencyAssetModel.updateAllTokenAssets().then((value) {
-      if(value == null) return;
-      String newassets = amount == 0 ? value["cnysum"] : value["usdsum"];
-      if (mounted) {
-        setState(() {
-          allAssetsValue = newassets;
-        });
-      }
-    });
+  initData() async {}
 
-  }
-
-  _findWalletsWithDB(int page) async {
-    List<MHWallet> currents = [];
-    if (page == 0) {
-      currents = await MHWallet.findWalletsByType(
-          MOriginType.MOriginType_Create.index);
-      currents.addAll(await MHWallet.findWalletsByType(
-          MOriginType.MOriginType_Restore.index));
-
-      setState(() {
-        appWalletsLists = currents;
-      });
-    } else if (page == 1) {
-      currents = await MHWallet.findWalletsByType(
-          MOriginType.MOriginType_LeadIn.index);
-
-      setState(() {
-        leadInWalletsLists = currents;
-      });
-    } else if (page == 2) {
-      currents =
-          await MHWallet.findWalletsByType(MOriginType.MOriginType_Colds.index);
-
-      setState(() {
-        firmWalletLists = currents;
-      });
-    } else if (page == 3) {
-      currents =
-          await MHWallet.findWalletsByType(MOriginType.MOriginType_NFC.index);
-
-      setState(() {
-        nfcWalletsLists = currents;
-      });
-    }
-  }
-
-  List<MHWallet> _findWallets(int page) {
-    List<MHWallet> datas;
-    if (page == 0) {
-      datas = appWalletsLists;
-    } else if (page == 1) {
-      datas = leadInWalletsLists;
-    } else if (page == 2) {
-      datas = firmWalletLists;
+  void _findWalletsWithDB(MCoinType _cointType) async {
+    List currents = [];
+    if (_cointType == MCoinType.MCoinType_All) {
+      currents = await MHWallet.findAllWallets();
     } else {
-      datas = nfcWalletsLists;
+      currents = await MHWallet.findWalletsByChainType(_cointType.index);
     }
-    return datas;
+    setState(() {
+      datas = currents;
+      currentType = _cointType;
+    });
   }
 
-  void _walletCategoryClick(int page) async {
-    currentPage = page;
-    LogUtil.v("_walletCategoryClick $page");
-    Future.delayed(Duration(milliseconds: 500)).then((value) => {
-          _findWalletsWithDB(page),
-        });
-  }
-
-  void _headerAsssetsClick() {
-    Routers.push(context, Routers.assetsListPage,
-        params: {"originAssets": originAssets});
-  }
-
-  void _cellContentSelectRowAt(int page, int index) async {
+  void _cellContentSelectRowAt(int index) async {
     LogUtil.v("点击钱包整体");
-    List<MHWallet> datas = _findWallets(page);
     MHWallet wallet = datas[index];
     if (await MHWallet.updateChoose(wallet)) {
       Routers.goBackWithParams(context, {"walletID": wallet.walletID});
     }
   }
 
-  void _cellDetailDidSelect(int page, int index) {
-    List<MHWallet> datas = _findWallets(page);
+  void _cellDetailDidSelect(int index) {
     MHWallet wallet = datas[index];
     MHWallet.updateChoose(wallet);
-    Routers.push(context, Routers.walletInfoPagePage,
-            params: {"walletID": wallet.walletID})
-        .then((value) => {_findWalletsWithDB(currentPage)});
+    // Routers.push(context, Routers.walletInfoPagePage,
+    //         params: {"walletID": wallet.walletID})
+    //     .then((value) => {_findWalletsWithDB(currentPage)});
   }
 
-  Widget _cellBuilder(int index, int page) {
-    List<MHWallet> datas = _findWallets(page);
-    MHWallet wallet = datas[index];
-    String logoPath = Constant.getChainLogo(wallet.chainType);
-    String name = Constant.getChainSymbol(wallet.chainType) + "-wallet";
-    String address = wallet?.walletAaddress;
-    String logodetail = Constant.ASSETS_IMG + "icon/wallet_detail.png";
+  Widget _itemBuilder(int index) {
+    final MCoinType mCoinType = coinDatas[index];
+    String typeStr = Constant.getChainSymbol(mCoinType.index);
+    if (mCoinType == MCoinType.MCoinType_All) {
+      typeStr = "wallets_all".local();
+    }
+    Color bgColor = Color(0XFFF6F9FC);
+    Color textColor = Color(0xFF586883);
+    if (mCoinType == currentType) {
+      bgColor = Color(0xFF586883);
+      textColor = Color(0xFFFFFFFF);
+    }
     return Container(
       alignment: Alignment.center,
-      // color: Colors.red,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () => _findWalletsWithDB(mCoinType),
+        child: Container(
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: bgColor,
+            borderRadius: BorderRadius.circular(4),
+          ),
+          height: OffsetWidget.setSc(25),
+          width: OffsetWidget.setSc(45),
+          child: Text(
+            typeStr,
+            style: TextStyle(
+              color: textColor,
+              fontWeight: FontWightHelper.medium,
+              fontSize: OffsetWidget.setSp(12),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _cellBuilder(int index) {
+    MHWallet wallet = datas[index];
+    String logoPath = Constant.getChainLogo(wallet.chainType);
+    String name = Constant.getChainSymbol(wallet.chainType);
+    String address = wallet?.walletAaddress;
+    return Container(
+      alignment: Alignment.center,
+      padding: EdgeInsets.only(bottom: OffsetWidget.setSc(12)),
       child: Column(
         children: [
           GestureDetector(
             behavior: HitTestBehavior.opaque,
-            onTap: () => _cellContentSelectRowAt(page, index),
+            onTap: () => _cellContentSelectRowAt(index),
             child: Container(
-              // color: Colors.blue,
-              height: OffsetWidget.setSc(54),
+              height: OffsetWidget.setSc(60),
               alignment: Alignment.center,
+              color: Colors.amber,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  LoadAssetsImage(
-                    logoPath,
-                    width: OffsetWidget.setSc(28),
-                    height: OffsetWidget.setSc(28),
-                    fit: BoxFit.contain,
+                  Container(
+                    padding: EdgeInsets.only(left: OffsetWidget.setSc(23)),
+                    child: LoadAssetsImage(
+                      logoPath,
+                      width: OffsetWidget.setSc(36),
+                      height: OffsetWidget.setSc(36),
+                      fit: BoxFit.contain,
+                    ),
                   ),
-                  OffsetWidget.hGap(9),
-                  Expanded(
+                  Container(
+                    padding: EdgeInsets.only(left: OffsetWidget.setSc(9)),
+                    width: OffsetWidget.setSc(116),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -175,8 +138,8 @@ class _WalletManagerState extends State<WalletManager> {
                           name,
                           style: TextStyle(
                               fontSize: OffsetWidget.setSp(16),
-                              fontWeight: FontWeight.w400,
-                              color: Color(0XFF171F24)),
+                              fontWeight: FontWightHelper.medium,
+                              color: Colors.white),
                           maxLines: 1,
                           softWrap: false,
                           overflow: TextOverflow.ellipsis,
@@ -186,8 +149,8 @@ class _WalletManagerState extends State<WalletManager> {
                           address,
                           style: TextStyle(
                               fontSize: OffsetWidget.setSp(10),
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xFF9B9B9B)),
+                              fontWeight: FontWightHelper.regular,
+                              color: Colors.white),
                           maxLines: 1,
                           softWrap: false,
                           overflow: TextOverflow.ellipsis,
@@ -195,119 +158,16 @@ class _WalletManagerState extends State<WalletManager> {
                       ],
                     ),
                   ),
-                  GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onTap: () => _cellDetailDidSelect(page, index),
-                    child: Container(
-                      // color: Colors.red,
-                      alignment: Alignment.centerRight,
-                      width: OffsetWidget.setSc(40),
-                      height: OffsetWidget.setSc(40),
-                      child: LoadAssetsImage(
-                        logodetail,
-                        width: OffsetWidget.setSc(13),
-                        height: OffsetWidget.setSc(3),
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),
-          ),
-          Container(
-            height: 1,
-            color: Color(0xFFCFCFCF),
           ),
         ],
       ),
     );
   }
 
-  Widget _headerBuilder() {
-    String backimg = Constant.ASSETS_IMG + "background/bg_asset.png";
-    return GestureDetector(
-      onTap: () => _headerAsssetsClick(),
-      child: Container(
-          margin: EdgeInsets.only(
-              left: OffsetWidget.setSc(16), right: OffsetWidget.setSc(16)),
-          padding: EdgeInsets.only(
-              left: OffsetWidget.setSc(10), right: OffsetWidget.setSc(10)),
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(
-                backimg,
-              ),
-            ),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "wallet_allassets".local(),
-                style: TextStyle(
-                    color: Color(0xFFFFFFFF),
-                    fontWeight: FontWeight.w400,
-                    fontSize: OffsetWidget.setSp(11)),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    "≈",
-                    style: TextStyle(
-                        color: Color(0xFFFFFFFF),
-                        fontSize: OffsetWidget.setSp(24),
-                        fontWeight: FontWeight.w500),
-                  ),
-                  OffsetWidget.hGap(5),
-                  Container(
-                    // color: Colors.amber,
-                    constraints: BoxConstraints(
-                      maxWidth: OffsetWidget.setSc(255),
-                    ),
-                    child: Text(
-                      allAssetsValue,
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          color: Color(0xFFFFFFFF),
-                          fontSize: OffsetWidget.setSp(32),
-                          fontWeight: FontWeight.w500),
-                    ),
-                  ),
-                  OffsetWidget.hGap(5),
-                  Text(
-                    amountType == 0 ? "￥" : "\$",
-                    style: TextStyle(
-                        color: Color(0xFFFFFFFF),
-                        fontSize: OffsetWidget.setSp(24),
-                        fontWeight: FontWeight.w500),
-                  ),
-                ],
-              ),
-            ],
-          )),
-    );
-  }
-
-  Widget _getPageViewWidget(int page) {
-    List datas = _findWallets(page);
-    return Container(
-      color: Colors.white,
-      padding: EdgeInsets.only(left: 32, right: 25),
-      child: ListView.builder(
-        itemCount: datas.length,
-        itemBuilder: (BuildContext context, int index) {
-          return _cellBuilder(index, page);
-        },
-      ),
-    );
-  }
-
-  List<Widget> getBarAction() {
+  List<Widget> _getRightBarAction() {
     return <Widget>[
       GestureDetector(
         onTap: () => {
@@ -317,77 +177,55 @@ class _WalletManagerState extends State<WalletManager> {
         },
         child: LoadAssetsImage(
           Constant.ASSETS_IMG + "icon/wallet_insert.png",
-          width: OffsetWidget.setSc(44),
-          height: OffsetWidget.setSc(44),
+          width: OffsetWidget.setSc(22),
+          height: OffsetWidget.setSc(22),
           fit: BoxFit.contain,
         ),
+      ),
+      Container(
+        width: 1,
+        color: Colors.red,
       ),
     ];
   }
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: _myTabs.length,
-      child: CustomPageView(
-        hiddenScrollView: true,
-        actions: getBarAction(),
-        title: Text(
-          "my_wallet".local(),
-          style: TextStyle(
-              color: Color(0xFF000000),
-              fontWeight: FontWeight.w400,
-              fontSize: OffsetWidget.setSc(18)),
-        ),
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(0),
-          child: Container(),
+    return CustomPageView(
+      hiddenScrollView: true,
+      actions: _getRightBarAction(),
+      title: CustomPageView.getDefaultTitle(
+        titleStr: "wallet_management".local(),
+      ),
+      child: Container(
+        padding: EdgeInsets.only(
+          left: OffsetWidget.setSc(20),
+          right: OffsetWidget.setSc(20),
+          top: OffsetWidget.setSc(20),
         ),
         child: Column(
           children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  height: OffsetWidget.setSc(100),
-                  child: _headerBuilder(),
-                ),
-                Material(
-                    color: Colors.white,
-                    child: Theme(
-                      data: ThemeData(
-                          splashColor: Color.fromRGBO(0, 0, 0, 0),
-                          highlightColor: Color.fromRGBO(0, 0, 0, 0)),
-                      child: TabBar(
-                        tabs: _myTabs,
-                        indicatorColor: Color(0xFF4A4A4A),
-                        indicatorWeight: 2,
-                        indicatorSize: TabBarIndicatorSize.label,
-                        labelColor: Color(0xFF4A4A4A),
-                        labelStyle: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                        ),
-                        unselectedLabelColor: Color(0xFF9B9B9B),
-                        unselectedLabelStyle: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                        ),
-                        onTap: (page) => {
-                          _walletCategoryClick(page),
-                        },
-                      ),
-                    )),
-              ],
+            // TextField(),
+            Container(
+              height: OffsetWidget.setSc(52),
+              alignment: Alignment.center,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                itemCount: coinDatas.length,
+                separatorBuilder: (BuildContext context, int index) {
+                  return OffsetWidget.hGap(7);
+                },
+                itemBuilder: (BuildContext context, int index) {
+                  return _itemBuilder(index);
+                },
+              ),
             ),
             Expanded(
-              child: TabBarView(
-                physics: NeverScrollableScrollPhysics(), //禁止左右滑动
-                children: _myTabs.map((Tab tab) {
-                  return _getPageViewWidget(
-                    _myTabs.indexOf(tab),
-                  );
-                }).toList(),
+              child: ListView.builder(
+                itemCount: datas.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return _cellBuilder(index);
+                },
               ),
             ),
           ],

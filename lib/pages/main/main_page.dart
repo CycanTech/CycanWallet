@@ -53,8 +53,8 @@ class _MainPageState extends State<MainPage> {
     });
   }
 
-  dispose(){
-    this._eventBusOn.cancel();//取消事件监听
+  dispose() {
+    this._eventBusOn.cancel(); //取消事件监听
     super.dispose();
   }
 
@@ -532,156 +532,60 @@ class _MainPageState extends State<MainPage> {
     } else {
       isShowAddResource = false;
     }
+    isShowSliderView = true;
     return Column(
       children: [
-        Visibility(
-          visible: isShowSliderView,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                width: OffsetWidget.setSc(92),
-                height: OffsetWidget.setSc(16),
-                child: Stack(
-                  alignment: Alignment.center,
-                  fit: StackFit.expand, //未定位widget占满Stack整个空间
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Map<String, dynamic> params = HashMap();
-                        params["account"] =
-                            mwallet != null ? mwallet.walletAaddress : "";
-                        Routers.push(context, Routers.ramDetailPage,
-                            params: params);
-                      },
-                      child: CustomSlider(
-                        width: 92,
-                        height: 16,
-                        percentage: 50,
-                        max: 100,
-                        borderRadius: 8,
-                        activeColor: Color(0xFF9013FE),
-                        backgroundColor: Color(0xFFC7B7FF),
-                      ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              width: OffsetWidget.setSc(92),
+              height: OffsetWidget.setSc(16),
+              child: Stack(
+                alignment: Alignment.center,
+                fit: StackFit.expand, //未定位widget占满Stack整个空间
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Map<String, dynamic> params = HashMap();
+                      params["account"] =
+                          mwallet != null ? mwallet.walletAaddress : "";
+                      Routers.push(context, Routers.ramDetailPage,
+                          params: params);
+                    },
+                    child: CustomSlider(
+                      width: 92,
+                      height: 16,
+                      percentage: 50,
+                      max: 100,
+                      borderRadius: 8,
+                      activeColor: Color(0xFF9013FE),
+                      backgroundColor: Color(0xFFC7B7FF),
                     ),
-                    Positioned(
-                      left: OffsetWidget.setSc(8),
-                      child: Text(
-                        "RAM",
-                        style: TextStyle(
-                            fontSize: OffsetWidget.setSp(10),
-                            color: Color(0xFFFFFFFF)),
-                      ),
+                  ),
+                  Positioned(
+                    left: OffsetWidget.setSc(8),
+                    child: Text(
+                      "RAM",
+                      style: TextStyle(
+                          fontSize: OffsetWidget.setSp(10),
+                          color: Color(0xFFFFFFFF)),
                     ),
-                    Positioned(
-                      right: OffsetWidget.setSc(8),
-                      child: LoadAssetsImage(
-                        Constant.ASSETS_IMG + "icon/icon_dian.png",
-                        width: OffsetWidget.setSc(15),
-                        height: OffsetWidget.setSc(2),
-                        fit: BoxFit.contain,
-                      ),
+                  ),
+                  Positioned(
+                    right: OffsetWidget.setSc(8),
+                    child: LoadAssetsImage(
+                      Constant.ASSETS_IMG + "icon/icon_dian.png",
+                      width: OffsetWidget.setSc(15),
+                      height: OffsetWidget.setSc(2),
+                      fit: BoxFit.contain,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              Container(
-                width: OffsetWidget.setSc(92),
-                height: OffsetWidget.setSc(16),
-                child: Stack(
-                  alignment: Alignment.center,
-                  fit: StackFit.expand, //未定位widget占满Stack整个空间
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Map<String, dynamic> params = HashMap();
-                        params["account"] =
-                            mwallet != null ? mwallet.walletAaddress : "";
-                        params["transType"] = 0;
-                        Routers.push(context, Routers.cpuNetTransferPage,
-                            params: params);
-                      },
-                      child: CustomSlider(
-                        width: 92,
-                        height: 16,
-                        percentage: 50,
-                        max: 100,
-                        borderRadius: 8,
-                        activeColor: Color(0xFF009DFF),
-                        backgroundColor: Color(0xFF87C7FF),
-                      ),
-                    ),
-                    Positioned(
-                      left: OffsetWidget.setSc(8),
-                      child: Text(
-                        "NET",
-                        style: TextStyle(
-                            fontSize: OffsetWidget.setSp(10),
-                            color: Color(0xFFFFFFFF)),
-                      ),
-                    ),
-                    Positioned(
-                      right: OffsetWidget.setSc(8),
-                      child: LoadAssetsImage(
-                        Constant.ASSETS_IMG + "icon/icon_dian.png",
-                        width: OffsetWidget.setSc(15),
-                        height: OffsetWidget.setSc(2),
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                width: OffsetWidget.setSc(92),
-                height: OffsetWidget.setSc(16),
-                child: Stack(
-                  alignment: Alignment.center,
-                  fit: StackFit.expand, //未定位widget占满Stack整个空间
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Map<String, dynamic> params = HashMap();
-                        params["account"] =
-                            mwallet != null ? mwallet.walletAaddress : "";
-                        params["transType"] = 1;
-                        Routers.push(context, Routers.cpuNetTransferPage,
-                            params: params);
-                      },
-                      child: CustomSlider(
-                        width: 92,
-                        height: 16,
-                        percentage: 50,
-                        max: 100,
-                        borderRadius: 8,
-                        activeColor: Color(0xFF586883),
-                        backgroundColor: Color(0xFFACBBCF),
-                      ),
-                    ),
-                    Positioned(
-                      left: OffsetWidget.setSc(8),
-                      child: Text(
-                        "CPU",
-                        style: TextStyle(
-                            fontSize: OffsetWidget.setSp(10),
-                            color: Color(0xFFFFFFFF)),
-                      ),
-                    ),
-                    Positioned(
-                      right: OffsetWidget.setSc(8),
-                      child: LoadAssetsImage(
-                        Constant.ASSETS_IMG + "icon/icon_dian.png",
-                        width: OffsetWidget.setSc(15),
-                        height: OffsetWidget.setSc(2),
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
         OffsetWidget.vGap(13),
         GestureDetector(
@@ -743,28 +647,10 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    OffsetWidget.screenInit(context, 360);
     return CustomPageView(
       hiddenScrollView: true,
       hiddenLeading: true,
-      title: Text(
-        "main_title".local(),
-        style: TextStyle(
-            fontSize: OffsetWidget.setSp(17), color: Color(0xFF4A4A4A)),
-      ),
       actions: getBarAction(),
-      leading: Container(
-        padding: EdgeInsets.all(OffsetWidget.setSc(5)),
-        child: GestureDetector(
-          onTap: () => {scan()},
-          child: LoadAssetsImage(
-            Constant.ASSETS_IMG + "icon/home_scan.png",
-            width: OffsetWidget.setSc(34),
-            height: OffsetWidget.setSc(34),
-            fit: BoxFit.contain,
-          ),
-        ),
-      ),
       child: CustomRefresher(
           refreshController: refreshController,
           onRefresh: () {

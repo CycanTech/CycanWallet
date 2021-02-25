@@ -17,6 +17,8 @@ class CustomPageView extends StatelessWidget {
     this.actions,
     this.leading,
     this.hiddenResizeToAvoidBottomInset = true,
+    this.elevation = 0,
+    this.backgroundColor = const Color(Constant.main_color),
   }) : super(key: key);
 
   Widget child;
@@ -30,6 +32,18 @@ class CustomPageView extends StatelessWidget {
   final VoidCallback leadBack;
   final List<Widget> actions;
   final Widget leading;
+  final double elevation;
+  final Color backgroundColor;
+
+  static Widget getDefaultTitle({String titleStr = ""}) {
+    return Text(
+      titleStr,
+      style: TextStyle(
+          color: Color(0xFF171F24),
+          fontWeight: FontWightHelper.medium,
+          fontSize: OffsetWidget.setSc(18)),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +60,7 @@ class CustomPageView extends StatelessWidget {
             : AppBar(
                 title: title,
                 centerTitle: true,
-                elevation: 0,
+                elevation: elevation,
                 bottom: bottom,
                 backgroundColor: Colors.white,
                 actions: actions,
@@ -74,7 +88,7 @@ class CustomPageView extends StatelessWidget {
                             ),
                           )
                         : Text("")),
-        backgroundColor: Color(Constant.main_color),
+        backgroundColor: backgroundColor,
         bottomNavigationBar: this.bottomNavigationBar,
         body: SafeArea(
           child: hiddenScrollView == true

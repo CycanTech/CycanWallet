@@ -14,7 +14,7 @@ import 'package:flutter_coinid/utils/sharedPrefer.dart';
 class CurrentChooseWalletState with ChangeNotifier {
   MHWallet _mhWallet;
 
-  CurrentChooseWalletState(this._mhWallet);
+  // CurrentChooseWalletState();
 
   void changeChooseWallet(MHWallet wallet) {
     _mhWallet = wallet;
@@ -27,9 +27,6 @@ class CurrentChooseWalletState with ChangeNotifier {
 
 class CurrencyTypeState with ChangeNotifier {
   MCurrencyType _currencyType;
-
-  CurrencyTypeState(this._currencyType);
-
   void changeCurrencyType(MCurrencyType mCurrencyType) {
     _currencyType = mCurrencyType;
     updateAmountValue(mCurrencyType == MCurrencyType.CNY);
