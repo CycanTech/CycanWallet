@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_coinid/channel/channel_scan.dart';
@@ -208,9 +209,10 @@ class _MainPageState extends State<MainPage> {
         },
         child: LoadAssetsImage(
           Constant.ASSETS_IMG + "icon/icon_option.png",
-          width: OffsetWidget.setSc(44),
-          height: OffsetWidget.setSc(44),
-          fit: BoxFit.contain,
+          scale: 2,
+          width: OffsetWidget.setSc(45),
+          height: OffsetWidget.setSc(45),
+          fit: null,
         ),
       ),
     ];
@@ -251,7 +253,6 @@ class _MainPageState extends State<MainPage> {
 
     return Container(
       padding: EdgeInsets.only(top: 10, left: 20, right: 20),
-      color: Colors.white,
       child: GestureDetector(
         onTap: () => {
           _cellDidSelectRowAt(index),
@@ -261,7 +262,7 @@ class _MainPageState extends State<MainPage> {
           height: OffsetWidget.setSp(54),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            color: Color(Constant.TextFileld_FillColor),
+            // color: Color(Constant.TextFileld_FillColor),
           ),
           child: Row(
             children: <Widget>[
@@ -340,7 +341,7 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  _img2codeDidSelect() {
+  _walletEditName() {
     if (StringUtil.isNotEmpty(mwallet.walletAaddress)) {
       Map<String, dynamic> params = HashMap();
       params["walletAddress"] = mwallet.walletAaddress;
@@ -355,6 +356,39 @@ class _MainPageState extends State<MainPage> {
       params["active"] = mwallet.subPubKey;
       params["owner"] = mwallet.pubKey;
       Routers.push(context, Routers.registerShowKeyPage, params: params);
+    }
+  }
+
+  _receive() {
+    print("object");
+  }
+
+  _payment() {
+    print("object");
+  }
+
+  _wallets() {
+    print("object");
+  }
+
+  _scan() async {
+    String result = await ChannelScan.scan();
+    print("flutter扫码结果: $result");
+  }
+
+  _addAssetsList() {
+    print("object");
+    if (mwallet != null &&
+        StringUtil.isNotEmpty(mwallet.walletAaddress) &&
+        isShowAddResource) {
+      Map<String, dynamic> params = HashMap();
+      params["account"] = mwallet.walletAaddress;
+      params["symbol"] = mwallet.symbol.toUpperCase();
+
+      Routers.push(context, Routers.addAssetsPagePage, params: params)
+          .then((value) => {
+                _findMainTokenCount(),
+              });
     }
   }
 
@@ -392,257 +426,257 @@ class _MainPageState extends State<MainPage> {
       chain = mwallet.symbol + " - ";
     }
 
-    return GestureDetector(
-        onTap: () {
-          if (mwallet != null) {
-            Map<String, dynamic> params = HashMap();
-            params["walletID"] = mwallet.walletID;
-            Routers.push(context, Routers.walletInfoPagePage, params: params)
-                .then((value) => {
-                      _findChooseWallet(),
-                    });
-          }
-        },
-        child: Container(
-          padding: EdgeInsets.fromLTRB(
-              OffsetWidget.setSc(36),
-              OffsetWidget.setSc(40),
-              OffsetWidget.setSc(32),
-              OffsetWidget.setSc(35)),
-          //设置背景图片
-          decoration: new BoxDecoration(
-            image: new DecorationImage(
-              image: new AssetImage(
-                bgPath,
-              ),
-              fit: BoxFit.fill,
-            ),
-          ),
-          width: OffsetWidget.setSc(360),
-          height: OffsetWidget.setSc(211),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  LoadAssetsImage(
-                    logoPath,
-                    width: OffsetWidget.setSc(48),
-                    height: OffsetWidget.setSc(48),
-                    fit: BoxFit.contain,
-                  ),
-                  OffsetWidget.hGap(OffsetWidget.setSc(11)),
-                  Container(
-                    width: OffsetWidget.setSc(180),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          (mwallet != null &&
-                                  mwallet.descName != null &&
-                                  mwallet.descName.length > 0
-                              ? chain + mwallet.descName
-                              : chain + "Wallet"),
-                          style: TextStyle(
-                              fontSize: OffsetWidget.setSp(29),
-                              color: Color(0xFFFFFFFF)),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            if (isRegisterEos && mwallet != null) {
-                              _clickCopy(mwallet.walletAaddress);
-                            }
-                          },
-                          child: Row(
-                            children: [
-                              Container(
-                                width: OffsetWidget.setSc(160),
-                                child: Text(
-                                  isRegisterEos
-                                      ? (mwallet != null
-                                          ? mwallet.walletAaddress
-                                          : "")
-                                      : "main_noaccount".local(),
-                                  style: TextStyle(
-                                      fontSize: OffsetWidget.setSp(12),
-                                      color: Color(0xFFFFFFFF)),
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
-                                ),
-                              ),
-                              OffsetWidget.hGap(OffsetWidget.setSc(5)),
-                              Visibility(
-                                visible: isRegisterEos,
-                                child: LoadAssetsImage(
-                                  Constant.ASSETS_IMG + "icon/icon_copy.png",
-                                  width: OffsetWidget.setSc(12),
-                                  height: OffsetWidget.setSc(12),
-                                  fit: BoxFit.contain,
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      _img2codeDidSelect();
-                    },
-                    child: LoadAssetsImage(
-                      isRegisterEos
-                          ? Constant.ASSETS_IMG + "icon/icon_code.png"
-                          : Constant.ASSETS_IMG + "icon/icon_create_purse.png",
-                      width: OffsetWidget.setSc(48),
-                      height: OffsetWidget.setSc(48),
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                ],
-              ),
-              Container(
-                margin: EdgeInsets.only(top: OffsetWidget.setSc(48)),
-                width: OffsetWidget.setSc(360),
-                alignment: Alignment.centerRight,
-                child: Text(
-                  (convert == "cny" ? '≈ ¥ ' : '≈ \$') + total,
-                  style: TextStyle(
-                      fontSize: OffsetWidget.setSp(19),
-                      color: Color(0xFFFFFFFF)),
-                ),
-              ),
-            ],
-          ),
-        ));
-  }
+    String name = mwallet != null &&
+            mwallet.descName != null &&
+            mwallet.descName.length > 0
+        ? chain + mwallet.descName
+        : chain + "Wallet";
 
-  Widget buildAssetsBar() {
-    if (mwallet != null && mwallet.chainType == MCoinType.MCoinType_EOS.index) {
-      isShowSliderView = true;
-    } else {
-      isShowSliderView = false;
-    }
-    if (mwallet != null &&
-        (mwallet.chainType == MCoinType.MCoinType_EOS.index ||
-            mwallet.chainType == MCoinType.MCoinType_ETH.index ||
-            mwallet.chainType == MCoinType.MCoinType_VNS.index)) {
-      isShowAddResource = true;
-    } else {
-      isShowAddResource = false;
-    }
-    isShowSliderView = true;
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              width: OffsetWidget.setSc(92),
-              height: OffsetWidget.setSc(16),
-              child: Stack(
-                alignment: Alignment.center,
-                fit: StackFit.expand, //未定位widget占满Stack整个空间
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Map<String, dynamic> params = HashMap();
-                      params["account"] =
-                          mwallet != null ? mwallet.walletAaddress : "";
-                      Routers.push(context, Routers.ramDetailPage,
-                          params: params);
-                    },
-                    child: CustomSlider(
-                      width: 92,
-                      height: 16,
-                      percentage: 50,
-                      max: 100,
-                      borderRadius: 8,
-                      activeColor: Color(0xFF9013FE),
-                      backgroundColor: Color(0xFFC7B7FF),
-                    ),
-                  ),
-                  Positioned(
-                    left: OffsetWidget.setSc(8),
-                    child: Text(
-                      "RAM",
-                      style: TextStyle(
-                          fontSize: OffsetWidget.setSp(10),
-                          color: Color(0xFFFFFFFF)),
-                    ),
-                  ),
-                  Positioned(
-                    right: OffsetWidget.setSc(8),
-                    child: LoadAssetsImage(
-                      Constant.ASSETS_IMG + "icon/icon_dian.png",
-                      width: OffsetWidget.setSc(15),
-                      height: OffsetWidget.setSc(2),
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        OffsetWidget.vGap(13),
-        GestureDetector(
+    String address = isRegisterEos
+        ? (mwallet != null ? mwallet.walletAaddress : "")
+        : "main_noaccount".local();
+
+    return Container(
+      color: Colors.white,
+      child: Column(
+        children: [
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
             onTap: () {
-              if (mwallet != null &&
-                  StringUtil.isNotEmpty(mwallet.walletAaddress) &&
-                  isShowAddResource) {
+              if (mwallet != null) {
                 Map<String, dynamic> params = HashMap();
-                params["account"] = mwallet.walletAaddress;
-                params["symbol"] = mwallet.symbol.toUpperCase();
-
-                Routers.push(context, Routers.addAssetsPagePage, params: params)
+                params["walletID"] = mwallet.walletID;
+                Routers.push(context, Routers.walletInfoPagePage,
+                        params: params)
                     .then((value) => {
-                          _findMainTokenCount(),
+                          _findChooseWallet(),
                         });
               }
             },
             child: Container(
-              margin: EdgeInsets.only(
-                left: OffsetWidget.setSp(19),
-                right: OffsetWidget.setSp(19),
-              ),
-              alignment: Alignment.centerLeft,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "main_assets".local(),
-                    style: TextStyle(
-                        fontSize: OffsetWidget.setSp(17),
-                        color: Color(0xFF4A4A4A)),
+              padding: EdgeInsets.fromLTRB(
+                  OffsetWidget.setSc(40),
+                  OffsetWidget.setSc(45),
+                  OffsetWidget.setSc(40),
+                  OffsetWidget.setSc(50)),
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(
+                    bgPath,
                   ),
-                  Visibility(
-                      visible: isShowAddResource,
-                      child: LoadAssetsImage(
-                        Constant.ASSETS_IMG + "icon/icon_add_token.png",
-                        width: OffsetWidget.setSc(13),
-                        height: OffsetWidget.setSc(13),
-                        fit: BoxFit.contain,
-                      )),
+                  fit: BoxFit.contain,
+                ),
+              ),
+              height: OffsetWidget.setSc(220),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  //地址名字编辑
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          LoadAssetsImage(
+                            logoPath,
+                            width: OffsetWidget.setSc(17),
+                            height: OffsetWidget.setSc(17),
+                            fit: BoxFit.contain,
+                          ),
+                          Container(
+                            width: OffsetWidget.setSc(230),
+                            padding: EdgeInsets.only(left: 4),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  name,
+                                  style: TextStyle(
+                                      fontWeight: FontWightHelper.medium,
+                                      fontSize: OffsetWidget.setSp(18),
+                                      color: Color(0xFFFFFFFF)),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                OffsetWidget.vGap(5),
+                                Text(
+                                  address,
+                                  style: TextStyle(
+                                      fontWeight: FontWightHelper.regular,
+                                      fontSize: OffsetWidget.setSp(10),
+                                      color: Color(0xFFFFFFFF)),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTap: () {
+                          _walletEditName();
+                        },
+                        child: LoadAssetsImage(
+                          Constant.ASSETS_IMG + "icon/icon_edit.png",
+                          width: OffsetWidget.setSc(15),
+                          height: OffsetWidget.setSc(18),
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                    ],
+                  ),
+                  //资产金额
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            "******",
+                            style: TextStyle(
+                                fontWeight: FontWightHelper.medium,
+                                fontSize: OffsetWidget.setSp(23),
+                                color: Color(0xFFFFFFFF)),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          OffsetWidget.hGap(10),
+                          LoadAssetsImage(
+                            Constant.ASSETS_IMG +
+                                "icon/icon_white_closeeyes.png",
+                            width: OffsetWidget.setSc(17),
+                            height: OffsetWidget.setSc(7),
+                          ),
+                        ],
+                      ),
+                      Text(
+                        "Total Assets",
+                        style: TextStyle(
+                            fontWeight: FontWightHelper.regular,
+                            fontSize: OffsetWidget.setSp(12),
+                            color: Color(0xFFFFFFFF)),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
                 ],
               ),
-            )),
-      ],
+            ),
+          ),
+          buildAssetsBar(),
+        ],
+      ),
     );
   }
 
-  void _clickCopy(String value) {
-    LogUtil.v("_clickCopy " + value);
-    if (value.isValid() == false) return;
-    Clipboard.setData(ClipboardData(text: value));
-    HWToast.showText(text: "copy_success".local());
-  }
-
-  scan() async {
-    String result = await ChannelScan.scan();
-    print("flutter扫码结果: $result");
+  Widget buildAssetsBar() {
+    return Container(
+      padding: EdgeInsets.only(
+          left: OffsetWidget.setSc(25),
+          right: OffsetWidget.setSc(25),
+          bottom: OffsetWidget.setSc(15)),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () => _receive(),
+            child: Container(
+              child: Column(
+                children: [
+                  LoadAssetsImage(
+                    Constant.ASSETS_IMG + "icon/icon_recevice.png",
+                    width: OffsetWidget.setSc(23),
+                    height: OffsetWidget.setSc(23),
+                  ),
+                  OffsetWidget.vGap(5),
+                  Text(
+                    "trans_receive".local(),
+                    style: TextStyle(
+                        color: Color(0xFF161D2D),
+                        fontSize: OffsetWidget.setSp(15),
+                        fontWeight: FontWightHelper.medium),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () => _payment(),
+            child: Container(
+              child: Column(
+                children: [
+                  LoadAssetsImage(
+                    Constant.ASSETS_IMG + "icon/icon_payment.png",
+                    width: OffsetWidget.setSc(23),
+                    height: OffsetWidget.setSc(23),
+                  ),
+                  OffsetWidget.vGap(5),
+                  Text(
+                    "wallet_payment".local(),
+                    style: TextStyle(
+                        color: Color(0xFF161D2D),
+                        fontSize: OffsetWidget.setSp(15),
+                        fontWeight: FontWightHelper.medium),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () => _wallets(),
+            child: Container(
+              child: Column(
+                children: [
+                  LoadAssetsImage(
+                    Constant.ASSETS_IMG + "icon/icon_wallets.png",
+                    width: OffsetWidget.setSc(23),
+                    height: OffsetWidget.setSc(23),
+                  ),
+                  OffsetWidget.vGap(5),
+                  Text(
+                    "wallet_manager".local(),
+                    style: TextStyle(
+                        color: Color(0xFF161D2D),
+                        fontSize: OffsetWidget.setSp(15),
+                        fontWeight: FontWightHelper.medium),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () => _scan(),
+            child: Container(
+              child: Column(
+                children: [
+                  LoadAssetsImage(
+                    Constant.ASSETS_IMG + "icon/icon_scan.png",
+                    width: OffsetWidget.setSc(23),
+                    height: OffsetWidget.setSc(23),
+                  ),
+                  OffsetWidget.vGap(5),
+                  Text(
+                    "wallet_scans".local(),
+                    style: TextStyle(
+                        color: Color(0xFF161D2D),
+                        fontSize: OffsetWidget.setSp(15),
+                        fontWeight: FontWightHelper.medium),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -650,6 +684,7 @@ class _MainPageState extends State<MainPage> {
     return CustomPageView(
       hiddenScrollView: true,
       hiddenLeading: true,
+      backgroundColor: Color(0xFFF8F9FB),
       actions: getBarAction(),
       child: CustomRefresher(
           refreshController: refreshController,
@@ -660,7 +695,43 @@ class _MainPageState extends State<MainPage> {
           child: Column(
             children: [
               buildHeadView(),
-              buildAssetsBar(),
+              Container(
+                height: OffsetWidget.setSc(50),
+                padding: EdgeInsets.only(
+                    left: OffsetWidget.setSc(20),
+                    right: OffsetWidget.setSc(20)),
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "main_assets".local(),
+                            style: TextStyle(
+                                fontSize: OffsetWidget.setSp(14),
+                                fontWeight: FontWightHelper.medium,
+                                color: Color(0xFF4A4A4A)),
+                          ),
+                          GestureDetector(
+                            onTap: () => _addAssetsList(),
+                            child: Visibility(
+                                visible: true,
+                                child: LoadAssetsImage(
+                                  Constant.ASSETS_IMG +
+                                      "icon/icon_add_token.png",
+                                  width: OffsetWidget.setSc(16),
+                                  height: OffsetWidget.setSc(16),
+                                  fit: BoxFit.contain,
+                                )),
+                          ),
+                        ],
+                      ),
+                    ),
+                    OffsetWidget.vLineWhitColor(1, Color(0xFFEAEFF2)),
+                  ],
+                ),
+              ),
               Expanded(
                 child: ListView.builder(
                   itemCount: collectionTokens.length,

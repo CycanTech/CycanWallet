@@ -219,5 +219,8 @@
     "export_wallet": "导出钱包",
     "wallet_type": "钱包类型",
     "wallet_name": "钱包名称",
-    "wallet_address":"钱包地址"
+    "wallet_address":"钱包地址",
+    "wallet_payment":"付款",
+    "wallet_manager":"管理",
+    "wallet_scans":"扫一扫"
 }

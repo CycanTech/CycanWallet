@@ -104,6 +104,11 @@ class _WalletManagerState extends State<WalletManager> {
     String logoPath = Constant.getChainLogo(wallet.chainType);
     String name = Constant.getChainSymbol(wallet.chainType);
     String address = wallet?.walletAaddress;
+    String bgPath = Constant.ASSETS_IMG +
+        "background/bg_" +
+        wallet.symbol.toLowerCase() +
+        ".png";
+
     return Container(
       alignment: Alignment.center,
       padding: EdgeInsets.only(bottom: OffsetWidget.setSc(12)),
@@ -115,7 +120,15 @@ class _WalletManagerState extends State<WalletManager> {
             child: Container(
               height: OffsetWidget.setSc(60),
               alignment: Alignment.center,
-              color: Colors.amber,
+              // color: Colors.amber,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(
+                    bgPath,
+                  ),
+                  fit: BoxFit.contain,
+                ),
+              ),
               child: Row(
                 children: <Widget>[
                   Container(

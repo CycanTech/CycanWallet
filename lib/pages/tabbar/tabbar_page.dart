@@ -14,12 +14,12 @@ class _TabbarPageState extends State<TabbarPage> {
     BottomNavigationBarItem(
         icon: LoadAssetsImage(
             Constant.ASSETS_IMG + "tabbar/tabbar_wallet_unselect.png",
-            width: 30,
-            height: 30),
+            width: 20,
+            height: 20),
         activeIcon: LoadAssetsImage(
             Constant.ASSETS_IMG + "tabbar/tabbar_wallet_select.png",
-            width: 30,
-            height: 30),
+            width: 20,
+            height: 20),
         label: "wallet".local()),
     // BottomNavigationBarItem(
     //     icon: LoadAssetsImage(
@@ -34,22 +34,22 @@ class _TabbarPageState extends State<TabbarPage> {
     BottomNavigationBarItem(
         icon: LoadAssetsImage(
             Constant.ASSETS_IMG + "tabbar/tabbar_app_unselect.png",
-            width: 30,
-            height: 30),
+            width: 20,
+            height: 20),
         activeIcon: LoadAssetsImage(
             Constant.ASSETS_IMG + "tabbar/tabbar_app_select.png",
-            width: 30,
-            height: 30),
+            width: 20,
+            height: 20),
         label: "application".local()),
     BottomNavigationBarItem(
         icon: LoadAssetsImage(
             Constant.ASSETS_IMG + "tabbar/tabbar_mine_unselect.png",
-            width: 30,
-            height: 30),
+            width: 20,
+            height: 20),
         activeIcon: LoadAssetsImage(
             Constant.ASSETS_IMG + "tabbar/tabbar_mine_select.png",
-            width: 30,
-            height: 30),
+            width: 20,
+            height: 20),
         label: "my".local()),
   ];
   final bodyList = [
