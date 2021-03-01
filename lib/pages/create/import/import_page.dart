@@ -12,7 +12,7 @@ import 'package:flutter_coinid/utils/json_util.dart';
 import 'package:flutter_coinid/utils/offset.dart';
 import 'package:flutter_coinid/widgets/custom_pageview.dart';
 import 'package:flutter_coinid/widgets/custom_textfield.dart';
-import 'package:flutter_full_pdf_viewer/full_pdf_viewer_scaffold.dart';
+// import 'package:flutter_full_pdf_viewer/full_pdf_viewer_scaffold.dart';
 import 'package:path_provider/path_provider.dart';
 
 class ImportPage extends StatefulWidget {
