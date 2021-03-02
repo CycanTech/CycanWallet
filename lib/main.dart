@@ -23,7 +23,8 @@ void main() async {
     DeviceOrientation.portraitDown
   ]);
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
-  CurrencyAssetModel.configCurrencyTokens();
+  WidgetsFlutterBinding.ensureInitialized();
+  Provider.debugCheckInvalidValueType = null;
   runApp(EasyLocalization(
     child: MyApp(),
     // 支持的语言

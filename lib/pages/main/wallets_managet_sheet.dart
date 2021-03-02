@@ -1,19 +1,14 @@
-import 'package:flutter/rendering.dart';
-import 'package:flutter_coinid/channel/channel_dapp.dart';
-import 'package:flutter_coinid/models/assets/currency_asset.dart';
 import 'package:flutter_coinid/models/wallet/mh_wallet.dart';
 import 'package:flutter_coinid/public.dart';
-import 'package:flutter_coinid/utils/screenutil.dart';
-import 'package:flutter_coinid/utils/sharedPrefer.dart';
 
-class WalletManager extends StatefulWidget {
-  WalletManager({Key key}) : super(key: key);
+class WalletsSheetPage extends StatefulWidget {
+  WalletsSheetPage({Key key}) : super(key: key);
 
   @override
-  _WalletManagerState createState() => _WalletManagerState();
+  _WalletsSheetPageState createState() => _WalletsSheetPageState();
 }
 
-class _WalletManagerState extends State<WalletManager> {
+class _WalletsSheetPageState extends State<WalletsSheetPage> {
   final List<MCoinType> coinDatas = [
     MCoinType.MCoinType_All,
     MCoinType.MCoinType_BTC,
@@ -22,16 +17,6 @@ class _WalletManagerState extends State<WalletManager> {
   ];
   List<MHWallet> datas = [];
   MCoinType currentType = MCoinType.MCoinType_All;
-  TextEditingController _tokenEC = TextEditingController();
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    initData();
-    _findWalletsWithDB(MCoinType.MCoinType_All);
-  }
-
-  initData() async {}
 
   void _findWalletsWithDB(MCoinType _cointType) async {
     List currents = [];
@@ -52,14 +37,6 @@ class _WalletManagerState extends State<WalletManager> {
     if (await MHWallet.updateChoose(wallet)) {
       Routers.goBackWithParams(context, {"walletID": wallet.walletID});
     }
-  }
-
-  void _cellDetailDidSelect(int index) {
-    MHWallet wallet = datas[index];
-    MHWallet.updateChoose(wallet);
-    // Routers.push(context, Routers.walletInfoPagePage,
-    //         params: {"walletID": wallet.walletID})
-    //     .then((value) => {_findWalletsWithDB(currentPage)});
   }
 
   Widget _itemBuilder(int index) {
@@ -181,85 +158,17 @@ class _WalletManagerState extends State<WalletManager> {
     );
   }
 
-  List<Widget> _getRightBarAction() {
-    return <Widget>[
-      GestureDetector(
-        onTap: () => {
-          Routers.push(context, Routers.chooseTypePage).then((value) => {
-                LogUtil.v("收到返回的数据 " + value.toString()),
-              }),
-        },
-        child: LoadAssetsImage(
-          Constant.ASSETS_IMG + "icon/wallet_insert.png",
-          width: OffsetWidget.setSc(45),
-          height: OffsetWidget.setSc(45),
-          fit: null,
-          scale: 2,
-        ),
-      ),
-    ];
-  }
-
   @override
   Widget build(BuildContext context) {
-    return CustomPageView(
-      hiddenScrollView: true,
-      actions: _getRightBarAction(),
-      title: CustomPageView.getDefaultTitle(
-        titleStr: "wallet_management".local(),
-      ),
-      child: Container(
-        padding: EdgeInsets.only(
-          left: OffsetWidget.setSc(20),
-          right: OffsetWidget.setSc(20),
-          top: OffsetWidget.setSc(20),
-        ),
-        child: Column(
+    OffsetWidget.screenInit(context, 360);
+    return GestureDetector(
+      onTap: () {
+        Routers.goBackWithParams(context, {});
+      },
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: Column(
           children: [
-            Container(
-              height: OffsetWidget.setSc(36),
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Color(0xFFEAEFF2),
-                ),
-                borderRadius: BorderRadius.circular(
-                  OffsetWidget.setSc(18),
-                ),
-              ),
-              child: Row(
-                children: [
-                  OffsetWidget.hGap(10),
-                  Icon(
-                    Icons.search,
-                    color: Color(0xFFC5C7D8),
-                  ),
-                  Expanded(
-                    child: CustomTextField(
-                      controller: _tokenEC,
-                      maxLines: 1,
-                      onSubmitted: (value) {},
-                      hintText: "wallets_inputName".local(),
-                      hintStyle: TextStyle(
-                          fontSize: OffsetWidget.setSp(12),
-                          fontWeight: FontWightHelper.medium,
-                          color: Color(0xFF929695)),
-                      contentPadding: EdgeInsets.all(OffsetWidget.setSp(4)),
-                    ),
-                  ),
-                  GestureDetector(
-                    child: Icon(
-                      Icons.cancel,
-                      color: Color(0xFFC5C7D8),
-                    ),
-                    onTap: () {
-                      _tokenEC.clear();
-                    },
-                  ),
-                  OffsetWidget.hGap(10),
-                ],
-              ),
-            ),
             Container(
               height: OffsetWidget.setSc(52),
               alignment: Alignment.center,

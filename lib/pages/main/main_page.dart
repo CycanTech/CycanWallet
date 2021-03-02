@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:event_bus/event_bus.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_coinid/channel/channel_scan.dart';
 import 'package:flutter_coinid/models/wallet/mh_wallet.dart';
@@ -12,6 +13,7 @@ import 'package:flutter_coinid/utils/json_util.dart';
 import 'package:flutter_coinid/utils/sharedPrefer.dart';
 import 'package:flutter_coinid/utils/ver_upgrade_util.dart';
 import 'package:flutter_coinid/widgets/custom_network_image.dart';
+import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../public.dart';
@@ -24,14 +26,9 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  MHWallet mwallet;
-  bool isShowSliderView = false;
-  bool isShowAddResource = false;
   List collectionTokens = List(); //我的资产
   List allTokens = List(); //我的所有资产
   Map mainToken = {}; //主币的价格和数量
-  String convert = "cny";
-  var _eventBusOn;
   RefreshController refreshController = RefreshController(
     initialRefresh: false,
   );
@@ -39,66 +36,21 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    _getConvert();
     _findChooseWallet();
     //版本检测
     VerSionUpgradeUtil.getAppInfo(context);
-    this._eventBusOn = eventBus.on<ConvertEvent>().listen((event) {
-      if (event.value == 0) {
-        convert = "cny";
-      } else {
-        convert = "usd";
-      }
-      setState(() {});
-      _findChooseWallet();
-    });
+    _findChooseWallet();
   }
 
   dispose() {
-    this._eventBusOn.cancel(); //取消事件监听
     super.dispose();
   }
 
-  _getConvert() async {
-    int amountType = await getAmountValue();
-    if (amountType == 0) {
-      convert = "cny";
-    } else {
-      convert = "usd";
-    }
-    setState(() {});
-    // String a = await rootBundle.loadString("resources/langs/en-US.json");
-    // String b = await rootBundle.loadString("resources/langs/zh-CN.json");
-    // Map en = JsonUtil.getObj(a.toString());
-    // Map cn = JsonUtil.getObj(b.toString());
-    // Map newmap = Map();
-    // cn.forEach((key, value) {
-    //   if (!en.containsKey(key)) {
-    //     newmap[key] = value;
-    //   }
-    // });
-    // LogUtil.v("rootBundle");
-    // print(JsonUtil.encodeObj(newmap));
-  }
-
   _findChooseWallet() async {
-    MHWallet wallet = await MHWallet.findChooseWallet();
-
-    if (wallet != null) {
-      setState(() {
-        mwallet = wallet;
-        collectionTokens = List();
-        allTokens = List();
-        _findMainTokenCount();
-      });
-    }
+    _findMainTokenCount();
   }
 
   _findMyCollectionTokens() {
-    Future.delayed(Duration(seconds: 2)).then((value) => {
-          refreshController.refreshCompleted(),
-          refreshController.loadComplete(),
-        });
     if (mwallet != null) {
       WalletServices.requestMyCollectionTokens(
           mwallet.walletAaddress, convert, mwallet.symbol.toUpperCase(),
@@ -342,29 +294,46 @@ class _MainPageState extends State<MainPage> {
   }
 
   _walletEditName() {
-    if (StringUtil.isNotEmpty(mwallet.walletAaddress)) {
-      Map<String, dynamic> params = HashMap();
-      params["walletAddress"] = mwallet.walletAaddress;
-      params["onlyAddress"] = "1";
-      params["contract"] = "";
-      params["token"] = mwallet.symbol;
-      params["decimals"] = "0";
-      params["chainType"] = mwallet.chainType;
-      Routers.push(context, Routers.recervePaymentPage, params: params);
-    } else {
-      Map<String, dynamic> params = HashMap();
-      params["active"] = mwallet.subPubKey;
-      params["owner"] = mwallet.pubKey;
-      Routers.push(context, Routers.registerShowKeyPage, params: params);
-    }
+    TextEditingController controller = TextEditingController();
+    showCupertinoDialog(
+        context: context,
+        builder: (context) {
+          return CupertinoAlertDialog(
+            title: Text("wallet_update_name".local()),
+            content: Column(
+              children: [
+                CupertinoTextField(
+                  maxLines: 1,
+                  controller: controller,
+                  autofocus: true,
+                ),
+              ],
+            ),
+            actions: <Widget>[
+              CupertinoDialogAction(
+                  child: Text("dialog_confirm".local()),
+                  onPressed: () {
+                    String text = controller.text;
+                    Navigator.pop(context);
+                  }),
+              CupertinoDialogAction(
+                child: Text("dialog_cancel".local()),
+                onPressed: () {
+                  controller.text = "";
+                  Navigator.pop(context);
+                },
+              )
+            ],
+          );
+        });
   }
 
   _receive() {
-    print("object");
+    Routers.push(context, Routers.recervePaymentPage);
   }
 
   _payment() {
-    print("object");
+    Routers.push(context, Routers.recervePaymentPage);
   }
 
   _wallets() {
@@ -377,14 +346,13 @@ class _MainPageState extends State<MainPage> {
   }
 
   _addAssetsList() {
-    print("object");
-    if (mwallet != null &&
-        StringUtil.isNotEmpty(mwallet.walletAaddress) &&
-        isShowAddResource) {
+
+
+
+    if (mwallet.chainType == MCoinType.MCoinType_ETH.index) {
       Map<String, dynamic> params = HashMap();
       params["account"] = mwallet.walletAaddress;
       params["symbol"] = mwallet.symbol.toUpperCase();
-
       Routers.push(context, Routers.addAssetsPagePage, params: params)
           .then((value) => {
                 _findMainTokenCount(),
@@ -432,6 +400,9 @@ class _MainPageState extends State<MainPage> {
         ? chain + mwallet.descName
         : chain + "Wallet";
 
+    name = Provider.of<CurrentChooseWalletState>(context)
+        .currentWallet ;
+
     String address = isRegisterEos
         ? (mwallet != null ? mwallet.walletAaddress : "")
         : "main_noaccount".local();
@@ -477,43 +448,44 @@ class _MainPageState extends State<MainPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          LoadAssetsImage(
-                            logoPath,
-                            width: OffsetWidget.setSc(17),
-                            height: OffsetWidget.setSc(17),
-                            fit: BoxFit.contain,
-                          ),
-                          Container(
-                            width: OffsetWidget.setSc(230),
-                            padding: EdgeInsets.only(left: 4),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  name,
-                                  style: TextStyle(
-                                      fontWeight: FontWightHelper.medium,
-                                      fontSize: OffsetWidget.setSp(18),
-                                      color: Color(0xFFFFFFFF)),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                OffsetWidget.vGap(5),
-                                Text(
-                                  address,
-                                  style: TextStyle(
-                                      fontWeight: FontWightHelper.regular,
-                                      fontSize: OffsetWidget.setSp(10),
-                                      color: Color(0xFFFFFFFF)),
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
-                                ),
-                              ],
+                      Expanded(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            LoadAssetsImage(
+                              logoPath,
+                              width: OffsetWidget.setSc(17),
+                              height: OffsetWidget.setSc(17),
+                              fit: BoxFit.contain,
                             ),
-                          ),
-                        ],
+                            OffsetWidget.hGap(4),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    name,
+                                    style: TextStyle(
+                                        fontWeight: FontWightHelper.medium,
+                                        fontSize: OffsetWidget.setSp(18),
+                                        color: Color(0xFFFFFFFF)),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  OffsetWidget.vGap(5),
+                                  Text(
+                                    address,
+                                    style: TextStyle(
+                                        fontWeight: FontWightHelper.regular,
+                                        fontSize: OffsetWidget.setSp(10),
+                                        color: Color(0xFFFFFFFF)),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       GestureDetector(
                         behavior: HitTestBehavior.opaque,
@@ -522,9 +494,8 @@ class _MainPageState extends State<MainPage> {
                         },
                         child: LoadAssetsImage(
                           Constant.ASSETS_IMG + "icon/icon_edit.png",
-                          width: OffsetWidget.setSc(15),
+                          width: OffsetWidget.setSc(25),
                           height: OffsetWidget.setSc(18),
-                          fit: BoxFit.contain,
                         ),
                       ),
                     ],
@@ -545,11 +516,18 @@ class _MainPageState extends State<MainPage> {
                             overflow: TextOverflow.ellipsis,
                           ),
                           OffsetWidget.hGap(10),
-                          LoadAssetsImage(
-                            Constant.ASSETS_IMG +
-                                "icon/icon_white_closeeyes.png",
-                            width: OffsetWidget.setSc(17),
-                            height: OffsetWidget.setSc(7),
+                          GestureDetector(
+                            behavior: HitTestBehavior.opaque,
+                            onTap: () {
+                              // _walletEditName();
+                            },
+                            child: LoadAssetsImage(
+                              Constant.ASSETS_IMG +
+                                  "icon/icon_white_closeeyes.png",
+                              width: OffsetWidget.setSc(17),
+                              height: OffsetWidget.setSc(7),
+                              fit: BoxFit.contain,
+                            ),
                           ),
                         ],
                       ),
@@ -681,6 +659,10 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    CurrentChooseWalletState statewallets =
+        Provider.of<CurrentChooseWalletState>(context);
+    statewallets.loadWallet();
+
     return CustomPageView(
       hiddenScrollView: true,
       hiddenLeading: true,

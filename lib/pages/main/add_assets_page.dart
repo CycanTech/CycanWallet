@@ -154,7 +154,6 @@ class _AddAssetsPageState extends State<AddAssetsPage> {
 
   @override
   Widget build(BuildContext context) {
-    OffsetWidget.screenInit(context, 360);
     return CustomPageView(
       hiddenAppBar: true,
       hiddenScrollView: true,
@@ -178,7 +177,8 @@ class _AddAssetsPageState extends State<AddAssetsPage> {
                     Constant.ASSETS_IMG + "icon/icon_goback.png",
                     width: OffsetWidget.setSc(45),
                     height: OffsetWidget.setSc(45),
-                    fit: BoxFit.contain,
+                    scale: 2,
+                    fit: null,
                   ),
                 ),
                 ClipRRect(
@@ -189,12 +189,16 @@ class _AddAssetsPageState extends State<AddAssetsPage> {
                     child: Row(
                       children: [
                         OffsetWidget.hGap(10),
-                        LoadAssetsImage(
-                          Constant.ASSETS_IMG + "icon/icon_search.png",
-                          width: OffsetWidget.setSc(13),
-                          height: OffsetWidget.setSc(13),
-                          fit: BoxFit.contain,
+                        Icon(
+                          Icons.search,
+                          color: Colors.grey,
                         ),
+                        // LoadAssetsImage(
+                        //   Constant.ASSETS_IMG + "icon/icon_search.png",
+                        //   width: OffsetWidget.setSc(13),
+                        //   height: OffsetWidget.setSc(13),
+                        //   fit: BoxFit.contain,
+                        // ),
                         Container(
                           width: OffsetWidget.setSc(270),
                           height: OffsetWidget.setSp(54),

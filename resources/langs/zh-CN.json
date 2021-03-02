@@ -222,5 +222,6 @@
     "wallet_address":"钱包地址",
     "wallet_payment":"付款",
     "wallet_manager":"管理",
-    "wallet_scans":"扫一扫"
+    "wallet_scans":"扫一扫",
+    "wallets_inputName":"输入Token名称"
 }

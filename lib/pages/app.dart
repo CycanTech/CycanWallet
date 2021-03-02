@@ -10,6 +10,7 @@ import 'package:flutter_coinid/upgrade/app_upgrade.dart';
 import 'package:flutter_coinid/upgrade/download_status.dart';
 import 'package:flutter_coinid/upgrade/flutter_upgrade.dart';
 import 'package:flutter_coinid/widgets/custom_app.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_coinid/public.dart';
 
@@ -80,15 +81,18 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomApp(
-      child: loadData == true
-          ? buildEmptyView()
-          : walletCreated == true
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider.value(value: CurrentChooseWalletState()),
+          ChangeNotifierProvider.value(value: CurrencyTypeState()),
+        ],
+        child: CustomApp(
+          child: walletCreated == true
               ? TabbarPage()
               : skin == true
                   ? ChooseTypePage()
                   : GuidePage(),
-      // child: ApplicationPage(),
-    );
+          // child: ApplicationPage(),
+        ));
   }
 }

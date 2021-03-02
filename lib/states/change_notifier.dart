@@ -13,8 +13,10 @@ import 'package:flutter_coinid/utils/sharedPrefer.dart';
 
 class CurrentChooseWalletState with ChangeNotifier {
   MHWallet _mhWallet;
-
-  // CurrentChooseWalletState();
+  void loadWallet() async {
+    _mhWallet = await MHWallet.findChooseWallet();
+    notifyListeners();
+  }
 
   void changeChooseWallet(MHWallet wallet) {
     _mhWallet = wallet;
@@ -27,6 +29,13 @@ class CurrentChooseWalletState with ChangeNotifier {
 
 class CurrencyTypeState with ChangeNotifier {
   MCurrencyType _currencyType;
+
+  void loadCurrencyType() async {
+    int type = await getAmountValue();
+    _currencyType = type == 0 ? MCurrencyType.CNY : MCurrencyType.USD;
+    notifyListeners();
+  }
+
   void changeCurrencyType(MCurrencyType mCurrencyType) {
     _currencyType = mCurrencyType;
     updateAmountValue(mCurrencyType == MCurrencyType.CNY);
