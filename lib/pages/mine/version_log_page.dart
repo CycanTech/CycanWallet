@@ -1,4 +1,5 @@
 import 'package:flutter_coinid/net/chain_services.dart';
+import 'package:flutter_coinid/net/wallet_services.dart';
 
 import '../../public.dart';
 
@@ -21,7 +22,7 @@ class _VersionLogPageState extends State<VersionLogPage> {
       appType = "ios";
     }
 
-    ChainServices.requestVersionLog(appType, (result, code) {
+    WalletServices.requestVersionLog(appType, (result, code) {
       if (code == 200 && mounted) {
         setState(() {
           datas.addAll(result);

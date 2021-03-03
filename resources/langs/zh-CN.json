@@ -223,5 +223,8 @@
     "wallet_payment":"付款",
     "wallet_manager":"管理",
     "wallet_scans":"扫一扫",
-    "wallets_inputName":"输入Token名称"
+    "wallets_inputName":"输入Token名称",
+    "wallets_choosewallet":"选择钱包",
+    "wallets_transin":"转入",
+    "wallets_transerr":"失败"
 }

@@ -3,10 +3,10 @@ import 'package:dio/dio.dart';
 import 'package:crypto/crypto.dart';
 import 'package:flutter_coinid/channel/channel_wallet.dart';
 import 'package:flutter_coinid/net/chain_services.dart';
+import 'package:flutter_coinid/net/wallet_services.dart';
 import 'package:flutter_coinid/upgrade/flutter_upgrade.dart';
 import 'package:flutter_coinid/utils/sharedPrefer.dart';
 import '../public.dart';
-
 
 class LogsInterceptors extends InterceptorsWrapper {
   @override
@@ -39,7 +39,7 @@ class LogsInterceptors extends InterceptorsWrapper {
   }
 
   addHeadersParams(String url, RequestOptions options) async {
-    if (url.contains(ChainServices.host)) {
+    if (url.contains(WalletServices.host)) {
       List<int> datas = List.filled(104, 0, growable: true);
       var appInfo = await FlutterUpgrade.appInfo;
       String uuid = await ChannelWallet.deviceImei();

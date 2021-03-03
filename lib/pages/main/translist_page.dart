@@ -30,27 +30,12 @@ class _TransListPageState extends State<TransListPage> {
   String balance;
   String total;
 
-  RefreshController refreshController = RefreshController(
-    initialRefresh: false,
-    initialLoadStatus: LoadStatus.idle,
-  );
-
   final List<Tab> _myTabs = <Tab>[
-    Tab(text: '全部'),
-    Tab(text: '转出'),
-    Tab(text: '转入'),
-    Tab(text: '失败'),
+    Tab(text: 'wallets_all'.local()),
+    Tab(text: 'payment_transtout'.local()),
+    Tab(text: 'wallets_transin'.local()),
+    Tab(text: 'wallets_transerr'.local()),
   ];
-
-  List allList = [];
-  List toList = [];
-  List inList = [];
-  List errList = [];
-
-  int allPage = -1;
-  int toPage = -1;
-  int inPage = -1;
-  int errPage = -1;
 
   @override
   void initState() {

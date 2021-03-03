@@ -1,5 +1,4 @@
 import 'package:flutter_coinid/models/node/node_model.dart';
-import 'package:flutter_coinid/services/EventBus.dart';
 import 'package:flutter_coinid/utils/sharedPrefer.dart';
 
 import '../../public.dart';
@@ -95,12 +94,6 @@ class _SystemSetPageState extends State<SystemSetPage> {
       Routers.push(context, Routers.modifiySetPage, params: {"settype": index})
           .then((value) => {
                 getSetType(),
-                if (index == 0)
-                  {
-                    getAmountValue().then((value) => {
-                          eventBus.fire(ConvertEvent(value)),
-                        }),
-                  }
               });
     } else {
       Routers.push(context, Routers.nodeListPage);

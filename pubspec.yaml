@@ -44,7 +44,6 @@ dependencies:
   flutter_full_pdf_viewer: ^1.0.6
   flutter_swiper: ^1.1.4
   isolate: ^2.0.3
-  event_bus: ^1.1.1
   provider: ^4.3.3
 
 dev_dependencies:

@@ -18,19 +18,21 @@ class _MinePageState extends State<MinePage> {
 
   bool isShow = false; //app钱包已删除
 
-  List<Map> _datas = [
-    {_kImageName: "menu_wallet.png", _kContent: "wallet_management".local()},
-    {_kImageName: "menu_wallet.png", _kContent: "wallet_management".local()},
-    {_kImageName: "menu_message.png", _kContent: "my_message".local()},
-    {_kImageName: "menu_set.png", _kContent: "system_settings".local()},
-    {_kImageName: "menu_back.png", _kContent: "backup_identity".local()},
-    {
-      _kImageName: "menu_recommended.png",
-      _kContent: "recommend_friends".local()
-    },
-    {_kImageName: "menu_about.png", _kContent: "about_us".local()},
-    {_kImageName: "menu_about.png", _kContent: "about_us".local()},
-  ];
+  List<Map> _datas() {
+    return [
+      {_kImageName: "menu_wallet.png", _kContent: "wallet_management".local()},
+      {_kImageName: "menu_wallet.png", _kContent: "wallet_management".local()},
+      {_kImageName: "menu_message.png", _kContent: "my_message".local()},
+      {_kImageName: "menu_set.png", _kContent: "system_settings".local()},
+      {_kImageName: "menu_back.png", _kContent: "backup_identity".local()},
+      {
+        _kImageName: "menu_recommended.png",
+        _kContent: "recommend_friends".local()
+      },
+      {_kImageName: "menu_about.png", _kContent: "about_us".local()},
+      {_kImageName: "menu_about.png", _kContent: "about_us".local()},
+    ];
+  }
 
   Future<void> _getWalletName() async {
     List<MHWallet> wallets =
@@ -164,7 +166,7 @@ class _MinePageState extends State<MinePage> {
   }
 
   Widget _getCellWidget(int index, BuildContext context) {
-    Map map = _datas[index];
+    Map map = _datas()[index];
     if (index == 0) {
       return Container(
         height: OffsetWidget.setSc(160),
@@ -182,7 +184,7 @@ class _MinePageState extends State<MinePage> {
           ],
         ),
       );
-    } else if (index == _datas.length - 1) {
+    } else if (index == _datas().length - 1) {
       return Visibility(
           visible: isShow,
           child: GestureDetector(
@@ -308,7 +310,7 @@ class _MinePageState extends State<MinePage> {
       _shared();
     } else if (index == 6) {
       Routers.push(context, Routers.aboutUsPage);
-    } else if (index == _datas.length - 1) {
+    } else if (index == _datas().length - 1) {
       _deleteWallet(context);
     }
   }
@@ -321,7 +323,7 @@ class _MinePageState extends State<MinePage> {
       hiddenAppBar: true,
       hiddenResizeToAvoidBottomInset: false,
       child: ListView.builder(
-        itemCount: _datas.length,
+        itemCount: _datas().length,
         itemBuilder: (BuildContext context, int index) {
           return _getCellWidget(index, context);
         },

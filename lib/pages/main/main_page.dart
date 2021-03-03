@@ -1,21 +1,12 @@
 import 'dart:collection';
-
-import 'package:easy_localization/easy_localization.dart';
-import 'package:event_bus/event_bus.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_coinid/channel/channel_scan.dart';
 import 'package:flutter_coinid/models/wallet/mh_wallet.dart';
-import 'package:flutter_coinid/net/chain_services.dart';
-import 'package:flutter_coinid/net/wallet_services.dart';
-import 'package:flutter_coinid/services/EventBus.dart';
-import 'package:flutter_coinid/utils/json_util.dart';
-import 'package:flutter_coinid/utils/sharedPrefer.dart';
+import 'package:flutter_coinid/pages/main/wallets_managet_sheet.dart';
 import 'package:flutter_coinid/utils/ver_upgrade_util.dart';
 import 'package:flutter_coinid/widgets/custom_network_image.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-
 import '../../public.dart';
 
 class MainPage extends StatefulWidget {
@@ -26,138 +17,28 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  List collectionTokens = List(); //我的资产
-  List allTokens = List(); //我的所有资产
-  Map mainToken = {}; //主币的价格和数量
-  RefreshController refreshController = RefreshController(
-    initialRefresh: false,
-  );
+  RefreshController refreshController =
+      RefreshController(initialRefresh: false);
+  bool isObscureText = false;
 
   @override
   void initState() {
     super.initState();
-    _findChooseWallet();
     //版本检测
     VerSionUpgradeUtil.getAppInfo(context);
-    _findChooseWallet();
   }
 
-  dispose() {
+  @override
+  void dispose() {
     super.dispose();
-  }
-
-  _findChooseWallet() async {
-    _findMainTokenCount();
-  }
-
-  _findMyCollectionTokens() {
-    if (mwallet != null) {
-      WalletServices.requestMyCollectionTokens(
-          mwallet.walletAaddress, convert, mwallet.symbol.toUpperCase(),
-          (result, code) {
-        if (mounted) {
-          setState(() {
-            Map<String, dynamic> map = Map();
-            if (result == null || result.length == 0) {
-              //没有数据返回，自己补上主币数据
-              result = [];
-              map["id"] = "";
-              map["contract"] = "";
-              map["token"] = mwallet.symbol;
-              map["coinType"] = mwallet.symbol;
-              map["iconPath"] = "";
-              map["state"] = "";
-              if (mwallet.chainType == MCoinType.MCoinType_BTC.index) {
-                map["decimals"] = "8";
-              } else if (mwallet.chainType == MCoinType.MCoinType_ETH.index) {
-                map["decimals"] = "18";
-              } else if (mwallet.chainType == MCoinType.MCoinType_DOT.index) {
-                map["decimals"] = "10";
-              }
-              if (convert == "cny") {
-                map["price"] = mainToken["p"];
-              } else {
-                map["price"] = mainToken["up"];
-              }
-              map["balance"] = mainToken["c"].toString();
-              result.add(map);
-            } else {
-              map = result[0];
-              if (convert == "cny") {
-                map["price"] = mainToken["p"];
-              } else {
-                map["price"] = mainToken["up"];
-              }
-              map["balance"] = mainToken["c"].toString();
-            }
-            collectionTokens = result;
-          });
-        }
-      });
-    }
-  }
-
-  _findCurrencyTokenPriceAndTokenCount() {
-    if (mwallet != null) {
-      WalletServices.requestGetCurrencyTokenPriceAndTokenCount(
-          mwallet.walletAaddress, convert, mwallet.symbol.toUpperCase(),
-          (result, code) {
-        if (mounted) {
-          setState(() {
-            Map<String, dynamic> map = Map();
-            if (result == null || result.length == 0) {
-              //没有数据返回，自己补上主币数据
-              result = [];
-              map["symbol"] = mwallet.symbol.toUpperCase();
-              map["code"] = "";
-              if (convert == "cny") {
-                map["price"] = mainToken["p"].toString();
-              } else {
-                map["price"] = mainToken["up"].toString();
-              }
-              map["balance"] = mainToken["c"].toString();
-              result.add(map);
-            } else {
-              map = result[0];
-              if (convert == "cny") {
-                map["price"] = mainToken["p"].toString();
-              } else {
-                map["price"] = mainToken["up"].toString();
-              }
-              map["balance"] = mainToken["c"].toString();
-            }
-            allTokens = result;
-          });
-        }
-      });
-    }
-  }
-
-  _findMainTokenCount() {
-    if (mwallet != null) {
-      ChainServices.requestAssets(
-        chainType: mwallet.symbol,
-        from: mwallet.walletAaddress,
-        contract: null,
-        token: null,
-        block: (result, code) {
-          if (code == 200 && mounted) {
-            print("主币价格：$result");
-            mainToken = result as Map;
-          }
-          _findMyCollectionTokens();
-          _findCurrencyTokenPriceAndTokenCount();
-        },
-      );
-    }
   }
 
   List<Widget> getBarAction() {
     return <Widget>[
       GestureDetector(
+        behavior: HitTestBehavior.opaque,
         onTap: () => {
-          Routers.push(context, Routers.walletManagerPage)
-              .then((value) => _findChooseWallet()),
+          Routers.push(context, Routers.walletManagerPage),
         },
         child: LoadAssetsImage(
           Constant.ASSETS_IMG + "icon/icon_option.png",
@@ -171,6 +52,15 @@ class _MainPageState extends State<MainPage> {
   }
 
   void _cellDidSelectRowAt(int index) {
+    List collectionTokens =
+        Provider.of<CurrentChooseWalletState>(context, listen: false)
+            .collectionTokens;
+    String convert =
+        Provider.of<SystemSettings>(context, listen: false).currencySymbolStr;
+    MHWallet mwallet =
+        Provider.of<CurrentChooseWalletState>(context, listen: false)
+            .currentWallet;
+
     Map<String, dynamic> map = collectionTokens[index];
     String total = StringUtil.dataFormat(
         double.parse(map["balance"].replaceAll(" " + map["token"], "")) *
@@ -180,29 +70,32 @@ class _MainPageState extends State<MainPage> {
     if (!StringUtil.isNotEmpty(total)) {
       total = "0.00";
     }
-
     Map<String, dynamic> params = HashMap();
-    params["walletAddress"] = mwallet.walletAaddress;
     params["token"] = map["token"];
     params["decimals"] = map["decimals"];
     params["contract"] = map["contract"];
-    params["chainType"] = mwallet.chainType;
     params["balance"] = map["balance"];
-    params["total"] = (convert == "cny" ? '≈ ¥ ' : '≈ \$') + total;
+    params["total"] = "≈$convert" + total;
+    params["walletAddress"] = mwallet.walletAaddress;
+    params["chainType"] = mwallet.chainType;
+
     Routers.push(context, Routers.transListPage, params: params);
   }
 
   Widget _cellBuilder(int index) {
+    List collectionTokens =
+        Provider.of<CurrentChooseWalletState>(context).collectionTokens;
+    String convert = Provider.of<SystemSettings>(context).currencySymbolStr;
     Map<String, dynamic> map = collectionTokens[index];
-    String total = "0.00";
+    String tokenAssets = "0.00";
     if (StringUtil.isNotEmpty(map["balance"]) &&
         StringUtil.isNotEmpty(map["token"])) {
-      total = StringUtil.dataFormat(
+      tokenAssets = StringUtil.dataFormat(
           double.parse(map["balance"].replaceAll(" " + map["token"], "")) *
               double.parse(map["price"].toString()),
           2);
     }
-
+    tokenAssets = "≈$convert " + tokenAssets;
     return Container(
       padding: EdgeInsets.only(top: 10, left: 20, right: 20),
       child: GestureDetector(
@@ -214,7 +107,6 @@ class _MainPageState extends State<MainPage> {
           height: OffsetWidget.setSp(54),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            // color: Color(Constant.TextFileld_FillColor),
           ),
           child: Row(
             children: <Widget>[
@@ -271,7 +163,7 @@ class _MainPageState extends State<MainPage> {
                       maxLines: 1,
                     ),
                     Text(
-                      (convert == "cny" ? '≈ ¥ ' : '≈ \$') + total,
+                      tokenAssets,
                       style: TextStyle(
                           fontSize: OffsetWidget.setSp(13),
                           color: Color(0xFF9B9B9B)),
@@ -315,6 +207,9 @@ class _MainPageState extends State<MainPage> {
                   onPressed: () {
                     String text = controller.text;
                     Navigator.pop(context);
+                    Provider.of<CurrentChooseWalletState>(context,
+                            listen: false)
+                        .updateWalletDescName(text);
                   }),
               CupertinoDialogAction(
                 child: Text("dialog_cancel".local()),
@@ -333,42 +228,64 @@ class _MainPageState extends State<MainPage> {
   }
 
   _payment() {
-    Routers.push(context, Routers.recervePaymentPage);
+    MHWallet mwallet =
+        Provider.of<CurrentChooseWalletState>(context, listen: false)
+            .currentWallet;
+    Map<String, dynamic> params = Map();
+    params["contract"] = "";
+    params["token"] = mwallet.symbol;
+    params["decimals"] = Constant.getChainDecimals(mwallet.chainType);
+    Routers.push(context, Routers.paymentPage, params: params);
   }
 
   _wallets() {
-    print("object");
+    showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.white,
+        elevation: 0,
+        isDismissible: true,
+        isScrollControlled: true,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        builder: (context) {
+          return SafeArea(child: WalletsSheetPage());
+        });
   }
 
   _scan() async {
+    MHWallet mwallet =
+        Provider.of<CurrentChooseWalletState>(context, listen: false)
+            .currentWallet;
+    Map<String, dynamic> params = Map();
+    params["contract"] = "";
+    params["token"] = mwallet.symbol;
+    params["decimals"] = Constant.getChainDecimals(mwallet.chainType);
     String result = await ChannelScan.scan();
-    print("flutter扫码结果: $result");
+    Routers.push(context, Routers.paymentPage, params: params);
   }
 
   _addAssetsList() {
-
-
-
+    MHWallet mwallet =
+        Provider.of<CurrentChooseWalletState>(context, listen: false)
+            .currentWallet;
     if (mwallet.chainType == MCoinType.MCoinType_ETH.index) {
       Map<String, dynamic> params = HashMap();
       params["account"] = mwallet.walletAaddress;
       params["symbol"] = mwallet.symbol.toUpperCase();
-      Routers.push(context, Routers.addAssetsPagePage, params: params)
-          .then((value) => {
-                _findMainTokenCount(),
-              });
+      Routers.push(context, Routers.addAssetsPagePage, params: params);
     }
   }
 
   Widget buildHeadView() {
-    String logoPath = Constant.ASSETS_IMG + "wallet/logo_BTC.png";
-    String bgPath = Constant.ASSETS_IMG + "background/bg_btc_index.png";
-    bool isRegisterEos = true;
+    List allTokens = Provider.of<CurrentChooseWalletState>(context).allTokens;
+    MHWallet mwallet =
+        Provider.of<CurrentChooseWalletState>(context).currentWallet;
+    String convert = Provider.of<SystemSettings>(context).currencySymbolStr;
+    String logoPath = "";
+    String bgPath = "";
     String chain = "";
     String total = "0.00";
     double calculation = 0;
     int i = 0;
-
     for (i = 0; i < allTokens.length; i++) {
       Map<String, dynamic> map = allTokens[i];
       if (StringUtil.isNotEmpty(map["balance"]) &&
@@ -378,14 +295,9 @@ class _MainPageState extends State<MainPage> {
       }
     }
     total = StringUtil.dataFormat(calculation, 2);
-
+    total = "≈$convert " + total;
+    total = isObscureText ? "******" : total;
     if (mwallet != null) {
-      if (mwallet.walletAaddress == null ||
-          mwallet.walletAaddress.length == 0) {
-        isRegisterEos = false;
-      } else {
-        isRegisterEos = true;
-      }
       logoPath = Constant.ASSETS_IMG + "wallet/logo_" + mwallet.symbol + ".png";
       bgPath = Constant.ASSETS_IMG +
           "background/bg_" +
@@ -393,19 +305,12 @@ class _MainPageState extends State<MainPage> {
           "_index.png";
       chain = mwallet.symbol + " - ";
     }
-
     String name = mwallet != null &&
             mwallet.descName != null &&
             mwallet.descName.length > 0
         ? chain + mwallet.descName
         : chain + "Wallet";
-
-    name = Provider.of<CurrentChooseWalletState>(context)
-        .currentWallet ;
-
-    String address = isRegisterEos
-        ? (mwallet != null ? mwallet.walletAaddress : "")
-        : "main_noaccount".local();
+    String address = mwallet?.walletAaddress ??= "";
 
     return Container(
       color: Colors.white,
@@ -418,10 +323,7 @@ class _MainPageState extends State<MainPage> {
                 Map<String, dynamic> params = HashMap();
                 params["walletID"] = mwallet.walletID;
                 Routers.push(context, Routers.walletInfoPagePage,
-                        params: params)
-                    .then((value) => {
-                          _findChooseWallet(),
-                        });
+                    params: params);
               }
             },
             child: Container(
@@ -508,25 +410,28 @@ class _MainPageState extends State<MainPage> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            "******",
+                            total,
                             style: TextStyle(
                                 fontWeight: FontWightHelper.medium,
                                 fontSize: OffsetWidget.setSp(23),
                                 color: Color(0xFFFFFFFF)),
                             overflow: TextOverflow.ellipsis,
                           ),
-                          OffsetWidget.hGap(10),
+                          // OffsetWidget.hGap(10),
                           GestureDetector(
                             behavior: HitTestBehavior.opaque,
                             onTap: () {
-                              // _walletEditName();
+                              setState(() {
+                                isObscureText = !isObscureText;
+                              });
                             },
                             child: LoadAssetsImage(
                               Constant.ASSETS_IMG +
                                   "icon/icon_white_closeeyes.png",
-                              width: OffsetWidget.setSc(17),
-                              height: OffsetWidget.setSc(7),
-                              fit: BoxFit.contain,
+                              width: OffsetWidget.setSc(45),
+                              height: OffsetWidget.setSc(45),
+                              fit: null,
+                              scale: 2,
                             ),
                           ),
                         ],
@@ -545,14 +450,15 @@ class _MainPageState extends State<MainPage> {
               ),
             ),
           ),
-          buildAssetsBar(),
+          buildItemBar(),
         ],
       ),
     );
   }
 
-  Widget buildAssetsBar() {
+  Widget buildItemBar() {
     return Container(
+      color: Colors.red,
       padding: EdgeInsets.only(
           left: OffsetWidget.setSc(25),
           right: OffsetWidget.setSc(25),
@@ -587,6 +493,7 @@ class _MainPageState extends State<MainPage> {
             behavior: HitTestBehavior.opaque,
             onTap: () => _payment(),
             child: Container(
+              width: OffsetWidget.setSc(310 / 4),
               child: Column(
                 children: [
                   LoadAssetsImage(
@@ -661,8 +568,6 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     CurrentChooseWalletState statewallets =
         Provider.of<CurrentChooseWalletState>(context);
-    statewallets.loadWallet();
-
     return CustomPageView(
       hiddenScrollView: true,
       hiddenLeading: true,
@@ -671,52 +576,63 @@ class _MainPageState extends State<MainPage> {
       child: CustomRefresher(
           refreshController: refreshController,
           onRefresh: () {
-            _findMainTokenCount();
+            Provider.of<CurrentChooseWalletState>(context, listen: false)
+                .findMainTokenCount();
+            Future.delayed(Duration(seconds: 3)).then((value) => {
+                  refreshController.loadComplete(),
+                  refreshController.refreshCompleted(resetFooterState: true),
+                });
           },
           enableFooter: false,
           child: Column(
             children: [
               buildHeadView(),
-              Container(
-                height: OffsetWidget.setSc(50),
-                padding: EdgeInsets.only(
-                    left: OffsetWidget.setSc(20),
-                    right: OffsetWidget.setSc(20)),
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "main_assets".local(),
-                            style: TextStyle(
-                                fontSize: OffsetWidget.setSp(14),
-                                fontWeight: FontWightHelper.medium,
-                                color: Color(0xFF4A4A4A)),
-                          ),
-                          GestureDetector(
-                            onTap: () => _addAssetsList(),
-                            child: Visibility(
-                                visible: true,
-                                child: LoadAssetsImage(
-                                  Constant.ASSETS_IMG +
-                                      "icon/icon_add_token.png",
-                                  width: OffsetWidget.setSc(16),
-                                  height: OffsetWidget.setSc(16),
-                                  fit: BoxFit.contain,
-                                )),
-                          ),
-                        ],
+              Visibility(
+                visible: statewallets.currentWallet.chainType ==
+                    MCoinType.MCoinType_ETH.index,
+                child: Container(
+                  height: OffsetWidget.setSc(50),
+                  padding: EdgeInsets.only(
+                      left: OffsetWidget.setSc(20),
+                      right: OffsetWidget.setSc(20)),
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "main_assets".local(),
+                              style: TextStyle(
+                                  fontSize: OffsetWidget.setSp(14),
+                                  fontWeight: FontWightHelper.medium,
+                                  color: Color(0xFF4A4A4A)),
+                            ),
+                            GestureDetector(
+                              onTap: () => _addAssetsList(),
+                              child: Visibility(
+                                  visible: true,
+                                  child: LoadAssetsImage(
+                                    Constant.ASSETS_IMG +
+                                        "icon/icon_add_token.png",
+                                    width: OffsetWidget.setSc(16),
+                                    height: OffsetWidget.setSc(16),
+                                    fit: BoxFit.contain,
+                                  )),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    OffsetWidget.vLineWhitColor(1, Color(0xFFEAEFF2)),
-                  ],
+                      OffsetWidget.vLineWhitColor(1, Color(0xFFEAEFF2)),
+                    ],
+                  ),
                 ),
               ),
               Expanded(
                 child: ListView.builder(
-                  itemCount: collectionTokens.length,
+                  itemCount: Provider.of<CurrentChooseWalletState>(context)
+                      .collectionTokens
+                      .length,
                   itemBuilder: (BuildContext context, int index) {
                     return _cellBuilder(index);
                   },

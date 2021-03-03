@@ -42,7 +42,7 @@ class MHWallet extends BaseModel {
   String subPrvKey; //私钥
   String subPubKey; //公钥
   String masterPubKey; //主公钥
-  String macUUID; //冷端id1
+  String macUUID; //UUID
   String descName; //自定义描述名称默认空字符
   bool didChoose; //did选中
   MHWallet(

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_coinid/utils/sharedPrefer.dart';
 
 import '../../public.dart';
@@ -75,8 +76,15 @@ class _ModifiySetPageState extends State<ModifiySetPage> {
     setState(() {});
     if (widget.setType == 0) {
       updateAmountValue(index == 0 ? true : false);
+      Provider.of<SystemSettings>(context, listen: false).changeCurrencyType(
+          index == 0 ? MCurrencyType.CNY : MCurrencyType.USD);
     } else {
       updateLanguageValue(index);
+      if (index == 0) {
+        EasyLocalization.of(context).locale = Locale('zh', 'CN');
+      } else {
+        EasyLocalization.of(context).locale = Locale('en', 'US');
+      }
     }
   }
 

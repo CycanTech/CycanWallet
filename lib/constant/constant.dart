@@ -106,6 +106,10 @@ enum MCurrencyType {
   CNY,
   USD,
 }
+enum MLanguage {
+  zh_hans,
+  en,
+}
 
 class Constant {
   static const bool inProduction = kReleaseMode;
@@ -129,16 +133,6 @@ class Constant {
   static const int tabbar_unselect_color = 0xff888888;
   static const int tabbar_select_color = 0xFF494949;
   static const int main_color = 0xFFFFFFFF; //主黑色调
-
-  // FontWeight.w100: 'Thin',
-  // FontWeight.w200: 'ExtraLight',
-  // FontWeight.w300: 'Light',
-  // FontWeight.w400: 'Regular',
-  // FontWeight.w500: 'Medium',
-  // FontWeight.w600: 'SemiBold',
-  // FontWeight.w700: 'Bold',
-  // FontWeight.w800: 'ExtraBold',
-  // FontWeight.w900: 'Black',
 
   static String getChainSymbol(int coinType) {
     String symbol = "";
@@ -166,7 +160,6 @@ class Constant {
 
   static MCoinType getCoinType(String symbol) {
     MCoinType coinType;
-
     if (symbol.toLowerCase() == "eos") {
       coinType = MCoinType.MCoinType_EOS;
     } else if (symbol.toLowerCase() == "eth") {
@@ -211,6 +204,32 @@ class Constant {
       fullName = "DOT";
     }
     return fullName;
+  }
+
+  static int getChainDecimals(int coinType) {
+    int decimals;
+    if (MCoinType.MCoinType_EOS.index == coinType) {
+      decimals = 4;
+    } else if (MCoinType.MCoinType_ETH.index == coinType) {
+      decimals = 18;
+    } else if (MCoinType.MCoinType_BTC.index == coinType) {
+      decimals = 8;
+    } else if (MCoinType.MCoinType_BTM.index == coinType) {
+      decimals = 8;
+    } else if (MCoinType.MCoinType_VNS.index == coinType) {
+      decimals = 18;
+    } else if (MCoinType.MCoinType_LTC.index == coinType) {
+      decimals = 8;
+    } else if (MCoinType.MCoinType_GPS.index == coinType) {
+      decimals = 4;
+    } else if (MCoinType.MCoinType_USDT.index == coinType) {
+      decimals = 8;
+    } else if (MCoinType.MCoinType_DOT.index == coinType) {
+      decimals = 10;
+    } else {
+      assert(false, "getChainDecimals");
+    }
+    return decimals;
   }
 
   static Future<File> getAppFile() async {

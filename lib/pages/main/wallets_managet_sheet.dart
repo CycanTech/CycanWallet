@@ -17,6 +17,26 @@ class _WalletsSheetPageState extends State<WalletsSheetPage> {
   ];
   List<MHWallet> datas = [];
   MCoinType currentType = MCoinType.MCoinType_All;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _findWalletsWithDB(MCoinType.MCoinType_All);
+  }
+
+  void walletsManagetClick() {
+    Navigator.pop(context);
+    Routers.push(context, Routers.walletManagerPage);
+  }
+
+  void sheetClose() {
+    Navigator.pop(context);
+  }
+
+  void insertWallets() {
+    Navigator.pop(context);
+    Routers.push(context, Routers.chooseTypePage);
+  }
 
   void _findWalletsWithDB(MCoinType _cointType) async {
     List currents = [];
@@ -34,9 +54,9 @@ class _WalletsSheetPageState extends State<WalletsSheetPage> {
   void _cellContentSelectRowAt(int index) async {
     LogUtil.v("点击钱包整体");
     MHWallet wallet = datas[index];
-    if (await MHWallet.updateChoose(wallet)) {
-      Routers.goBackWithParams(context, {"walletID": wallet.walletID});
-    }
+    Provider.of<CurrentChooseWalletState>(context, listen: false)
+        .updateChoose(wallet);
+    Routers.goBackWithParams(context, {"walletID": wallet.walletID});
   }
 
   Widget _itemBuilder(int index) {
@@ -161,38 +181,130 @@ class _WalletsSheetPageState extends State<WalletsSheetPage> {
   @override
   Widget build(BuildContext context) {
     OffsetWidget.screenInit(context, 360);
-    return GestureDetector(
-      onTap: () {
-        Routers.goBackWithParams(context, {});
-      },
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: Column(
-          children: [
-            Container(
-              height: OffsetWidget.setSc(52),
+    return Container(
+      height: OffsetWidget.setSc(500),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+        color: Color(0xFFF6F9FC),
+      ),
+      child: Column(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+              color: Color(0xFFF6F9FC),
+            ),
+            height: OffsetWidget.setSc(54),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () => {insertWallets()},
+                  child: LoadAssetsImage(
+                    Constant.ASSETS_IMG + "icon/wallet_insert.png",
+                    width: OffsetWidget.setSc(45),
+                    height: OffsetWidget.setSc(45),
+                    fit: null,
+                    scale: 2,
+                  ),
+                ),
+                Text(
+                  "wallets_choosewallet".local(),
+                  style: TextStyle(
+                      color: Color(0xFF586883),
+                      fontSize: OffsetWidget.setSp(18),
+                      fontWeight: FontWeight.w500),
+                ),
+                GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () => {sheetClose()},
+                  child: LoadAssetsImage(
+                    Constant.ASSETS_IMG + "icon/icon_close.png",
+                    width: OffsetWidget.setSc(45),
+                    height: OffsetWidget.setSc(45),
+                    fit: null,
+                    scale: 2,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: Container(
+              color: Colors.white,
+              margin: EdgeInsets.only(
+                left: OffsetWidget.setSc(10),
+                right: OffsetWidget.setSc(10),
+              ),
+              padding: EdgeInsets.only(
+                left: OffsetWidget.setSc(10),
+                right: OffsetWidget.setSc(10),
+              ),
+              child: Column(
+                children: [
+                  Container(
+                    height: OffsetWidget.setSc(52),
+                    alignment: Alignment.center,
+                    child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: coinDatas.length,
+                      separatorBuilder: (BuildContext context, int index) {
+                        return OffsetWidget.hGap(7);
+                      },
+                      itemBuilder: (BuildContext context, int index) {
+                        return _itemBuilder(index);
+                      },
+                    ),
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: datas.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return _cellBuilder(index);
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () => {walletsManagetClick()},
+            child: Container(
+              height: OffsetWidget.setSc(68),
               alignment: Alignment.center,
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                itemCount: coinDatas.length,
-                separatorBuilder: (BuildContext context, int index) {
-                  return OffsetWidget.hGap(7);
-                },
-                itemBuilder: (BuildContext context, int index) {
-                  return _itemBuilder(index);
-                },
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border(
+                      top: BorderSide(
+                          color: Color(0XFFEAEFF2),
+                          width: 1,
+                          style: BorderStyle.solid))),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  LoadAssetsImage(
+                    Constant.ASSETS_IMG + "icon/icon_walletmanager.png",
+                    width: OffsetWidget.setSc(19),
+                    height: OffsetWidget.setSc(21),
+                  ),
+                  OffsetWidget.hGap(7),
+                  Text(
+                    "wallet_management".local(),
+                    style: TextStyle(
+                        color: Color(0xFF586883),
+                        fontSize: OffsetWidget.setSp(18),
+                        fontWeight: FontWeight.w500),
+                  ),
+                ],
               ),
             ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: datas.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return _cellBuilder(index);
-                },
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

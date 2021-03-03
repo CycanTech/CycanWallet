@@ -3,15 +3,13 @@ import 'dart:math';
 import 'package:flutter_coinid/channel/channel_native.dart';
 import 'package:flutter_coinid/models/transrecord/trans_record.dart';
 import 'package:flutter_coinid/net/request_method.dart';
+import 'package:flutter_coinid/net/wallet_services.dart';
 import 'package:flutter_coinid/utils/instruction_data_format.dart';
 import 'package:flutter_coinid/utils/json_util.dart';
 import '../public.dart';
 
 class ChainServices {
   static const bool isTestNode = false;
-
-  static const String host = "https://api.coinid.pro/coinidplus/v1";
-  // static const String host = "https://babbit.coinid.pro/v1";
 
   static const String _ethTestChain = "http://116.7.228.59:5003";
   static String ethMainChain = "https://mainnet-eth.coinid.pro";
@@ -21,10 +19,6 @@ class ChainServices {
   // static String btcMainChain = "https://api.bitcore.io";
   static String btcMainChain = "https://btc-api.coinid.pro";
   static String _btcurl = isTestNode ? _btcTestChain : btcMainChain;
-
-  static const String updateInfo = "/api/mobile/update";
-  static const String versionLog = "/api/mobile/versionInfo";
-  static const String getCurrencyPrice = "/api/mobile/getCurrencyPrice";
 
   static const String regtestBtcSend = "/api/BTC/regtest/tx/send";
   static const String regtestBtcList = "/api/BTC/regtest";
@@ -63,73 +57,6 @@ class ChainServices {
         }
       });
     }
-  }
-
-  static void requestUpdateInfo(String imei, String version, String packageName,
-      String appType, String productId, complationBlock block) {
-    Map<String, dynamic> params = {
-      "imei": imei,
-      "version": version,
-      "packageName": packageName,
-      "appType": appType,
-    };
-    if (productId != null) {
-      params["productId"] = productId;
-    }
-    RequestMethod().requestNetwork(Method.POST, host + updateInfo,
-        (response, code) {
-      if (code == 200 && response is Map) {
-        if (block != null) {
-          block(response, 200);
-        }
-      } else {
-        if (block != null) {
-          block(null, 500);
-        }
-      }
-    }, data: params);
-  }
-
-  static void requestVersionLog(String appType, complationBlock block) {
-    if (appType == null || appType.length == 0) {
-      LogUtil.v("平台类型为空");
-      return;
-    }
-
-    Map<String, dynamic> params = {
-      "appType": appType,
-    };
-
-    RequestMethod().requestNetwork(Method.POST, host + versionLog,
-        (response, code) {
-      if (code == 200 && response as List != null) {
-        List datas = response as List;
-        List<Map<String, dynamic>> results = [];
-        datas.forEach(
-          (element) {
-            if (element as Map != null) {
-              Map data = element as Map;
-              String version = data["version"] as String;
-              String description = data["description"] as String;
-              String createTime = data["createTime"] as String;
-
-              Map<String, dynamic> dic = Map();
-              dic["version"] = version;
-              dic["description"] = description;
-              dic["createTime"] = createTime;
-              results.add(dic);
-            }
-          },
-        );
-        if (block != null) {
-          block(results, 200);
-        }
-      } else {
-        if (block != null) {
-          block(null, 500);
-        }
-      }
-    }, data: params);
   }
 
   static void requestTransRecord(String chainType, MTransType transType,
@@ -670,8 +597,8 @@ class ChainServices {
       assetResult["c"] = bal ??= "0";
     }
     if (neePrice == true) {
-      Map<String, dynamic> priceResule =
-          await requestTokenPrice(token == null ? "ETH" : token, null);
+      Map<String, dynamic> priceResule = await WalletServices.requestTokenPrice(
+          token == null ? "ETH" : token, null);
       priceResule.forEach((key, value) {
         assetResult[key] = value;
       });
@@ -738,7 +665,8 @@ class ChainServices {
     // dynamic usdtresult = _requestUSDTAssets(from, neePrice, null);
 
     if (neePrice == true) {
-      Map<String, dynamic> priceResule = await requestTokenPrice("BTC", null);
+      Map<String, dynamic> priceResule =
+          await WalletServices.requestTokenPrice("BTC", null);
       priceResule.forEach((key, value) {
         assetResult[key] = value;
       });
@@ -773,7 +701,8 @@ class ChainServices {
       }
     }
     if (neePrice == true) {
-      Map<String, dynamic> priceResule = await requestTokenPrice("USDT", null);
+      Map<String, dynamic> priceResule =
+          await WalletServices.requestTokenPrice("USDT", null);
       priceResule.forEach((key, value) {
         assetResult[key] = value;
       });
@@ -820,34 +749,6 @@ class ChainServices {
           }
         }
       }
-    }
-    if (block != null) {
-      block(datas, 200);
-    }
-    return Future.value(datas);
-  }
-
-  static Future<Map<String, dynamic>> requestTokenPrice(
-      String token, complationBlock block) async {
-    String url = host + getCurrencyPrice;
-    Map<String, dynamic> datas = Map();
-    datas["p"] = "0";
-    datas["up"] = "0";
-    Map<String, dynamic> cnyPara = Map();
-    cnyPara["currency"] = token;
-    cnyPara["convert"] = "CNY";
-    Map<String, dynamic> usdtPara = Map();
-    usdtPara["currency"] = token;
-    usdtPara["convert"] = "USD";
-    dynamic cnyresult = await RequestMethod()
-        .futureRequestData(Method.GET, url, null, queryParameters: cnyPara);
-    dynamic usdresult = await RequestMethod()
-        .futureRequestData(Method.GET, url, null, queryParameters: usdtPara);
-    if (cnyresult != null) {
-      datas["p"] = cnyresult["data"];
-    }
-    if (usdresult != null) {
-      datas["up"] = usdresult["data"];
     }
     if (block != null) {
       block(datas, 200);

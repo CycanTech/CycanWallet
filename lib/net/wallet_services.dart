@@ -1,7 +1,7 @@
 import '../public.dart';
 
 class WalletServices {
-  static const String host = "https://api.coinid.io/coinidplus/v1";
+  static const String host = "https://api.coinid.pro/coinidplus/v1";
   // static const String host = "https://api.coinid.pro/alltoken/v1";
   static const String findTokensData = "/api/mobile/findTokensData";
   static const String collectionToken = "/api/mobile/collectionToken";
@@ -15,9 +15,108 @@ class WalletServices {
   static const String clickTransferAllRead = "/api/mobile/clickTransferAllRead";
   static const String getCurrencyInfo = "/api/mobile/market/getCurrencyInfo";
   static const String myCollection = "/api/mobile/myCollection";
-  static const String getOtherLinkImage = "/api/mobile/market/getOtherLinkImageResult/";
+  static const String getOtherLinkImage =
+      "/api/mobile/market/getOtherLinkImageResult/";
   static const String getPopularCurrency = "/api/mobile/getPopularCurrency";
   static const String currencySearch = "/api/mobile/currencySearch";
+  static const String updateInfo = "/api/mobile/update";
+  static const String versionLog = "/api/mobile/versionInfo";
+  static const String getCurrencyPrice = "/api/mobile/getCurrencyPrice";
+
+  static void requestUpdateInfo(String imei, String version, String packageName,
+      String appType, String productId, complationBlock block) {
+    Map<String, dynamic> params = {
+      "imei": imei,
+      "version": version,
+      "packageName": packageName,
+      "appType": appType,
+    };
+    if (productId != null) {
+      params["productId"] = productId;
+    }
+    RequestMethod().requestNetwork(Method.POST, host + updateInfo,
+        (response, code) {
+      if (code == 200 && response is Map) {
+        if (block != null) {
+          block(response, 200);
+        }
+      } else {
+        if (block != null) {
+          block(null, 500);
+        }
+      }
+    }, data: params);
+  }
+
+  static void requestVersionLog(String appType, complationBlock block) {
+    if (appType == null || appType.length == 0) {
+      LogUtil.v("平台类型为空");
+      return;
+    }
+
+    Map<String, dynamic> params = {
+      "appType": appType,
+    };
+
+    RequestMethod().requestNetwork(Method.POST, host + versionLog,
+        (response, code) {
+      if (code == 200 && response as List != null) {
+        List datas = response as List;
+        List<Map<String, dynamic>> results = [];
+        datas.forEach(
+          (element) {
+            if (element as Map != null) {
+              Map data = element as Map;
+              String version = data["version"] as String;
+              String description = data["description"] as String;
+              String createTime = data["createTime"] as String;
+
+              Map<String, dynamic> dic = Map();
+              dic["version"] = version;
+              dic["description"] = description;
+              dic["createTime"] = createTime;
+              results.add(dic);
+            }
+          },
+        );
+        if (block != null) {
+          block(results, 200);
+        }
+      } else {
+        if (block != null) {
+          block(null, 500);
+        }
+      }
+    }, data: params);
+  }
+
+  static Future<Map<String, dynamic>> requestTokenPrice(
+      String token, complationBlock block) async {
+    String url = host + getCurrencyPrice;
+    Map<String, dynamic> datas = Map();
+    datas["p"] = "0";
+    datas["up"] = "0";
+    Map<String, dynamic> cnyPara = Map();
+    cnyPara["currency"] = token;
+    cnyPara["convert"] = "CNY";
+    Map<String, dynamic> usdtPara = Map();
+    usdtPara["currency"] = token;
+    usdtPara["convert"] = "USD";
+    dynamic cnyresult = await RequestMethod()
+        .futureRequestData(Method.GET, url, null, queryParameters: cnyPara);
+    dynamic usdresult = await RequestMethod()
+        .futureRequestData(Method.GET, url, null, queryParameters: usdtPara);
+    if (cnyresult != null) {
+      datas["p"] = cnyresult["data"];
+    }
+    if (usdresult != null) {
+      datas["up"] = usdresult["data"];
+    }
+    if (block != null) {
+      block(datas, 200);
+    }
+    return Future.value(datas);
+  }
 
   static void requestGetCurrencyTokenPriceAndTokenCount(
       String account, String convert, String coinType, complationBlock block) {
@@ -413,11 +512,9 @@ class WalletServices {
     }, data: params);
   }
 
-  static void getOtherLinkImageDatas(
-      String coinType, complationBlock block) {
-
-    RequestMethod().requestNetwork(Method.GET, host + getOtherLinkImage + coinType,
-        (response, code) {
+  static void getOtherLinkImageDatas(String coinType, complationBlock block) {
+    RequestMethod().requestNetwork(
+        Method.GET, host + getOtherLinkImage + coinType, (response, code) {
       if (code == 200 && response as Map != null) {
         List datas = response["data"] as List;
         List<Map<String, dynamic>> results = [];

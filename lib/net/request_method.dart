@@ -230,7 +230,7 @@ class RequestMethod {
     (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
         (HttpClient client) {
       client.findProxy = (uri) {
-        return "PROXY 192.168.1.8:8888";
+        return "PROXY 192.168.1.111:8888";
       };
       client.badCertificateCallback =
           (X509Certificate cert, String host, int port) {

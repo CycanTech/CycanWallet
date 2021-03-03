@@ -2,6 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_coinid/pages/application/application_page.dart';
 import 'package:flutter_coinid/pages/main/main_page.dart';
 import 'package:flutter_coinid/pages/mine/mine_page.dart';
+import 'package:provider/provider.dart';
 import '../../public.dart';
 
 class TabbarPage extends StatefulWidget {
@@ -60,6 +61,15 @@ class _TabbarPageState extends State<TabbarPage> {
   ];
   int currentIndex = 0;
   int exitTime = 0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    Provider.of<SystemSettings>(context, listen: false).loadSystemSettings();
+    Provider.of<CurrentChooseWalletState>(context, listen: false).loadWallet();
+  }
 
   void onTap(int index) {
     setState(() {

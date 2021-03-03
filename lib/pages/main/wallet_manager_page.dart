@@ -49,9 +49,9 @@ class _WalletManagerState extends State<WalletManager> {
   void _cellContentSelectRowAt(int index) async {
     LogUtil.v("点击钱包整体");
     MHWallet wallet = datas[index];
-    if (await MHWallet.updateChoose(wallet)) {
-      Routers.goBackWithParams(context, {"walletID": wallet.walletID});
-    }
+    Provider.of<CurrentChooseWalletState>(context, listen: false)
+        .updateChoose(wallet);
+    Routers.goBackWithParams(context, {"walletID": wallet.walletID});
   }
 
   void _cellDetailDidSelect(int index) {
@@ -68,7 +68,7 @@ class _WalletManagerState extends State<WalletManager> {
     if (mCoinType == MCoinType.MCoinType_All) {
       typeStr = "wallets_all".local();
     }
-    Color bgColor = Color(0XFFF6F9FC);
+    Color bgColor = Color(0xFFF6F9FC);
     Color textColor = Color(0xFF586883);
     if (mCoinType == currentType) {
       bgColor = Color(0xFF586883);

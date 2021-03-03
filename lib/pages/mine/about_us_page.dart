@@ -1,5 +1,6 @@
 import 'package:flutter_coinid/channel/channel_wallet.dart';
 import 'package:flutter_coinid/net/chain_services.dart';
+import 'package:flutter_coinid/net/wallet_services.dart';
 import 'package:flutter_coinid/upgrade/app_upgrade.dart';
 import 'package:flutter_coinid/upgrade/download_status.dart';
 import 'package:flutter_coinid/upgrade/flutter_upgrade.dart';
@@ -61,7 +62,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
     } else if (Constant.isIOS) {
       appType = "ios";
     }
-    ChainServices.requestUpdateInfo(
+    WalletServices.requestUpdateInfo(
         _imei, _appInfo.versionName, _appInfo.packageName, appType, null,
         (result, code) {
       if (code == 200 && mounted) {

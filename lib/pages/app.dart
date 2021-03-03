@@ -84,7 +84,7 @@ class _MyAppState extends State<MyApp> {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider.value(value: CurrentChooseWalletState()),
-          ChangeNotifierProvider.value(value: CurrencyTypeState()),
+          ChangeNotifierProvider.value(value: SystemSettings()),
         ],
         child: CustomApp(
           child: walletCreated == true

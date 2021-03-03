@@ -13,6 +13,7 @@ export 'package:flutter_coinid/utils/date_util.dart';
 export './utils/string_util.dart';
 export './states/change_notifier.dart';
 export './utils/font_weight.dart';
+export 'package:provider/provider.dart';
 
 //widgets
 export 'package:flutter_coinid/widgets/custom_toast.dart';

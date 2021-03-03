@@ -3,6 +3,7 @@ import 'package:flutter_coinid/db/database.dart';
 import 'package:flutter_coinid/models/assets/currency_list.dart';
 import 'package:flutter_coinid/models/wallet/mh_wallet.dart';
 import 'package:flutter_coinid/net/chain_services.dart';
+import 'package:flutter_coinid/net/wallet_services.dart';
 import 'package:flutter_coinid/utils/sharedPrefer.dart';
 import 'package:json_annotation/json_annotation.dart';
 import '../../public.dart';
@@ -216,7 +217,7 @@ class CurrencyAssetModel extends BaseModel {
         walletsLen += 1;
         if (walletsLen == wallets.length) {
           currencyLen += 1;
-          var priceresult = await ChainServices.requestTokenPrice(token, null);
+          var priceresult = await WalletServices.requestTokenPrice(token, null);
           String cnyprice = priceresult["p"];
           String usdprice = priceresult["up"];
           currency.cnyprice = cnyprice;
