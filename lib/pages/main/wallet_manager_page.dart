@@ -239,6 +239,15 @@ class _WalletManagerState extends State<WalletManager> {
                       controller: _tokenEC,
                       maxLines: 1,
                       onSubmitted: (value) {},
+                      onChange: (value) async {
+                        print("onChange" + value);
+                        List<MHWallet> wallets =
+                            await MHWallet.findWalletsBySymbol(
+                                value.toUpperCase());
+                        setState(() {
+                          datas = wallets;
+                        });
+                      },
                       hintText: "wallets_inputName".local(),
                       hintStyle: TextStyle(
                           fontSize: OffsetWidget.setSp(12),

@@ -87,11 +87,13 @@ class _MyAppState extends State<MyApp> {
           ChangeNotifierProvider.value(value: SystemSettings()),
         ],
         child: CustomApp(
-          child: walletCreated == true
-              ? TabbarPage()
-              : skin == true
-                  ? ChooseTypePage()
-                  : GuidePage(),
+          child: loadData == true
+              ? buildEmptyView()
+              : walletCreated == true
+                  ? TabbarPage()
+                  : skin == true
+                      ? ChooseTypePage()
+                      : GuidePage(),
           // child: ApplicationPage(),
         ));
   }

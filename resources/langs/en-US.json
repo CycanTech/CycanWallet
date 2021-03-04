@@ -115,7 +115,7 @@
     "paymentdetail_chaintxid": "Record",
     "paymentdetail_time": "Time",
     "paymentdetail_blockh": "Block height",
-    "empay_data": "No data",
+    "empay_data": "No data, try clicking the picture to refresh the page",
     "import_page": "Import",
     "import_wallet": "wallet",
     "import_prv": "Private key",
@@ -224,7 +224,7 @@
     "wallet_manager": "Management",
     "wallet_scans": "Scan",
     "wallets_inputName": "Enter Token name",
-    "wallets_choosewallet": "Choose a wallet",
+    "wallets_choosewallet": "Choose wallet",
     "wallets_transin": "Transfer in",
     "wallets_transerr": "Failure"
 }

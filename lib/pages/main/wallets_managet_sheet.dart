@@ -98,6 +98,8 @@ class _WalletsSheetPageState extends State<WalletsSheetPage> {
   }
 
   Widget _cellBuilder(int index) {
+    MHWallet chooseWallet =
+        Provider.of<CurrentChooseWalletState>(context).currentWallet;
     MHWallet wallet = datas[index];
     String logoPath = Constant.getChainLogo(wallet.chainType);
     String name = Constant.getChainSymbol(wallet.chainType);
@@ -106,29 +108,30 @@ class _WalletsSheetPageState extends State<WalletsSheetPage> {
         "background/bg_" +
         wallet.symbol.toLowerCase() +
         ".png";
-
+    bool visible = wallet.walletID == (chooseWallet?.walletID);
     return Container(
       alignment: Alignment.center,
       padding: EdgeInsets.only(bottom: OffsetWidget.setSc(12)),
-      child: Column(
-        children: [
-          GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () => _cellContentSelectRowAt(index),
-            child: Container(
-              height: OffsetWidget.setSc(60),
-              alignment: Alignment.center,
-              // color: Colors.amber,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(
-                    bgPath,
-                  ),
-                  fit: BoxFit.contain,
-                ),
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () => _cellContentSelectRowAt(index),
+        child: Container(
+          height: OffsetWidget.setSc(60),
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(
+                bgPath,
               ),
-              child: Row(
-                children: <Widget>[
+              fit: BoxFit.contain,
+            ),
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Row(
+                children: [
                   Container(
                     padding: EdgeInsets.only(left: OffsetWidget.setSc(23)),
                     child: LoadAssetsImage(
@@ -171,9 +174,17 @@ class _WalletsSheetPageState extends State<WalletsSheetPage> {
                   ),
                 ],
               ),
-            ),
+              Visibility(
+                visible: visible,
+                child: LoadAssetsImage(
+                  Constant.ASSETS_IMG + "icon/icon_walletchoose.png",
+                  width: OffsetWidget.setSc(34),
+                  height: OffsetWidget.setSc(36),
+                ),
+              )
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

@@ -9,7 +9,7 @@ import 'package:flutter_coinid/utils/json_util.dart';
 import '../public.dart';
 
 class ChainServices {
-  static const bool isTestNode = false;
+  static const bool isTestNode = true;
 
   static const String _ethTestChain = "http://116.7.228.59:5003";
   static String ethMainChain = "https://mainnet-eth.coinid.pro";
@@ -611,7 +611,7 @@ class ChainServices {
 
   static Future<dynamic> _requestDotAssets(
       String from, bool neePrice, complationBlock block) async {
-    Map<String, dynamic> assetResult = {"c": "100", "p": "0", "up": "0"};
+    Map<String, dynamic> assetResult = {"c": "100", "p": "1000", "up": "1000"};
     String url = "https://polkadot.subscan.io/api/scan/search";
     Map<String, dynamic> balanceParams = Map();
     // from = "13GkDCmf2pxLW1mDCTkSezQF541Ksy6MsZfAEhw5vfTdPsxE";

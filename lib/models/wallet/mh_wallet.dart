@@ -305,6 +305,19 @@ class MHWallet extends BaseModel {
     }
   }
 
+  static Future<List<MHWallet>> findWalletsBySymbol(String symbol) async {
+    try {
+      FlutterDatabase database = await BaseModel.getDataBae();
+      symbol = "symbol LIKE '%$symbol%'";
+      List<MHWallet> wallet =
+          await database.walletDao.findWalletsBySymbol(symbol);
+      return wallet ??= [];
+    } catch (e) {
+      LogUtil.v("失败" + e.toString());
+      return [];
+    }
+  }
+
   void showLockPinDialog({
     @required BuildContext context,
     @required void Function(String value) ok,
@@ -712,6 +725,10 @@ abstract class MHWalletDao {
       ' WHERE walletAaddress = :walletAaddress and chainType = :chainType')
   Future<List<MHWallet>> findWalletsByAddress(
       String walletAaddress, int chainType);
+
+  //自动生成的有问题需要自己写sql
+  @Query("SELECT * FROM " + tableName + " WHERE symbol like :symbol")
+  Future<List<MHWallet>> findWalletsBySymbol(String symbol);
 
   @Query('SELECT * FROM ' + tableName)
   Future<List<MHWallet>> findAllWallets();

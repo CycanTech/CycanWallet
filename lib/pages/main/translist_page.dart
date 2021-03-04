@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'dart:math' as math;
 
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_coinid/models/transrecord/trans_record.dart';
 import 'package:flutter_coinid/net/chain_services.dart';
 import 'package:flutter_coinid/utils/sharedPrefer.dart';
@@ -92,7 +93,7 @@ class _TransListPageState extends State<TransListPage> {
     params["token"] = token;
     params["decimals"] = decimals;
     params["chainType"] = chainType;
-    params["onlyAddress"] = "0";
+    params["onlyAddress"] = 0;
     Routers.push(context, Routers.recervePaymentPage, params: params);
   }
 
@@ -117,13 +118,51 @@ class _TransListPageState extends State<TransListPage> {
             children: [
               Container(
                 alignment: Alignment.center,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      constraints: BoxConstraints(
+                        maxWidth: OffsetWidget.setSc(250),
+                      ),
+                      child: Text(
+                        walletAddress,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Color(0xFF171F24),
+                            fontWeight: FontWeight.w400,
+                            fontSize: OffsetWidget.setSp(10)),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        if (walletAddress.isValid() == false) return;
+                        Clipboard.setData(ClipboardData(text: walletAddress));
+                        HWToast.showText(text: "copy_success".local());
+                      },
+                      child: LoadAssetsImage(
+                        Constant.ASSETS_IMG + "icon/icon_copy.png",
+                        scale: 2,
+                        fit: null,
+                        width: 20,
+                        height: 20,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              OffsetWidget.vGap(5),
+              Container(
+                alignment: Alignment.center,
                 width: OffsetWidget.setSc(300),
                 child: Text(
                   balance,
                   style: TextStyle(
-                      color: Color(0xFF000000),
+                      color: Color(0xFF171F24),
                       fontWeight: FontWeight.w400,
-                      fontSize: OffsetWidget.setSp(35)),
+                      fontSize: OffsetWidget.setSp(26)),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -134,9 +173,9 @@ class _TransListPageState extends State<TransListPage> {
                 child: Text(
                   total,
                   style: TextStyle(
-                      color: Color(0xFF1308FE),
+                      color: Color(0xFFACBBCF),
                       fontWeight: FontWeight.w400,
-                      fontSize: OffsetWidget.setSp(12)),
+                      fontSize: OffsetWidget.setSp(16)),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -169,7 +208,7 @@ class _TransListPageState extends State<TransListPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Container(
-                  height: OffsetWidget.setSc(120),
+                  height: OffsetWidget.setSc(140),
                   padding: EdgeInsets.only(left: 16, right: 16),
                   child: _headerBuilder(),
                 ),
@@ -244,34 +283,54 @@ class _TransListPageState extends State<TransListPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CustomBorderRadiusButton(
-                    textStr: "trans_receive".local(),
-                    borderColor: Color(0xFF1308FE),
-                    borderWidth: 1,
-                    height: OffsetWidget.setSc(40),
-                    width: OffsetWidget.setSc(96),
-                    textColor: Color(0xFF1308FE),
-                    fontSize: OffsetWidget.setSp(14),
-                    topLeftBorderRadius: 50,
-                    topRightBorderRadius: 50,
-                    bottomLeftBorderRadius: 50,
-                    bottomRightBorderRadius: 50,
-                    onTap: _receiveClick,
-                  ),
-                  OffsetWidget.hGap(32),
-                  CustomBorderRadiusButton(
-                    textStr: "trans_payment".local(),
-                    borderColor: Color(0xFF1308FE),
-                    borderWidth: 1,
-                    height: OffsetWidget.setSc(40),
-                    width: OffsetWidget.setSc(96),
-                    textColor: Color(0xFF1308FE),
-                    fontSize: OffsetWidget.setSp(14),
-                    topLeftBorderRadius: 50,
-                    topRightBorderRadius: 50,
-                    bottomLeftBorderRadius: 50,
-                    bottomRightBorderRadius: 50,
+                  GestureDetector(
+                    behavior: HitTestBehavior.opaque,
                     onTap: _paymentClick,
+                    child: Container(
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage(
+                            Constant.ASSETS_IMG + "icon/icon_normal.png",
+                          ),
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                      height: OffsetWidget.setSc(40),
+                      width: OffsetWidget.setSc(160),
+                      child: Text(
+                        "trans_payment".local(),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: OffsetWidget.setSp(14),
+                            fontWeight: FontWightHelper.medium),
+                      ),
+                    ),
+                  ),
+                  OffsetWidget.hGap(15),
+                  GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: _receiveClick,
+                    child: Container(
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage(
+                            Constant.ASSETS_IMG + "icon/icon_green.png",
+                          ),
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                      height: OffsetWidget.setSc(40),
+                      width: OffsetWidget.setSc(160),
+                      child: Text(
+                        "trans_receive".local(),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: OffsetWidget.setSp(14),
+                            fontWeight: FontWightHelper.medium),
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -496,12 +555,14 @@ class _MTransListPageState extends State<MTransListPage>
         },
         onLoading: () {},
         enableFooter: false,
-        child: ListView.builder(
-          itemCount: _datas.length,
-          itemBuilder: (BuildContext context, int index) {
-            return _cellBuilder(index);
-          },
-        ),
+        child: _datas.length == 0
+            ? EmptyDataPage()
+            : ListView.builder(
+                itemCount: _datas.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return _cellBuilder(index);
+                },
+              ),
       ),
     );
   }

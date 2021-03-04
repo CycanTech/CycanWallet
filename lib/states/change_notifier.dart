@@ -17,9 +17,9 @@ import 'package:provider/provider.dart';
 
 class CurrentChooseWalletState with ChangeNotifier {
   MHWallet _mhWallet;
-  List _collectionTokens = []; //我的资产
-  List _allTokens = []; //我的所有资产
-  Map _mainToken = {}; //主币的价格和数量
+  Map<String, List> _collectionTokens = {}; //我的资产
+  Map<String, List> _allTokens = {}; //我的所有资产
+  Map<String, Map> _mainToken = {}; //主币的价格和数量
 
   void loadWallet() async {
     _mhWallet = await MHWallet.findChooseWallet();
@@ -52,7 +52,8 @@ class CurrentChooseWalletState with ChangeNotifier {
       token: null,
       block: (result, code) {
         if (code == 200) {
-          _mainToken = result as Map;
+          Map value = result as Map;
+          _mainToken[walletAaddress] = value;
           notifyListeners();
         }
         _findMyCollectionTokens();
@@ -68,42 +69,44 @@ class CurrentChooseWalletState with ChangeNotifier {
     final String walletAaddress = _mhWallet.walletAaddress;
     final String symbol = _mhWallet.symbol.toUpperCase();
     final int chainType = _mhWallet.chainType;
-
+    Map<String, dynamic> map = Map();
+    map["id"] = "";
+    map["contract"] = "";
+    map["token"] = symbol;
+    map["coinType"] = symbol;
+    map["iconPath"] = "";
+    map["state"] = "";
+    if (chainType == MCoinType.MCoinType_BTC.index) {
+      map["decimals"] = "8";
+    } else if (chainType == MCoinType.MCoinType_ETH.index) {
+      map["decimals"] = "18";
+    } else if (chainType == MCoinType.MCoinType_DOT.index) {
+      map["decimals"] = "10";
+    }
+    if (convert == "CNY") {
+      map["price"] = _mainToken[walletAaddress]["p"];
+    } else {
+      map["price"] = _mainToken[walletAaddress]["up"];
+    }
+    map["balance"] = _mainToken[walletAaddress]["c"].toString();
+    _collectionTokens[walletAaddress] = [map];
+    notifyListeners();
+    print("_cellBuilder_cellBuilder_cellBuilder1");
     WalletServices.requestMyCollectionTokens(walletAaddress, convert, symbol,
         (result, code) {
-      Map<String, dynamic> map = Map();
       if (result == null || result.length == 0) {
         result = [];
-        map["id"] = "";
-        map["contract"] = "";
-        map["token"] = symbol;
-        map["coinType"] = symbol;
-        map["iconPath"] = "";
-        map["state"] = "";
-        if (chainType == MCoinType.MCoinType_BTC.index) {
-          map["decimals"] = "8";
-        } else if (chainType == MCoinType.MCoinType_ETH.index) {
-          map["decimals"] = "18";
-        } else if (chainType == MCoinType.MCoinType_DOT.index) {
-          map["decimals"] = "10";
-        }
-        if (convert == "CNY") {
-          map["price"] = _mainToken["p"];
-        } else {
-          map["price"] = _mainToken["up"];
-        }
-        map["balance"] = _mainToken["c"].toString();
         result.add(map);
       } else {
         map = result[0];
         if (convert == "CNY") {
-          map["price"] = _mainToken["p"];
+          map["price"] = _mainToken[walletAaddress]["p"];
         } else {
-          map["price"] = _mainToken["up"];
+          map["price"] = _mainToken[walletAaddress]["up"];
         }
-        map["balance"] = _mainToken["c"].toString();
+        map["balance"] = _mainToken[walletAaddress]["c"].toString();
       }
-      _collectionTokens = result;
+      _collectionTokens[walletAaddress] = result;
       notifyListeners();
     });
   }
@@ -123,29 +126,32 @@ class CurrentChooseWalletState with ChangeNotifier {
         map["symbol"] = symbol;
         map["code"] = "";
         if (convert == "CNY") {
-          map["price"] = _mainToken["p"].toString();
+          map["price"] = _mainToken[walletAaddress]["p"].toString();
         } else {
-          map["price"] = _mainToken["up"].toString();
+          map["price"] = _mainToken[walletAaddress]["up"].toString();
         }
-        map["balance"] = _mainToken["c"].toString();
+        map["balance"] = _mainToken[walletAaddress]["c"].toString();
         result.add(map);
       } else {
         map = result[0];
         if (convert == "CNY") {
-          map["price"] = _mainToken["p"].toString();
+          map["price"] = _mainToken[walletAaddress]["p"].toString();
         } else {
-          map["price"] = _mainToken["up"].toString();
+          map["price"] = _mainToken[walletAaddress]["up"].toString();
         }
-        map["balance"] = _mainToken["c"].toString();
+        map["balance"] = _mainToken[walletAaddress]["c"].toString();
       }
-      _allTokens = result;
+      _allTokens[walletAaddress] = result;
       notifyListeners();
     });
   }
 
   MHWallet get currentWallet => _mhWallet;
-  List get collectionTokens => _collectionTokens;
-  List get allTokens => _allTokens;
+  List get collectionTokens => _mhWallet != null
+      ? _collectionTokens[_mhWallet.walletAaddress] ??= []
+      : [];
+  List get allTokens =>
+      _mhWallet != null ? _allTokens[_mhWallet.walletAaddress] ??= [] : [];
 }
 
 class SystemSettings with ChangeNotifier {

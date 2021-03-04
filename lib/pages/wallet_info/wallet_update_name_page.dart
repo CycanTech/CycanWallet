@@ -41,10 +41,9 @@ class _WalletUpdateNamePageState extends State<WalletUpdateNamePage> {
   }
 
   _updateWalletName(String name) async {
-    mwallet.descName = name;
-    if (await MHWallet.updateWallet(mwallet)) {
-      Routers.goBackWithParams(context, {"name": name});
-    }
+    Provider.of<CurrentChooseWalletState>(context, listen: false)
+        .updateWalletDescName(name);
+    Routers.goBackWithParams(context, {"name": name});
   }
 
   @override

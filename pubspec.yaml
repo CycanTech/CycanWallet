@@ -67,7 +67,6 @@ flutter:
     - assets/data/
     - assets/images/
     - assets/images/guide/
-    - assets/images/button/
     - assets/images/icon/
     - assets/images/wallet/
     - assets/images/tabbar/

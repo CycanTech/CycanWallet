@@ -400,6 +400,35 @@ class _$MHWalletDao extends MHWalletDao {
   }
 
   @override
+  Future<List<MHWallet>> findWalletsBySymbol(String symbol) async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM wallet_table WHERE $symbol',
+        // arguments: <dynamic>[symbol],
+        mapper: (Map<String, dynamic> row) => MHWallet(
+            row['walletID'] as String,
+            row['walletAaddress'] as String,
+            row['pin'] as String,
+            row['pinTip'] as String,
+            row['createTime'] as String,
+            row['updateTime'] as String,
+            row['symbol'] as String,
+            row['fullName'] as String,
+            row['isChoose'] == null ? null : (row['isChoose'] as int) != 0,
+            row['prvKey'] as String,
+            row['pubKey'] as String,
+            row['chainType'] as int,
+            row['isWegwit'] == null ? null : (row['isWegwit'] as int) != 0,
+            row['leadType'] as int,
+            row['originType'] as int,
+            row['subPrvKey'] as String,
+            row['subPubKey'] as String,
+            row['masterPubKey'] as String,
+            row['macUUID'] as String,
+            row['descName'] as String,
+            row['didChoose'] == null ? null : (row['didChoose'] as int) != 0));
+  }
+
+  @override
   Future<List<MHWallet>> findAllWallets() async {
     return _queryAdapter.queryList('SELECT * FROM wallet_table',
         mapper: (Map<String, dynamic> row) => MHWallet(

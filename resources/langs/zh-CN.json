@@ -59,7 +59,7 @@
     "paymentdetail_chaintxid": "链上记录",
     "paymentdetail_time": "交易时间",
     "paymentdetail_blockh": "区块高度",
-    "empay_data": "暂无数据",
+    "empay_data": "暂无数据，试试点击图片刷新页面",
     "import_page": "导入",
     "import_wallet": "钱包",
     "import_prv": "私钥",

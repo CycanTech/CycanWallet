@@ -9,9 +9,13 @@ import '../models/node/node_model.dart';
 part 'database.g.dart';
 
 //flutter packages pub run build_runner build
+//findWalletsBySymbol 需要手动替换
 
-const int dbCurrentVersion = 1 ;
-@Database(version: dbCurrentVersion, entities: [MHWallet, UserModel, CurrencyAssetModel, NodeModel])
+const int dbCurrentVersion = 1;
+
+@Database(
+    version: dbCurrentVersion,
+    entities: [MHWallet, UserModel, CurrencyAssetModel, NodeModel])
 abstract class FlutterDatabase extends FloorDatabase {
   // NodeDao get nodeDao;
   MHWalletDao get walletDao;

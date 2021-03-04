@@ -1,8 +1,12 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:isolate';
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_coinid/utils/timer_util.dart';
+import 'package:isolate/isolate.dart';
 import '../public.dart';
 import 'log_interceptor.dart';
 
@@ -48,6 +52,8 @@ class RequestMethod {
 
   List requesList = [];
   TimerUtil timer;
+  Future<LoadBalancer> loadBalancer =
+      LoadBalancer.create(5, IsolateRunner.spawn);
 
   var _options = BaseOptions(
     connectTimeout: _connectTimeout,
@@ -93,7 +99,10 @@ class RequestMethod {
           Options option = Options();
           option.method = op.method;
           var result;
+
           try {
+            final lb = await loadBalancer;
+            // Response response = await lb.run((argument) => _dio.request, op.baseUrl);
             Response response = await _dio.request(op.baseUrl,
                 data: op.data,
                 queryParameters: op.queryParameters,
