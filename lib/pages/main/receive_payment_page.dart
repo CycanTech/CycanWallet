@@ -40,8 +40,8 @@ class _RecervePaymentPageState extends State<RecervePaymentPage> {
       if (widget.params.containsKey("token")) {
         token = widget.params["token"][0];
       }
-      if (widget.params.containsKey("decimalStr")) {
-        decimalStr = widget.params["decimalStr"][0];
+      if (widget.params.containsKey("decimals")) {
+        decimalStr = widget.params["decimals"][0];
       }
       if (widget.params.containsKey("onlyAddress")) {
         onlyAddress = int.tryParse(widget.params["onlyAddress"][0]);

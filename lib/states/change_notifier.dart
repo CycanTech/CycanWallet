@@ -24,7 +24,7 @@ class CurrentChooseWalletState with ChangeNotifier {
   void loadWallet() async {
     _mhWallet = await MHWallet.findChooseWallet();
     notifyListeners();
-    findMainTokenCount();
+    requestAssets();
   }
 
   void updateChoose(MHWallet wallet) {
@@ -32,7 +32,7 @@ class CurrentChooseWalletState with ChangeNotifier {
     _mhWallet = wallet;
     MHWallet.updateChoose(wallet);
     notifyListeners();
-    findMainTokenCount();
+    requestAssets();
   }
 
   void updateWalletDescName(String newName) {
@@ -41,10 +41,14 @@ class CurrentChooseWalletState with ChangeNotifier {
     notifyListeners();
   }
 
-  void findMainTokenCount() {
+  void requestAssets() {
     if (_mhWallet == null) return;
     final String walletAaddress = _mhWallet.walletAaddress;
     final String symbol = _mhWallet.symbol.toUpperCase();
+    Map cacheValue = _mainToken[walletAaddress];
+    if (cacheValue == null) {
+      _mainToken[walletAaddress] = {};
+    }
     ChainServices.requestAssets(
       chainType: symbol,
       from: walletAaddress,
@@ -55,11 +59,12 @@ class CurrentChooseWalletState with ChangeNotifier {
           Map value = result as Map;
           _mainToken[walletAaddress] = value;
           notifyListeners();
+          _findMyCollectionTokens();
+          _findCurrencyTokenPriceAndTokenCount();
         }
-        _findMyCollectionTokens();
-        _findCurrencyTokenPriceAndTokenCount();
       },
     );
+    _findMyCollectionTokens();
   }
 
   void _findMyCollectionTokens() async {
@@ -106,6 +111,7 @@ class CurrentChooseWalletState with ChangeNotifier {
         }
         map["balance"] = _mainToken[walletAaddress]["c"].toString();
       }
+      print("_collectionTokens  $map _mainToken $_mainToken");
       _collectionTokens[walletAaddress] = result;
       notifyListeners();
     });

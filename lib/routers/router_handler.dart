@@ -34,6 +34,7 @@ import 'package:flutter_coinid/pages/wallet_info/wallet_info_page.dart';
 import 'package:flutter_coinid/pages/wallet_info/wallet_show_pubkey_page.dart';
 import 'package:flutter_coinid/pages/wallet_info/wallet_update_name_page.dart';
 import 'package:flutter_coinid/pages/wallet_info/wallet_update_tips_page.dart';
+import 'package:flutter_coinid/utils/log_util.dart';
 import 'package:flutter_coinid/widgets/custom_pageview.dart';
 
 var emptyHandler = new Handler(
@@ -77,7 +78,7 @@ var restoreHandler = new Handler(
 
 var chooseCountHandler =
     Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-  print("ChooseCountPage接收的参数+$params");
+  LogUtil.v("ChooseCountPage接收的参数+$params");
   return ChooseCountPage(
     params: params,
   );
@@ -85,7 +86,7 @@ var chooseCountHandler =
 
 var backMemoValuesHandler =
     Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-  print("BackupMemoPage接收的参数+$params");
+  LogUtil.v("BackupMemoPage接收的参数+$params");
   return BackupMemoPage(
     params: params,
   );
@@ -93,7 +94,7 @@ var backMemoValuesHandler =
 
 var verifyMemoHandler =
     Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-  print("VerifyMemoPage接收的参数+$params");
+  LogUtil.v("VerifyMemoPage接收的参数+$params");
   return VerifyMemoPage(
     params: params,
   );
@@ -101,7 +102,7 @@ var verifyMemoHandler =
 
 var importHandler =
     Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-  print("ImportPage接收的参数+$params");
+  LogUtil.v("ImportPage接收的参数+$params");
   return ImportPage(
     params: params,
   );
@@ -109,7 +110,7 @@ var importHandler =
 
 var walletManagerHandler =
     Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-  print("CurrencyMarket" + "接收的参数+$params");
+  LogUtil.v("CurrencyMarket" + "接收的参数+$params");
   return WalletManager(
       // params: params,
       );
@@ -117,7 +118,7 @@ var walletManagerHandler =
 
 var modifiySetPageHandler =
     Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-  print("ModifiySetPage" + "接收的参数+$params");
+  LogUtil.v("ModifiySetPage" + "接收的参数+$params");
   return ModifiySetPage(
     setType: int.parse(params["settype"][0]),
   );
@@ -125,13 +126,13 @@ var modifiySetPageHandler =
 
 var transListPageHandler =
     Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-  print("ModifiySetPage" + "接收的参数+$params");
+  LogUtil.v("ModifiySetPage" + "接收的参数+$params");
   return TransListPage(params: params);
 });
 
 var transDetailPageHandler =
     Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-  print("transDetailPage" + "接收的参数+$params");
+  LogUtil.v("transDetailPage" + "接收的参数+$params");
   return TransDetailPage(
     params: params,
   );
@@ -139,49 +140,49 @@ var transDetailPageHandler =
 
 var tabbarPageHandler =
     Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-  print("ModifiySetPage" + "接收的参数+$params");
+  LogUtil.v("ModifiySetPage" + "接收的参数+$params");
   return TabbarPage();
 });
 
 var walletInfoPagePageHandler =
     Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-  print("ModifiySetPage" + "接收的参数+$params");
+  LogUtil.v("ModifiySetPage" + "接收的参数+$params");
   return WalletInfoPage(params: params);
 });
 
 var walletUpdateNamePageHandler =
     Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-  print("ModifiySetPage" + "接收的参数+$params");
+  LogUtil.v("ModifiySetPage" + "接收的参数+$params");
   return WalletUpdateNamePage(params: params);
 });
 
 var walletUpdateTipsPageHandler =
     Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-  print("ModifiySetPage" + "接收的参数+$params");
+  LogUtil.v("ModifiySetPage" + "接收的参数+$params");
   return WalletUpdateTipsPage(params: params);
 });
 
 var walletShowPubKeyPageHandler =
     Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-  print("ModifiySetPage" + "接收的参数+$params");
+  LogUtil.v("ModifiySetPage" + "接收的参数+$params");
   return WalletShowPubKeyPage(params: params);
 });
 
 var walletExportPrikeyKeystorePageHandler =
     Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-  print("ModifiySetPage" + "接收的参数+$params");
+  LogUtil.v("ModifiySetPage" + "接收的参数+$params");
   return WalletExportPrikeyKeystorePage(params: params);
 });
 
 var addAssetsPagePageHandler =
     Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-  print("ModifiySetPage" + "接收的参数+$params");
+  LogUtil.v("ModifiySetPage" + "接收的参数+$params");
   return AddAssetsPage(params: params);
 });
 
 var paymentPageHandler =
     Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-  print("PaymentPage" + "接收的参数+$params");
+  LogUtil.v("PaymentPage" + "接收的参数+$params");
   return PaymentPage(params: params);
 });
 

@@ -11,11 +11,11 @@ import '../public.dart';
 class ChainServices {
   static const bool isTestNode = true;
 
-  static const String _ethTestChain = "http://116.7.228.59:5003";
+  static const String _ethTestChain = "http://103.46.128.21:32391";
   static String ethMainChain = "https://mainnet-eth.coinid.pro";
   static String _ethurl = isTestNode ? _ethTestChain : ethMainChain;
 
-  static const String _btcTestChain = "http://116.7.228.59:5001";
+  static const String _btcTestChain = "http://c181e88770.51vip.biz:56249";
   // static String btcMainChain = "https://api.bitcore.io";
   static String btcMainChain = "https://btc-api.coinid.pro";
   static String _btcurl = isTestNode ? _btcTestChain : btcMainChain;
@@ -129,10 +129,10 @@ class ChainServices {
       String from, int start, complationBlock block) {
     String url = "http://192.168.1.190:9090/api/accountTxs?addr=$from";
     RequestMethod().requestNetwork(Method.GET, url, (result, code) {
+      List<MHTransRecordModel> results = [];
       if (code == 200 && result as Map != null) {
         if (result != null && result.keys.contains("data")) {
           List datas = result["data"] as List;
-          List<MHTransRecordModel> results = [];
           datas.forEach((element) {
             Map data = element as Map;
             BigInt value = BigInt.from(data["value"]);
@@ -611,7 +611,7 @@ class ChainServices {
 
   static Future<dynamic> _requestDotAssets(
       String from, bool neePrice, complationBlock block) async {
-    Map<String, dynamic> assetResult = {"c": "100", "p": "1000", "up": "1000"};
+    Map<String, dynamic> assetResult = {"c": "0", "p": "0", "up": "0"};
     String url = "https://polkadot.subscan.io/api/scan/search";
     Map<String, dynamic> balanceParams = Map();
     // from = "13GkDCmf2pxLW1mDCTkSezQF541Ksy6MsZfAEhw5vfTdPsxE";

@@ -66,6 +66,9 @@ class _PaymentPageState extends State<PaymentPage> {
       token = widget.params["token"][0];
       decimals = widget.params["decimals"][0];
       contract = widget.params["contract"][0];
+      if (widget.params.containsKey("to")) {
+        _addressEC.text = widget.params["to"][0];
+      }
     }
     _findChooseWallet();
   }
@@ -122,7 +125,7 @@ class _PaymentPageState extends State<PaymentPage> {
         block: (result, code) {
           String offsetValue = btcDefaultSatLen;
           int newBean = _feeBean;
-          if (code == 200 && result != null && mounted) {
+          if (code == 200 && result != null) {
             chaininfo = result;
             if (chainType == MCoinType.MCoinType_ETH.index ||
                 chainType == MCoinType.MCoinType_VNS.index) {
@@ -137,10 +140,13 @@ class _PaymentPageState extends State<PaymentPage> {
               cointype: chainType,
               beanValue: newBean.toString(),
               offsetValue: offsetValue);
-          setState(() {
-            _feeValue = double.tryParse(value);
-            _feeBean = newBean;
-          });
+          if (mounted) {
+            setState(() {
+              _feeValue = double.tryParse(value);
+              _feeBean = newBean;
+            });
+          }
+
           if (back != null) {
             back();
           }

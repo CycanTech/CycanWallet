@@ -151,7 +151,10 @@ class _MinePageState extends State<MinePage> {
                             }
                           },
                           cancle: null,
-                          wrong: null);
+                          wrong: () => {
+                                HWToast.showText(
+                                    text: "payment_pwdwrong".local())
+                              });
                     }
                   }),
             ],
@@ -304,7 +307,7 @@ class _MinePageState extends State<MinePage> {
               }
             },
             cancle: null,
-            wrong: null);
+            wrong: () => {HWToast.showText(text: "payment_pwdwrong".local())});
       }
     } else if (index == 5) {
       _shared();

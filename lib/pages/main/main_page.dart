@@ -60,12 +60,13 @@ class _MainPageState extends State<MainPage> {
     MHWallet mwallet =
         Provider.of<CurrentChooseWalletState>(context, listen: false)
             .currentWallet;
-
     Map<String, dynamic> map = collectionTokens[index];
-    String total = StringUtil.dataFormat(
-        double.parse(map["balance"].replaceAll(" " + map["token"], "")) *
-            double.parse(map["price"].toString()),
-        2);
+    double price = double.tryParse(map["price"].toString());
+    double balance =
+        double.tryParse(map["balance"].replaceAll(" " + map["token"], ""));
+    price ??= 0;
+    balance ??= 0;
+    String total = StringUtil.dataFormat(balance * price, 2);
 
     if (!StringUtil.isNotEmpty(total)) {
       total = "0.00";
@@ -268,6 +269,22 @@ class _MainPageState extends State<MainPage> {
     params["token"] = mwallet.symbol;
     params["decimals"] = Constant.getChainDecimals(mwallet.chainType);
     String result = await ChannelScan.scan();
+    params["to"] = result;
+    if (result.contains("ethereum:") ||
+        result.contains("bitcoin:") ||
+        result.contains("dot:")) {
+      if (result.contains("ethereum:")) {
+        params["to"] = result.replaceAll("ethereum:", "").substring(0, 42);
+      } else {
+        int index = result.indexOf("&decimal");
+        if (index != -1) {
+          params["to"] = result
+              .replaceAll("dot:", "")
+              .replaceAll("bitcoin:", "")
+              .substring(0, index);
+        }
+      }
+    }
     Routers.push(context, Routers.paymentPage, params: params);
   }
 
@@ -603,7 +620,7 @@ class _MainPageState extends State<MainPage> {
           refreshController: refreshController,
           onRefresh: () {
             Provider.of<CurrentChooseWalletState>(context, listen: false)
-                .findMainTokenCount();
+                .requestAssets();
             Future.delayed(Duration(seconds: 3)).then((value) => {
                   refreshController.loadComplete(),
                   refreshController.refreshCompleted(resetFooterState: true),

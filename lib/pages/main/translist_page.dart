@@ -220,15 +220,17 @@ class _TransListPageState extends State<TransListPage> {
                           highlightColor: Color.fromRGBO(0, 0, 0, 0)),
                       child: TabBar(
                         tabs: _myTabs,
-                        indicatorColor: Colors.transparent,
-                        labelColor: Color(0xFF4A4A4A),
+                        indicatorColor: Color(0xFF586883),
+                        indicatorWeight: 2,
+                        indicatorSize: TabBarIndicatorSize.label,
+                        labelColor: Color(0xFF586883),
                         labelStyle: TextStyle(
-                          fontSize: OffsetWidget.setSp(17),
+                          fontSize: OffsetWidget.setSp(16),
                           fontWeight: FontWeight.w500,
                         ),
-                        unselectedLabelColor: Color(0xFF9B9B9B),
+                        unselectedLabelColor: Color(0xFFACBBCF),
                         unselectedLabelStyle: TextStyle(
-                          fontSize: OffsetWidget.setSp(17),
+                          fontSize: OffsetWidget.setSp(14),
                           fontWeight: FontWeight.w500,
                         ),
                         onTap: (page) => {
@@ -391,8 +393,10 @@ class _MTransListPageState extends State<MTransListPage>
     String contract = widget.contract;
     LogUtil.v(
         "_requestTransListWithNet $from chainType $chainType  selectIndex $selectIndex _page $_page");
+    HWToast.showLoading(clickClose: true);
     ChainServices.requestTransRecord(
         chainType, selectIndex, from, contract, _page, (result, code) {
+      HWToast.hiddenAllToast();
       _refreshController.loadComplete();
       _refreshController.refreshCompleted(resetFooterState: true);
       if (code == 200 && mounted && result != null) {
@@ -427,12 +431,14 @@ class _MTransListPageState extends State<MTransListPage>
     Color txtColor;
     if (transModel.isOut == true) {
       logoPath = Constant.ASSETS_IMG + "icon/trans_out.png";
-      txtColor = Color(0xFFF42850);
+      txtColor = Color(0xFF586883);
       amount = "-";
+      remarks = "转账成功";
     } else {
       logoPath = Constant.ASSETS_IMG + "icon/trans_in.png";
-      txtColor = Color(0xFF54A000);
+      txtColor = Color(0xFF586883);
       amount = "+";
+      remarks = "收款成功";
     }
     amount += transModel.amount + " ${transModel.token}";
     return Container(
@@ -442,8 +448,8 @@ class _MTransListPageState extends State<MTransListPage>
           GestureDetector(
             onTap: () => _cellContentSelectRowAt(index),
             child: Container(
-              width: OffsetWidget.setSc(309),
-              height: OffsetWidget.setSc(54),
+              // width: OffsetWidget.setSc(309),
+              height: OffsetWidget.setSc(60),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -452,39 +458,39 @@ class _MTransListPageState extends State<MTransListPage>
                     margin: EdgeInsets.only(top: OffsetWidget.setSc(16)),
                     child: LoadAssetsImage(
                       logoPath,
-                      width: OffsetWidget.setSc(16),
-                      height: OffsetWidget.setSc(12),
+                      width: OffsetWidget.setSc(26),
+                      height: OffsetWidget.setSc(26),
                       fit: BoxFit.contain,
                     ),
                   ),
-                  OffsetWidget.hGap(9),
+                  OffsetWidget.hGap(12),
                   Expanded(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Container(
                               width: OffsetWidget.setSc(150),
                               child: Text(
                                 to,
                                 style: TextStyle(
-                                    fontSize: OffsetWidget.setSp(16),
+                                    fontSize: OffsetWidget.setSp(14),
                                     fontWeight: FontWeight.w400,
-                                    color: Color(0XFF171F24)),
+                                    color: Color(0xFF4A4A4A)),
                                 maxLines: 1,
                                 softWrap: false,
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
                             OffsetWidget.vGap(3),
-                            Container(
-                              width: OffsetWidget.setSc(126),
+                            Expanded(
                               child: Text(
                                 amount,
                                 style: TextStyle(
-                                    fontSize: OffsetWidget.setSp(17),
+                                    fontSize: OffsetWidget.setSp(16),
                                     fontWeight: FontWeight.w400,
                                     color: txtColor),
                                 maxLines: 1,
@@ -496,13 +502,14 @@ class _MTransListPageState extends State<MTransListPage>
                           ],
                         ),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Container(
                               width: OffsetWidget.setSc(150),
                               child: Text(
                                 date,
                                 style: TextStyle(
-                                    fontSize: OffsetWidget.setSp(12),
+                                    fontSize: OffsetWidget.setSp(10),
                                     fontWeight: FontWeight.w400,
                                     color: Color(0xFF9B9B9B)),
                                 maxLines: 1,
@@ -511,14 +518,13 @@ class _MTransListPageState extends State<MTransListPage>
                               ),
                             ),
                             OffsetWidget.vGap(3),
-                            Container(
-                              width: OffsetWidget.setSc(126),
+                            Expanded(
                               child: Text(
                                 remarks,
                                 style: TextStyle(
-                                    fontSize: OffsetWidget.setSp(12),
+                                    fontSize: OffsetWidget.setSp(10),
                                     fontWeight: FontWeight.w400,
-                                    color: Color(0xFF000000)),
+                                    color: Color(0xFF33D371)),
                                 maxLines: 1,
                                 softWrap: false,
                                 overflow: TextOverflow.ellipsis,
@@ -536,7 +542,7 @@ class _MTransListPageState extends State<MTransListPage>
           ),
           Container(
             height: 1,
-            color: Color(0x50979797),
+            color: Color(0xFFEAEFF2),
           ),
         ],
       ),

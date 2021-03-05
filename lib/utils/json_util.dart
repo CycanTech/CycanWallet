@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
+
 /**
  * @Author: Sky24n
  * @GitHub: https://github.com/Sky24n
@@ -19,6 +21,7 @@ class JsonUtil {
     if (source == null || source.isEmpty) return null;
     try {
       Map map = json.decode(source);
+      // return  compute(json.decode,source);
       return map == null ? null : map;
     } catch (e) {
       print('JsonUtil convert error, Exception：${e.toString()}');
