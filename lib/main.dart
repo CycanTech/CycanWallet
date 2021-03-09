@@ -22,8 +22,11 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown
   ]);
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
-  WidgetsFlutterBinding.ensureInitialized();
+  SystemUiOverlayStyle systemUiOverlayStyle = SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent,
+    statusBarBrightness: Brightness.dark,
+  );
+  SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
   Provider.debugCheckInvalidValueType = null;
   runApp(EasyLocalization(
     child: MyApp(),

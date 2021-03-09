@@ -693,19 +693,30 @@ void main() {
     // LogUtil.v("object " + pwd.checkPassword().toString());
     // data = await assetLoader.load(path, Locale(locale.languageCode))
 
-    String a = await rootBundle.loadString("resources/langs/en-US.json");
+    // String a = await rootBundle.loadString("resources/langs/en-US.json");
 
-    String b = await rootBundle.loadString("resources/langs/zh-CN.json");
+    // String b = await rootBundle.loadString("resources/langs/zh-CN.json");
 
-    Map en = JsonUtil.getObj(a.toString());
-    Map cn = JsonUtil.getObj(b.toString());
+    // Map en = JsonUtil.getObj(a.toString());
+    // Map cn = JsonUtil.getObj(b.toString());
 
-    Map newmap = Map();
-    cn.forEach((key, value) {
-      if (!en.containsKey(key)) {
-        newmap[key] = "";
-      }
-    });
-    LogUtil.v(newmap);
+    // Map newmap = Map();
+    // cn.forEach((key, value) {
+    //   if (!en.containsKey(key)) {
+    //     newmap[key] = "";
+    //   }
+    // });
+    // LogUtil.v(newmap);
+
+    Map json = {
+      "receipt-data":
+          "MIITrQYJKoZIhvcNAQcCoIITnjCCE5oCAQExCzAJBgUrDgMCGgUAMIIDTgYJKoZIhvcNAQcBoIIDPwSCAzsxggM3MAoCAQgCAQEEAhYAMAoCARQCAQEEAgwAMAsCAQECAQEEAwIBADALAgELAgEBBAMCAQAwCwIBDwIBAQQDAgEAMAsCARACAQEEAwIBADALAgEZAgEBBAMCAQMwDAIBCgIBAQQEFgI0KzAMAgEOAgEBBAQCAgDlMA0CAQ0CAQEEBQIDAiRwMA0CARMCAQEEBQwDMS4wMA4CAQMCAQEEBgwEMTI0NDAOAgEJAgEBBAYCBFAyNTYwGAIBAgIBAQQQDA5jb20ubGVrYWkuZHN3dzAYAgEEAgECBBAX5LI42L+7QINRlHsVLSLsMBsCAQACAQEEEwwRUHJvZHVjdGlvblNhbmRib3gwHAIBBQIBAQQU+pgwS6EjKuOYhQR2DPbTywluDVQwHgIBDAIBAQQWFhQyMDIxLTAzLTA4VDA1OjMwOjAyWjAeAgESAgEBBBYWFDIwMTMtMDgtMDFUMDc6MDA6MDBaMDMCAQcCAQEEKxvMGbdcWYNvE/ygTIVyrE/9I5sF4L1sl4pF/KQyrZb2ejM9CaYJhNgYgQ0wQAIBBgIBAQQ4d9Dl8YfLkLh2c9H7K1NyydB1m2MchBHU+PB0Ds9clRjrgrKhsjmgdRH3WaHWRDJtRV+ZqCTjkN0wggFaAgERAgEBBIIBUDGCAUwwCwICBqwCAQEEAhYAMAsCAgatAgEBBAIMADALAgIGsAIBAQQCFgAwCwICBrICAQEEAgwAMAsCAgazAgEBBAIMADALAgIGtAIBAQQCDAAwCwICBrUCAQEEAgwAMAsCAga2AgEBBAIMADAMAgIGpQIBAQQDAgEBMAwCAgarAgEBBAMCAQEwDAICBq4CAQEEAwIBADAMAgIGrwIBAQQDAgEAMAwCAgaxAgEBBAMCAQAwGwICBqcCAQEEEgwQMTAwMDAwMDc4NTY"
+    };
+
+    String aaa =
+        "MIIT0wYJKoZIhvcNAQcCoIITxDCCE8ACAQExCzAJBgUrDgMCGgUAMIIDdAYJKoZIhvcNAQcBoIIDZQSCA2ExggNdMAoCAQgCAQEEAhYAMAoCARQCAQEEAgwAMAsCAQECAQEEAwIBADALAgELAgEBBAMCAQAwCwIBDwIBAQQDAgEAMAsCARACAQEEAwIBADALAgEZAgEBBAMCAQMwDAIBCgIBAQQEFgI0KzAMAgEOAgEBBAQCAgDlMA0CAQ0CAQEEBQIDAiRwMA0CARMCAQEEBQwDMS4wMA4CAQMCAQEEBgwEMTI0NDAOAgEJAgEBBAYCBFAyNTYwGAIBAgIBAQQQDA5jb20ubGVrYWkuZHN3dzAYAgEEAgECBBAZgJA2Uz9Px6sZeSRRwFfHMBsCAQACAQEEEwwRUHJvZHVjdGlvblNhbmRib3gwHAIBBQIBAQQUnqgcDa+Ass9HIvAMjIhC+rLxh1owHgIBDAIBAQQWFhQyMDIxLTAzLTA4VDA1OjU3OjI2WjAeAgESAgEBBBYWFDIwMTMtMDgtMDFUMDc6MDA6MDBaMEMCAQcCAQEEOwKYoGRLg3tnd3lvrPfKLAbMf1gaVopVqhbEn1tpIGHX+TvAAYX2FEmL/t7yfgb4ozRFT0HTlEjc8aOmMFYCAQYCAQEETiTf3HTBHYJn0wNyZPpchFI10plM4RnTRGFzk4bQ5WNvvBwIQRuiAB/eUo8fQnhw4USnGHQiX/R3DLkKd/SDkY7Iw8VU7o+vGmbSsdwE3DCCAVoCARECAQEEggFQMYIBTDALAgIGrAIBAQQCFgAwCwICBq0CAQEEAgwAMAsCAgawAgEBBAIWADALAgIGsgIBAQQCDAAwCwICBrMCAQEEAgwAMAsCAga0AgEBBAIMADALAgIGtQIBAQQCDAAwCwICBrYCAQEEAgwAMAwCAgalAgEBBAMCAQEwDAICBqsCAQEEAwIBATAMAgIGrgIBAQQDAgEAMAwCAgavAgEBBAMCAQA";
+    List datas = utf8.encode(aaa);
+
+    print(InstructionDataFormat.intToString(datas));
   });
 }

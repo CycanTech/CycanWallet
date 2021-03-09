@@ -226,5 +226,7 @@
     "wallets_inputName":"输入Token名称",
     "wallets_choosewallet":"选择钱包",
     "wallets_transin":"转入",
-    "wallets_transerr":"失败"
+    "wallets_transerr":"失败",
+    "translist_transoutsuccess":"转账成功",
+    "translist_transinsuccess":"收款成功"
 }

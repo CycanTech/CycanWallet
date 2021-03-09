@@ -101,8 +101,8 @@ class RequestMethod {
           var result;
 
           try {
-            final lb = await loadBalancer;
-            // Response response = await lb.run((argument) => _dio.request, op.baseUrl);
+            // Completer completer = Completer();
+            // Future future = completer.future;
             Response response = await _dio.request(op.baseUrl,
                 data: op.data,
                 queryParameters: op.queryParameters,

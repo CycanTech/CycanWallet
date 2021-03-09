@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_coinid/public.dart';
+import 'package:flutter_coinid/utils/screenutil.dart';
 
 //封装视图view
 // ignore: must_be_immutable
@@ -41,7 +43,47 @@ class CustomPageView extends StatelessWidget {
       style: TextStyle(
           color: Color(0xFF171F24),
           fontWeight: FontWightHelper.medium,
-          fontSize: OffsetWidget.setSc(18)),
+          fontSize: OffsetWidget.setSp(18)),
+    );
+  }
+
+  static Widget getIconSmallTitle(
+      {String smallIconPath = "",
+      String bigTitle = "",
+      String smallTitle = ""}) {
+    return Container(
+      alignment: Alignment.center,
+      width: OffsetWidget.setSc(200),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          LoadAssetsImage(
+            smallIconPath,
+            width: OffsetWidget.setSc(26),
+            height: OffsetWidget.setSc(26),
+          ),
+          OffsetWidget.hGap(5),
+          Column(
+            children: [
+              Text(
+                bigTitle,
+                style: TextStyle(
+                    color: Color(0xFF171F24),
+                    fontWeight: FontWightHelper.semiBold,
+                    fontSize: OffsetWidget.setSp(18)),
+              ),
+              Text(
+                smallTitle,
+                style: TextStyle(
+                    color: Color(0xFFACBBCF),
+                    fontWeight: FontWightHelper.medium,
+                    fontSize: OffsetWidget.setSp(10)),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -53,49 +95,53 @@ class CustomPageView extends StatelessWidget {
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
       },
-      child: Scaffold(
-        resizeToAvoidBottomInset: hiddenResizeToAvoidBottomInset,
-        appBar: hiddenAppBar == true
-            ? null
-            : AppBar(
-                title: title,
-                centerTitle: true,
-                elevation: elevation,
-                bottom: bottom,
-                backgroundColor: Colors.white,
-                actions: actions,
-                leading: hiddenLeading == true
-                    ? (leading != null ? leading : Text(""))
-                    : Routers.canGoPop(context) == true
-                        ? GestureDetector(
-                            onTap: () => {
-                              if (leadBack != null)
-                                {
-                                  leadBack(),
-                                }
-                              else
-                                {
-                                  Routers.goBackWithParams(context, null),
-                                }
-                            },
-                            child: Center(
-                              child: Image.asset(
-                                Constant.ASSETS_IMG + "icon/icon_goback.png",
-                                scale: 2,
-                                width: 45,
-                                height: 45,
+      child: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.dark,
+        child: Scaffold(
+          resizeToAvoidBottomInset: hiddenResizeToAvoidBottomInset,
+          appBar: hiddenAppBar == true
+              ? null
+              : AppBar(
+                  title: title,
+                  centerTitle: true,
+                  elevation: elevation,
+                  bottom: bottom,
+                  backgroundColor: Colors.white,
+                  brightness: Brightness.dark,
+                  actions: actions,
+                  leading: hiddenLeading == true
+                      ? (leading != null ? leading : Text(""))
+                      : Routers.canGoPop(context) == true
+                          ? GestureDetector(
+                              onTap: () => {
+                                if (leadBack != null)
+                                  {
+                                    leadBack(),
+                                  }
+                                else
+                                  {
+                                    Routers.goBackWithParams(context, null),
+                                  }
+                              },
+                              child: Center(
+                                child: Image.asset(
+                                  Constant.ASSETS_IMG + "icon/icon_goback.png",
+                                  scale: 2,
+                                  width: 45,
+                                  height: 45,
+                                ),
                               ),
-                            ),
-                          )
-                        : Text("")),
-        backgroundColor: backgroundColor,
-        bottomNavigationBar: this.bottomNavigationBar,
-        body: SafeArea(
-          child: hiddenScrollView == true
-              ? child
-              : SingleChildScrollView(
-                  child: child,
-                ),
+                            )
+                          : Text("")),
+          backgroundColor: backgroundColor,
+          bottomNavigationBar: this.bottomNavigationBar,
+          body: SafeArea(
+            child: hiddenScrollView == true
+                ? child
+                : SingleChildScrollView(
+                    child: child,
+                  ),
+          ),
         ),
       ),
     );

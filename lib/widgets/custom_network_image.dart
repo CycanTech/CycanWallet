@@ -9,7 +9,8 @@ class LoadNetworkImage extends StatelessWidget {
       this.height,
       this.fit = BoxFit.contain,
       this.color,
-      this.scale})
+      this.scale,
+      this.placeholder})
       : super(key: key);
 
   final String name;
@@ -18,16 +19,17 @@ class LoadNetworkImage extends StatelessWidget {
   final BoxFit fit;
   final Color color;
   final double scale;
+  final String placeholder;
 
   @override
   Widget build(BuildContext context) {
-    return Image.network(
-      name,
+    return FadeInImage.assetNetwork(
+      image: name == null ? "" : name,
+      placeholder: placeholder,
       height: height,
       width: width,
       fit: fit,
-      color: color,
-      scale: scale,
+      imageScale: scale,
     );
   }
 }

@@ -45,6 +45,7 @@ class MHWallet extends BaseModel {
   String macUUID; //UUID
   String descName; //自定义描述名称默认空字符
   bool didChoose; //did选中
+  bool hiddenAssets; //隐藏资产
   MHWallet(
     this.walletID,
     this.walletAaddress,
@@ -67,6 +68,7 @@ class MHWallet extends BaseModel {
     this.macUUID,
     this.descName,
     this.didChoose,
+    this.hiddenAssets,
   );
 
   MHWallet.instance(WalletObject object) {
@@ -95,6 +97,7 @@ class MHWallet extends BaseModel {
             (walletAaddress == null || walletAaddress.length == 0)
                 ? pubKey
                 : walletAaddress);
+    hiddenAssets = false;
 
     MHWallet(
       walletID,
@@ -118,6 +121,7 @@ class MHWallet extends BaseModel {
       macUUID,
       descName,
       didChoose,
+      hiddenAssets,
     );
   }
 
@@ -507,6 +511,7 @@ class MHWallet extends BaseModel {
         wallet.leadType = mLeadType.index;
         wallet.pin = hashPin;
         wallet.pinTip = pintip;
+        wallet.descName = walletName;
         MHWallet oldWallets =
             await database.walletDao.findWalletByWalletID(wallet.walletID);
         if (oldWallets == null) {
@@ -727,7 +732,7 @@ abstract class MHWalletDao {
       String walletAaddress, int chainType);
 
   //自动生成的有问题需要自己写sql
-  @Query("SELECT * FROM " + tableName + " WHERE symbol like :symbol")
+  @Query("SELECT * FROM " + tableName + " WHERE :symbol")
   Future<List<MHWallet>> findWalletsBySymbol(String symbol);
 
   @Query('SELECT * FROM ' + tableName)

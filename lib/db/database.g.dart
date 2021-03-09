@@ -86,7 +86,7 @@ class _$FlutterDatabase extends FlutterDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `wallet_table` (`walletID` TEXT, `walletAaddress` TEXT, `pin` TEXT, `pinTip` TEXT, `createTime` TEXT, `updateTime` TEXT, `symbol` TEXT, `fullName` TEXT, `isChoose` INTEGER, `prvKey` TEXT, `pubKey` TEXT, `chainType` INTEGER, `isWegwit` INTEGER, `leadType` INTEGER, `originType` INTEGER, `subPrvKey` TEXT, `subPubKey` TEXT, `masterPubKey` TEXT, `macUUID` TEXT, `descName` TEXT, `didChoose` INTEGER, PRIMARY KEY (`walletID`))');
+            'CREATE TABLE IF NOT EXISTS `wallet_table` (`walletID` TEXT, `walletAaddress` TEXT, `pin` TEXT, `pinTip` TEXT, `createTime` TEXT, `updateTime` TEXT, `symbol` TEXT, `fullName` TEXT, `isChoose` INTEGER, `prvKey` TEXT, `pubKey` TEXT, `chainType` INTEGER, `isWegwit` INTEGER, `leadType` INTEGER, `originType` INTEGER, `subPrvKey` TEXT, `subPubKey` TEXT, `masterPubKey` TEXT, `macUUID` TEXT, `descName` TEXT, `didChoose` INTEGER, `hiddenAssets` INTEGER, PRIMARY KEY (`walletID`))');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `userid_table` (`walletName` TEXT, `pwd` TEXT, `tip` TEXT, `masterPubKey` TEXT, `memos` TEXT, `leadType` INTEGER, `mOriginType` INTEGER, PRIMARY KEY (`masterPubKey`))');
         await database.execute(
@@ -151,7 +151,10 @@ class _$MHWalletDao extends MHWalletDao {
                   'macUUID': item.macUUID,
                   'descName': item.descName,
                   'didChoose':
-                      item.didChoose == null ? null : (item.didChoose ? 1 : 0)
+                      item.didChoose == null ? null : (item.didChoose ? 1 : 0),
+                  'hiddenAssets': item.hiddenAssets == null
+                      ? null
+                      : (item.hiddenAssets ? 1 : 0)
                 },
             changeListener),
         _mHWalletUpdateAdapter = UpdateAdapter(
@@ -182,7 +185,10 @@ class _$MHWalletDao extends MHWalletDao {
                   'macUUID': item.macUUID,
                   'descName': item.descName,
                   'didChoose':
-                      item.didChoose == null ? null : (item.didChoose ? 1 : 0)
+                      item.didChoose == null ? null : (item.didChoose ? 1 : 0),
+                  'hiddenAssets': item.hiddenAssets == null
+                      ? null
+                      : (item.hiddenAssets ? 1 : 0)
                 },
             changeListener),
         _mHWalletDeletionAdapter = DeletionAdapter(
@@ -213,7 +219,10 @@ class _$MHWalletDao extends MHWalletDao {
                   'macUUID': item.macUUID,
                   'descName': item.descName,
                   'didChoose':
-                      item.didChoose == null ? null : (item.didChoose ? 1 : 0)
+                      item.didChoose == null ? null : (item.didChoose ? 1 : 0),
+                  'hiddenAssets': item.hiddenAssets == null
+                      ? null
+                      : (item.hiddenAssets ? 1 : 0)
                 },
             changeListener);
 
@@ -254,7 +263,10 @@ class _$MHWalletDao extends MHWalletDao {
             row['masterPubKey'] as String,
             row['macUUID'] as String,
             row['descName'] as String,
-            row['didChoose'] == null ? null : (row['didChoose'] as int) != 0));
+            row['didChoose'] == null ? null : (row['didChoose'] as int) != 0,
+            row['hiddenAssets'] == null
+                ? null
+                : (row['hiddenAssets'] as int) != 0));
   }
 
   @override
@@ -281,7 +293,10 @@ class _$MHWalletDao extends MHWalletDao {
             row['masterPubKey'] as String,
             row['macUUID'] as String,
             row['descName'] as String,
-            row['didChoose'] == null ? null : (row['didChoose'] as int) != 0));
+            row['didChoose'] == null ? null : (row['didChoose'] as int) != 0,
+            row['hiddenAssets'] == null
+                ? null
+                : (row['hiddenAssets'] as int) != 0));
   }
 
   @override
@@ -308,7 +323,10 @@ class _$MHWalletDao extends MHWalletDao {
             row['masterPubKey'] as String,
             row['macUUID'] as String,
             row['descName'] as String,
-            row['didChoose'] == null ? null : (row['didChoose'] as int) != 0));
+            row['didChoose'] == null ? null : (row['didChoose'] as int) != 0,
+            row['hiddenAssets'] == null
+                ? null
+                : (row['hiddenAssets'] as int) != 0));
   }
 
   @override
@@ -337,7 +355,10 @@ class _$MHWalletDao extends MHWalletDao {
             row['masterPubKey'] as String,
             row['macUUID'] as String,
             row['descName'] as String,
-            row['didChoose'] == null ? null : (row['didChoose'] as int) != 0));
+            row['didChoose'] == null ? null : (row['didChoose'] as int) != 0,
+            row['hiddenAssets'] == null
+                ? null
+                : (row['hiddenAssets'] as int) != 0));
   }
 
   @override
@@ -366,7 +387,10 @@ class _$MHWalletDao extends MHWalletDao {
             row['masterPubKey'] as String,
             row['macUUID'] as String,
             row['descName'] as String,
-            row['didChoose'] == null ? null : (row['didChoose'] as int) != 0));
+            row['didChoose'] == null ? null : (row['didChoose'] as int) != 0,
+            row['hiddenAssets'] == null
+                ? null
+                : (row['hiddenAssets'] as int) != 0));
   }
 
   @override
@@ -396,14 +420,16 @@ class _$MHWalletDao extends MHWalletDao {
             row['masterPubKey'] as String,
             row['macUUID'] as String,
             row['descName'] as String,
-            row['didChoose'] == null ? null : (row['didChoose'] as int) != 0));
+            row['didChoose'] == null ? null : (row['didChoose'] as int) != 0,
+            row['hiddenAssets'] == null
+                ? null
+                : (row['hiddenAssets'] as int) != 0));
   }
 
   @override
   Future<List<MHWallet>> findWalletsBySymbol(String symbol) async {
-    return _queryAdapter.queryList(
-        'SELECT * FROM wallet_table WHERE $symbol',
-        // arguments: <dynamic>[symbol],
+    return _queryAdapter.queryList('SELECT * FROM wallet_table WHERE ?',
+        arguments: <dynamic>[symbol],
         mapper: (Map<String, dynamic> row) => MHWallet(
             row['walletID'] as String,
             row['walletAaddress'] as String,
@@ -425,7 +451,10 @@ class _$MHWalletDao extends MHWalletDao {
             row['masterPubKey'] as String,
             row['macUUID'] as String,
             row['descName'] as String,
-            row['didChoose'] == null ? null : (row['didChoose'] as int) != 0));
+            row['didChoose'] == null ? null : (row['didChoose'] as int) != 0,
+            row['hiddenAssets'] == null
+                ? null
+                : (row['hiddenAssets'] as int) != 0));
   }
 
   @override
@@ -452,7 +481,10 @@ class _$MHWalletDao extends MHWalletDao {
             row['masterPubKey'] as String,
             row['macUUID'] as String,
             row['descName'] as String,
-            row['didChoose'] == null ? null : (row['didChoose'] as int) != 0));
+            row['didChoose'] == null ? null : (row['didChoose'] as int) != 0,
+            row['hiddenAssets'] == null
+                ? null
+                : (row['hiddenAssets'] as int) != 0));
   }
 
   @override
@@ -481,7 +513,10 @@ class _$MHWalletDao extends MHWalletDao {
             row['masterPubKey'] as String,
             row['macUUID'] as String,
             row['descName'] as String,
-            row['didChoose'] == null ? null : (row['didChoose'] as int) != 0));
+            row['didChoose'] == null ? null : (row['didChoose'] as int) != 0,
+            row['hiddenAssets'] == null
+                ? null
+                : (row['hiddenAssets'] as int) != 0));
   }
 
   @override

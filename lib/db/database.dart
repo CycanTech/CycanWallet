@@ -10,6 +10,8 @@ part 'database.g.dart';
 
 //flutter packages pub run build_runner build
 //findWalletsBySymbol 需要手动替换
+  // 'SELECT * FROM wallet_table WHERE $symbol',
+  // arguments: <dynamic>[symbol],
 
 const int dbCurrentVersion = 1;
 

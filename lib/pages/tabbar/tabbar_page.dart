@@ -66,8 +66,6 @@ class _TabbarPageState extends State<TabbarPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
-    Provider.of<SystemSettings>(context, listen: false).loadSystemSettings();
     Provider.of<CurrentChooseWalletState>(context, listen: false).loadWallet();
   }
 

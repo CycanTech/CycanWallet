@@ -151,7 +151,7 @@ class _WalletInfoPageState extends State<WalletInfoPage> {
     String descName = mwallet.descName;
     String symbol = mwallet.symbol;
     return CustomPageView(
-      hiddenResizeToAvoidBottomInset: false,
+      // hiddenResizeToAvoidBottomInset: false,
       title: CustomPageView.getDefaultTitle(
         titleStr: "wallet_management".local(),
       ),

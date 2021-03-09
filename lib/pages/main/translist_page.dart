@@ -110,78 +110,76 @@ class _TransListPageState extends State<TransListPage> {
 
   Widget _headerBuilder() {
     return GestureDetector(
-      onTap: () => {},
+      onTap: () {},
       child: Container(
-          alignment: Alignment.center,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                alignment: Alignment.center,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          OffsetWidget.vGap(25),
+          GestureDetector(
+            onTap: () {
+              if (walletAddress.isValid() == false) return;
+              Clipboard.setData(ClipboardData(text: walletAddress));
+              HWToast.showText(text: "copy_success".local());
+            },
+            child: Container(
+              alignment: Alignment.center,
+              width: OffsetWidget.setSc(300),
+              child: RichText(
+                maxLines: 3,
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                  text: walletAddress,
+                  style: TextStyle(
+                      color: Color(0xFF171F24),
+                      fontWeight: FontWeight.w400,
+                      fontSize: OffsetWidget.setSp(10)),
                   children: [
-                    Container(
-                      constraints: BoxConstraints(
-                        maxWidth: OffsetWidget.setSc(250),
-                      ),
-                      child: Text(
-                        walletAddress,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Color(0xFF171F24),
-                            fontWeight: FontWeight.w400,
-                            fontSize: OffsetWidget.setSp(10)),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
+                    WidgetSpan(
+                      child: OffsetWidget.hGap(10),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        if (walletAddress.isValid() == false) return;
-                        Clipboard.setData(ClipboardData(text: walletAddress));
-                        HWToast.showText(text: "copy_success".local());
-                      },
+                    WidgetSpan(
                       child: LoadAssetsImage(
                         Constant.ASSETS_IMG + "icon/icon_copy.png",
                         scale: 2,
                         fit: null,
-                        width: 20,
-                        height: 20,
+                        width: 10,
+                        height: 10,
                       ),
                     ),
                   ],
                 ),
               ),
-              OffsetWidget.vGap(5),
-              Container(
-                alignment: Alignment.center,
-                width: OffsetWidget.setSc(300),
-                child: Text(
-                  balance,
-                  style: TextStyle(
-                      color: Color(0xFF171F24),
-                      fontWeight: FontWeight.w400,
-                      fontSize: OffsetWidget.setSp(26)),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              Container(
-                alignment: Alignment.center,
-                width: OffsetWidget.setSc(300),
-                child: Text(
-                  total,
-                  style: TextStyle(
-                      color: Color(0xFFACBBCF),
-                      fontWeight: FontWeight.w400,
-                      fontSize: OffsetWidget.setSp(16)),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ],
-          )),
+            ),
+          ),
+          OffsetWidget.vGap(5),
+          Container(
+            alignment: Alignment.center,
+            width: OffsetWidget.setSc(300),
+            child: Text(
+              balance,
+              style: TextStyle(
+                  color: Color(0xFF171F24),
+                  fontWeight: FontWeight.w400,
+                  fontSize: OffsetWidget.setSp(26)),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          Container(
+            alignment: Alignment.center,
+            width: OffsetWidget.setSc(300),
+            child: Text(
+              total,
+              style: TextStyle(
+                  color: Color(0xFFACBBCF),
+                  fontWeight: FontWeight.w400,
+                  fontSize: OffsetWidget.setSp(16)),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      )),
     );
   }
 
@@ -191,13 +189,10 @@ class _TransListPageState extends State<TransListPage> {
       length: _myTabs.length,
       child: CustomPageView(
         hiddenScrollView: true,
-        title: Text(
-          token,
-          style: TextStyle(
-              color: Color(0xFF000000),
-              fontWeight: FontWeight.w400,
-              fontSize: OffsetWidget.setSc(18)),
-        ),
+        title: CustomPageView.getIconSmallTitle(
+            smallIconPath: Constant.ASSETS_IMG + "wallet/wallet_dot.png",
+            smallTitle: "Bytom",
+            bigTitle: token),
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(0),
           child: Text(""),
@@ -387,15 +382,16 @@ class _MTransListPageState extends State<MTransListPage>
   bool get wantKeepAlive => true;
 
   void _requestTransListWithNet(int page) async {
+    _page = page;
     MTransType selectIndex = widget.selectIndex;
-    String chainType = Constant.getChainSymbol(int.tryParse(widget.chainType));
+    int chainType = int.tryParse(widget.chainType);
     String from = widget.walletAddress;
     String contract = widget.contract;
     LogUtil.v(
         "_requestTransListWithNet $from chainType $chainType  selectIndex $selectIndex _page $_page");
     HWToast.showLoading(clickClose: true);
     ChainServices.requestTransRecord(
-        chainType, selectIndex, from, contract, _page, (result, code) {
+        chainType, selectIndex, from, contract, page, (result, code) {
       HWToast.hiddenAllToast();
       _refreshController.loadComplete();
       _refreshController.refreshCompleted(resetFooterState: true);
@@ -433,12 +429,12 @@ class _MTransListPageState extends State<MTransListPage>
       logoPath = Constant.ASSETS_IMG + "icon/trans_out.png";
       txtColor = Color(0xFF586883);
       amount = "-";
-      remarks = "转账成功";
+      remarks = "translist_transoutsuccess".local();
     } else {
       logoPath = Constant.ASSETS_IMG + "icon/trans_in.png";
       txtColor = Color(0xFF586883);
       amount = "+";
-      remarks = "收款成功";
+      remarks = "translist_transinsuccess".local();
     }
     amount += transModel.amount + " ${transModel.token}";
     return Container(
@@ -559,10 +555,15 @@ class _MTransListPageState extends State<MTransListPage>
         onRefresh: () {
           _requestTransListWithNet(1);
         },
-        onLoading: () {},
-        enableFooter: false,
+        onLoading: () {
+          _requestTransListWithNet(_page + 1);
+        },
         child: _datas.length == 0
-            ? EmptyDataPage()
+            ? EmptyDataPage(
+                refreshAction: () => {
+                  _requestTransListWithNet(1),
+                },
+              )
             : ListView.builder(
                 itemCount: _datas.length,
                 itemBuilder: (BuildContext context, int index) {

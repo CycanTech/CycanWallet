@@ -11,11 +11,11 @@ import '../public.dart';
 class ChainServices {
   static const bool isTestNode = true;
 
-  static const String _ethTestChain = "http://103.46.128.21:32391";
+  static const String _ethTestChain = "http://103.46.128.21:26082";
   static String ethMainChain = "https://mainnet-eth.coinid.pro";
   static String _ethurl = isTestNode ? _ethTestChain : ethMainChain;
 
-  static const String _btcTestChain = "http://c181e88770.51vip.biz:56249";
+  static const String _btcTestChain = "http://c181e88770.51vip.biz";
   // static String btcMainChain = "https://api.bitcore.io";
   static String btcMainChain = "https://btc-api.coinid.pro";
   static String _btcurl = isTestNode ? _btcTestChain : btcMainChain;
@@ -59,17 +59,17 @@ class ChainServices {
     }
   }
 
-  static void requestTransRecord(String chainType, MTransType transType,
-      String from, String contract, int start, complationBlock block) {
+  static void requestTransRecord(int chainType, MTransType transType,
+      String from, String contract, int page, complationBlock block) {
     assert(chainType != null, "requestTransRecord");
     assert(from != null, "requestTransRecord");
     assert(block != null, "requestTransRecord");
 
-    if (chainType.toLowerCase() == "eth") {
-      return _requestETHTransRecord(from, start, block);
+    if (chainType == MCoinType.MCoinType_ETH.index) {
+      return _requestETHTransRecord(from, contract, page, block);
     }
-    if (chainType.toLowerCase() == "btc") {
-      return _requestBTCTransRecord(transType, from, start, block);
+    if (chainType == MCoinType.MCoinType_BTC.index) {
+      return _requestBTCTransRecord(transType, from, page, block);
     }
   }
 
@@ -126,7 +126,7 @@ class ChainServices {
   }
 
   static void _requestETHTransRecord(
-      String from, int start, complationBlock block) {
+      String from, String contract, int page, complationBlock block) {
     String url = "http://192.168.1.190:9090/api/accountTxs?addr=$from";
     RequestMethod().requestNetwork(Method.GET, url, (result, code) {
       List<MHTransRecordModel> results = [];
@@ -173,7 +173,7 @@ class ChainServices {
   }
 
   static void _requestBTCTransRecord(
-      MTransType transType, String from, int start, complationBlock block) {
+      MTransType transType, String from, int page, complationBlock block) {
     String baseurl;
     String recordURL;
     String coinsurl;
@@ -182,13 +182,17 @@ class ChainServices {
     } else {
       baseurl = _btcurl + mainnetBtcList;
     }
+    const int limit = 15;
+    page = max(1, page);
+    int start = (page - 1) * limit;
+    int to = limit * page;
     if (transType == MTransType.MTransType_Err) {
       if (block != null) {
         block([], 500);
       }
       return;
     }
-    recordURL = baseurl + "/address/$from/txs?limit=100";
+    recordURL = baseurl + "/address/$from/txs?limit=$to";
     RequestMethod().requestNetwork(Method.GET, recordURL, (result, code) {
       if (code == 200 && result is List) {
         List datas = result;
@@ -611,7 +615,7 @@ class ChainServices {
 
   static Future<dynamic> _requestDotAssets(
       String from, bool neePrice, complationBlock block) async {
-    Map<String, dynamic> assetResult = {"c": "0", "p": "0", "up": "0"};
+    Map<String, dynamic> assetResult = {"c": "1000", "p": "100", "up": "1"};
     String url = "https://polkadot.subscan.io/api/scan/search";
     Map<String, dynamic> balanceParams = Map();
     // from = "13GkDCmf2pxLW1mDCTkSezQF541Ksy6MsZfAEhw5vfTdPsxE";

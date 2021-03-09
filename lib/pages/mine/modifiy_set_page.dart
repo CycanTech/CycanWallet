@@ -76,7 +76,7 @@ class _ModifiySetPageState extends State<ModifiySetPage> {
     setState(() {});
     if (widget.setType == 0) {
       updateAmountValue(index == 0 ? true : false);
-      Provider.of<SystemSettings>(context, listen: false).changeCurrencyType(
+      Provider.of<CurrentChooseWalletState>(context, listen: false).updateCurrencyType(
           index == 0 ? MCurrencyType.CNY : MCurrencyType.USD);
     } else {
       updateLanguageValue(index);

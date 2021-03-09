@@ -159,7 +159,7 @@ class _TransDetailPageState extends State<TransDetailPage> {
         style: TextStyle(
             color: Color(0xFF000000),
             fontWeight: FontWeight.w400,
-            fontSize: OffsetWidget.setSc(18)),
+            fontSize: OffsetWidget.setSp(18)),
       ),
       child: Container(
         margin: EdgeInsets.only(

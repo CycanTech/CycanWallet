@@ -68,24 +68,17 @@ class _AddAssetsPageState extends State<AddAssetsPage> {
       child: Row(
         children: [
           OffsetWidget.hGap(10),
-          StringUtil.isNotEmpty(map["iconPath"])
-              ? LoadNetworkImage(
-                  map["iconPath"],
-                  width: OffsetWidget.setSc(30),
-                  height: OffsetWidget.setSc(30),
-                  fit: BoxFit.contain,
-                  scale: 1,
-                )
-              : LoadAssetsImage(
-                  Constant.ASSETS_IMG +
-                      "wallet/icon_" +
-                      symbol.toLowerCase() +
-                      "_token_default.png",
-                  width: OffsetWidget.setSc(30),
-                  height: OffsetWidget.setSc(30),
-                  fit: BoxFit.contain,
-                  scale: 1,
-                ),
+          LoadNetworkImage(
+            map["iconPath"],
+            width: OffsetWidget.setSc(30),
+            height: OffsetWidget.setSc(30),
+            fit: BoxFit.contain,
+            scale: 1,
+            placeholder: Constant.ASSETS_IMG +
+                "wallet/icon_" +
+                symbol.toLowerCase() +
+                "_token_default.png",
+          ),
           OffsetWidget.hGap(9),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
