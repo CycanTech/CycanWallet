@@ -107,7 +107,7 @@ class CustomPageView extends StatelessWidget {
                   elevation: elevation,
                   bottom: bottom,
                   backgroundColor: Colors.white,
-                  brightness: Brightness.dark,
+                  brightness: Brightness.light,
                   actions: actions,
                   leading: hiddenLeading == true
                       ? (leading != null ? leading : Text(""))
@@ -132,7 +132,8 @@ class CustomPageView extends StatelessWidget {
                                 ),
                               ),
                             )
-                          : Text("")),
+                          : Text(""),
+                ),
           backgroundColor: backgroundColor,
           bottomNavigationBar: this.bottomNavigationBar,
           body: SafeArea(

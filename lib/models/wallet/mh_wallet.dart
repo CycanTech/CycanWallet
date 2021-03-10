@@ -46,6 +46,10 @@ class MHWallet extends BaseModel {
   String descName; //自定义描述名称默认空字符
   bool didChoose; //did选中
   bool hiddenAssets; //隐藏资产
+  int index;
+  // int pre_no; //上一个序号
+  // int next_no;//下一个序号
+
   MHWallet(
     this.walletID,
     this.walletAaddress,

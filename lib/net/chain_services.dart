@@ -67,10 +67,10 @@ class ChainServices {
 
     if (chainType == MCoinType.MCoinType_ETH.index) {
       return _requestETHTransRecord(from, contract, page, block);
-    }
-    if (chainType == MCoinType.MCoinType_BTC.index) {
+    } else if (chainType == MCoinType.MCoinType_BTC.index) {
       return _requestBTCTransRecord(transType, from, page, block);
-    }
+    } else if (chainType == MCoinType.MCoinType_DOT.index) {
+    } else {}
   }
 
   static void pushData(

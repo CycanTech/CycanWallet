@@ -127,15 +127,15 @@ class _RecervePaymentPageState extends State<RecervePaymentPage> {
                 data: qrCodeStr,
                 size: OffsetWidget.setSc(140),
               ),
-              OffsetWidget.vGap(5),
-              Text(
-                walletAddress,
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.center,
-                maxLines: 2,
-                style: TextStyle(
-                    fontSize: OffsetWidget.setSp(13), color: Color(0xFF444444)),
-              ),
+              // OffsetWidget.vGap(5),
+              // Text(
+              //   walletAddress,
+              //   overflow: TextOverflow.ellipsis,
+              //   textAlign: TextAlign.center,
+              //   maxLines: 2,
+              //   style: TextStyle(
+              //       fontSize: OffsetWidget.setSp(13), color: Color(0xFF444444)),
+              // ),
             ],
           ),
         ),

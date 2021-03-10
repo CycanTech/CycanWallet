@@ -46,9 +46,8 @@ class _WalletManagerState extends State<WalletManager> {
     });
   }
 
-  void _cellContentSelectRowAt(int index) async {
+  void _cellContentSelectRowAt(MHWallet wallet) async {
     LogUtil.v("点击钱包整体");
-    MHWallet wallet = datas[index];
     Provider.of<CurrentChooseWalletState>(context, listen: false)
         .updateChoose(wallet);
     Routers.goBackWithParams(context, {"walletID": wallet.walletID});
@@ -100,8 +99,7 @@ class _WalletManagerState extends State<WalletManager> {
     );
   }
 
-  Widget _cellBuilder(int index) {
-    MHWallet wallet = datas[index];
+  Widget _cellBuilder(MHWallet wallet) {
     String logoPath = Constant.getChainLogo(wallet.chainType);
     String name = Constant.getChainSymbol(wallet.chainType);
     String address = wallet?.walletAaddress;
@@ -111,13 +109,14 @@ class _WalletManagerState extends State<WalletManager> {
         ".png";
 
     return Container(
+      key: Key(wallet.walletID),
       alignment: Alignment.center,
       padding: EdgeInsets.only(bottom: OffsetWidget.setSc(12)),
       child: Column(
         children: [
           GestureDetector(
             behavior: HitTestBehavior.opaque,
-            onTap: () => _cellContentSelectRowAt(index),
+            onTap: () => _cellContentSelectRowAt(wallet),
             child: Container(
               height: OffsetWidget.setSc(60),
               alignment: Alignment.center,
@@ -284,10 +283,19 @@ class _WalletManagerState extends State<WalletManager> {
               ),
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: datas.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return _cellBuilder(index);
+              child: ReorderableListView(
+                children: datas.map((e) => _cellBuilder(e)).toList(),
+                onReorder: (int oldIndex, int newIndex) {
+                  LogUtil.v("$oldIndex --- $newIndex");
+                  setState(() {
+                    if (oldIndex < newIndex) {
+                      newIndex -= 1;
+                    }
+                    var temp = datas.removeAt(oldIndex);
+                    datas.insert(newIndex, temp);
+                    // temp.updateTime = DateUtil.getNowDateStr();
+                    // MHWallet.updateWallet(temp);
+                  });
                 },
               ),
             ),

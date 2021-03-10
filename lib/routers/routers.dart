@@ -141,7 +141,6 @@ class Routers {
     }
     path = path + query;
     LogUtil.v('我是navigateTo传递的参数：$query' + "\n跳转路径path :$path");
-
     return AppRouters.router.navigateTo(context, path,
         replace: replace,
         clearStack: clearStack,
