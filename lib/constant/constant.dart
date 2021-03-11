@@ -201,7 +201,7 @@ class Constant {
     } else if (MCoinType.MCoinType_USDT.index == coinType) {
       fullName = "USDT";
     } else if (MCoinType.MCoinType_DOT.index == coinType) {
-      fullName = "DOT";
+      fullName = "Polkadot";
     }
     return fullName;
   }

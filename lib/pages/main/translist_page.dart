@@ -67,15 +67,16 @@ class _TransListPageState extends State<TransListPage> {
       token: token,
       block: (result, code) {
         if (code == 200 && result is Map && mounted) {
-          String balance = result["c"] as String;
+          String newValue = result["c"] as String;
           String price =
               amountType == 0 ? result["p"] as String : result["up"] as String;
           price = price.length == 0 ? "0" : price;
+          LogUtil.v("_initData setState $newValue");
           setState(() {
             tokenPrice = double.tryParse(price);
-            balance = balance;
+            balance = newValue;
             total = assets +
-                (double.tryParse(balance) * tokenPrice).toStringAsFixed(2);
+                (double.tryParse(newValue) * tokenPrice).toStringAsFixed(2);
           });
         }
       },
@@ -103,7 +104,9 @@ class _TransListPageState extends State<TransListPage> {
     params["token"] = token;
     params["decimals"] = decimals;
     Routers.push(context, Routers.paymentPage, params: params).then((value) => {
-          _initData(),
+          Future.delayed(Duration(seconds: 3)).then((value) => {
+                _initData(),
+              })
           // _refreshTransList(0),
         });
   }
@@ -190,9 +193,14 @@ class _TransListPageState extends State<TransListPage> {
       child: CustomPageView(
         hiddenScrollView: true,
         title: CustomPageView.getIconSmallTitle(
-            smallIconPath: Constant.ASSETS_IMG + "wallet/wallet_dot.png",
-            smallTitle: "Bytom",
-            bigTitle: token),
+          smallIconPath: widget.params["iconPath"][0],
+          smallTitle: Constant.getChainFullName(int.tryParse(chainType)),
+          bigTitle: token,
+          placeholder: Constant.ASSETS_IMG +
+              "wallet/icon_" +
+              Constant.getChainSymbol(int.tryParse(chainType)).toLowerCase() +
+              "_token_default.png",
+        ),
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(0),
           child: Text(""),
@@ -246,6 +254,9 @@ class _TransListPageState extends State<TransListPage> {
                     walletAddress: walletAddress,
                     tokenPrice: tokenPrice,
                     chainType: chainType,
+                    refreshBack: () => {
+                      _initData(),
+                    },
                   ),
                   MTransListPage(
                     token: token,
@@ -254,6 +265,9 @@ class _TransListPageState extends State<TransListPage> {
                     walletAddress: walletAddress,
                     tokenPrice: tokenPrice,
                     chainType: chainType,
+                    refreshBack: () => {
+                      _initData(),
+                    },
                   ),
                   MTransListPage(
                     token: token,
@@ -262,6 +276,9 @@ class _TransListPageState extends State<TransListPage> {
                     walletAddress: walletAddress,
                     tokenPrice: tokenPrice,
                     chainType: chainType,
+                    refreshBack: () => {
+                      _initData(),
+                    },
                   ),
                   MTransListPage(
                     token: token,
@@ -270,6 +287,9 @@ class _TransListPageState extends State<TransListPage> {
                     walletAddress: walletAddress,
                     tokenPrice: tokenPrice,
                     chainType: chainType,
+                    refreshBack: () => {
+                      _initData(),
+                    },
                   )
                 ],
               ),
@@ -347,7 +367,8 @@ class MTransListPage extends StatefulWidget {
       this.contract,
       this.walletAddress,
       this.token,
-      this.chainType})
+      this.chainType,
+      this.refreshBack})
       : super(key: key);
   final double tokenPrice;
   final MTransType selectIndex;
@@ -355,6 +376,7 @@ class MTransListPage extends StatefulWidget {
   final String walletAddress;
   final String token;
   final String chainType;
+  final VoidCallback refreshBack;
 
   @override
   _MTransListPageState createState() => _MTransListPageState();
@@ -554,6 +576,7 @@ class _MTransListPageState extends State<MTransListPage>
         refreshController: _refreshController,
         onRefresh: () {
           _requestTransListWithNet(1);
+          widget.refreshBack();
         },
         onLoading: () {
           _requestTransListWithNet(_page + 1);

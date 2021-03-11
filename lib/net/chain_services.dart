@@ -20,6 +20,10 @@ class ChainServices {
   static String btcMainChain = "https://btc-api.coinid.pro";
   static String _btcurl = isTestNode ? _btcTestChain : btcMainChain;
 
+  static const String _dotTestChain = "http://103.46.128.21:45979";
+  static const String _dotMainChain = "https://mainnet-dot.coinid.pro";
+  static const String _doturl = isTestNode ? _dotTestChain : _dotMainChain;
+
   static const String regtestBtcSend = "/api/BTC/regtest/tx/send";
   static const String regtestBtcList = "/api/BTC/regtest";
   static const String mainnetBtcList = "/api/BTC/mainnet";
@@ -70,7 +74,10 @@ class ChainServices {
     } else if (chainType == MCoinType.MCoinType_BTC.index) {
       return _requestBTCTransRecord(transType, from, page, block);
     } else if (chainType == MCoinType.MCoinType_DOT.index) {
-    } else {}
+      return _requestDOTTransRecord(transType, from, page, block);
+    } else {
+      assert(false, "补充请求");
+    }
   }
 
   static void pushData(
@@ -257,6 +264,62 @@ class ChainServices {
     });
   }
 
+  static void _requestDOTTransRecord(MTransType transType, String fromAddress,
+      int page, complationBlock block) {
+    if (transType == MTransType.MTransType_Err) {
+      if (block != null) {
+        block([], 500);
+      }
+      return;
+    }
+    // fromAddress = "15hR89mVdPq3hh3SDmRFyEvNah98NbeGrHViv8yCu1tvkpKs";
+    String url = _doturl + "/v1/api/transfer";
+    Map<String, dynamic> params = {};
+    params["page"] = page;
+    params["pageSize"] = 15;
+    params["transferType"] = transType == MTransType.MTransType_All
+        ? "ALL"
+        : transType == MTransType.MTransType_In
+            ? "BUY"
+            : "SELL";
+    params["address"] = fromAddress;
+    RequestMethod().requestNetwork(Method.GET, url, (result, code) {
+      if (code == 200 && result is Map) {
+        List datas = result["data_event_extrinsics"] as List;
+        List<MHTransRecordModel> results = [];
+        datas.forEach((element) {
+          String from = element["from"] as String;
+          String to = element["to"] as String;
+          num balance = element["balance"] as num;
+          String time = element["time"] as String;
+          String trxid = element["extrinsic_hash"] as String;
+          int blockid = element["block_id"] as int;
+          MHTransRecordModel model = MHTransRecordModel();
+          model.from = from;
+          model.to = to;
+          model.amount = balance.toString();
+          model.isOut = (fromAddress.toLowerCase() == to.toLowerCase()) == true
+              ? false
+              : true;
+          model.date = time;
+          model.txid = trxid;
+          model.token = "DOT";
+          model.coinType = "DOT";
+          model.blocknumber = blockid.toString();
+          model.transStatus = MTransState.MTransState_Success.index;
+          results.add(model);
+        });
+        if (block != null) {
+          block(results, 200);
+        }
+      } else {
+        if (block != null) {
+          block([], 500);
+        }
+      }
+    }, queryParameters: params);
+  }
+
   static void _requestETHAddresssInfo(
       {String from, String contract, complationBlock block}) {
     Map gasPrice = {
@@ -341,7 +404,7 @@ class ChainServices {
       "params": [nonceKey],
       "id": "getNonce"
     };
-    String url = "http://192.168.1.224:9933";
+    String url = _doturl;
     Map<String, dynamic> objects = Map();
     RequestMethod().requestNetwork(Method.POST, url, (result, code) {
       if (code == 200 && result is List) {
@@ -533,8 +596,11 @@ class ChainServices {
       "method": "author_submitExtrinsic",
       "params": [packByteString]
     };
-    RequestMethod().requestNetwork(Method.POST, "http://192.168.1.224:9933",
-        (response, code) {
+    String url = _doturl;
+    if (isTestNode == false) {
+      url += "/rpc";
+    }
+    RequestMethod().requestNetwork(Method.POST, url, (response, code) {
       if (code == 200 && response as Map != null) {
         if (response.keys.contains("error")) {
           Map<String, dynamic> err = response["error"] as Map;
@@ -615,31 +681,54 @@ class ChainServices {
 
   static Future<dynamic> _requestDotAssets(
       String from, bool neePrice, complationBlock block) async {
-    Map<String, dynamic> assetResult = {"c": "1000", "p": "100", "up": "1"};
-    String url = "https://polkadot.subscan.io/api/scan/search";
+    Map<String, dynamic> assetResult = {"c": "0", "p": "0", "up": "0"};
+    String url = _doturl;
     Map<String, dynamic> balanceParams = Map();
-    // from = "13GkDCmf2pxLW1mDCTkSezQF541Ksy6MsZfAEhw5vfTdPsxE";
-    balanceParams["key"] = from;
-    balanceParams["row"] = 1;
-    balanceParams["page"] = 0;
-    dynamic balresult = await RequestMethod()
-        .futureRequestData(Method.POST, url, null, data: balanceParams);
-    if (balresult != null) {
-      Map balMap = balresult as Map;
-      if (balMap != null) {
-        Map dataMap = balresult["data"] as Map;
-        if (dataMap != null) {
-          Map accountMap = dataMap["account"] as Map;
-          assetResult["c"] = accountMap["balance"];
-          // assetResult["c"] = "1000";
-          if (neePrice) {
-            Map<String, dynamic> priceResule = await requestDotPrice(null);
-            priceResule.forEach((key, value) {
-              assetResult[key] = value;
-            });
+    dynamic balresult;
+    if (isTestNode == false) {
+      url += "/v1/api/getAddressInfo";
+      balanceParams = {
+        "address": from,
+      };
+      balresult = await RequestMethod().futureRequestData(Method.GET, url, null,
+          queryParameters: balanceParams);
+      if (balresult != null) {
+        Map balMap = balresult as Map;
+        if (balMap != null) {
+          num balance = balresult["balance_free"] as num;
+          assetResult["c"] = balance.toString();
+        }
+      }
+    } else {
+      String nonceKey = await ChannelNative.polkadotgetNonceKey(from);
+      nonceKey = "0x" + nonceKey;
+      balanceParams = {
+        "jsonrpc": "2.0",
+        "method": "state_getStorage",
+        "params": [nonceKey],
+        "id": "getNonce"
+      };
+      balresult = await RequestMethod()
+          .futureRequestData(Method.POST, url, null, data: balanceParams);
+      if (balresult != null) {
+        Map balMap = balresult as Map;
+        if (balMap.containsKey("result") == true) {
+          String value = balMap["result"] as String;
+          if (value != null) {
+            value = value.replaceAll("0x", "");
+            value = value.substring(16, value.length);
+            int balance = InstructionDataFormat.littleConvertBigEndian(value);
+            double newBalance = balance / pow(10, 15);
+            assetResult["c"] = newBalance.toString();
           }
         }
       }
+    }
+    if (neePrice) {
+      Map<String, dynamic> priceResule = await requestDotPrice(null);
+      priceResule.forEach((key, value) {
+        assetResult[key] = value;
+      });
     }
     if (block != null) {
       block(assetResult, 200);

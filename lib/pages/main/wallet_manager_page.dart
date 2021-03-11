@@ -286,15 +286,14 @@ class _WalletManagerState extends State<WalletManager> {
               child: ReorderableListView(
                 children: datas.map((e) => _cellBuilder(e)).toList(),
                 onReorder: (int oldIndex, int newIndex) {
+                  if (oldIndex < newIndex) {
+                    newIndex -= 1;
+                  }
                   LogUtil.v("$oldIndex --- $newIndex");
                   setState(() {
-                    if (oldIndex < newIndex) {
-                      newIndex -= 1;
-                    }
                     var temp = datas.removeAt(oldIndex);
                     datas.insert(newIndex, temp);
-                    // temp.updateTime = DateUtil.getNowDateStr();
-                    // MHWallet.updateWallet(temp);
+                    MHWallet.moveItem(temp.walletID, oldIndex, newIndex);
                   });
                 },
               ),

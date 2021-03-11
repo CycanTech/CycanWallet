@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_coinid/public.dart';
 import 'package:flutter_coinid/utils/screenutil.dart';
 
+import 'custom_network_image.dart';
+
 //封装视图view
 // ignore: must_be_immutable
 class CustomPageView extends StatelessWidget {
@@ -47,10 +49,12 @@ class CustomPageView extends StatelessWidget {
     );
   }
 
-  static Widget getIconSmallTitle(
-      {String smallIconPath = "",
-      String bigTitle = "",
-      String smallTitle = ""}) {
+  static Widget getIconSmallTitle({
+    String smallIconPath = "",
+    String bigTitle = "",
+    String smallTitle = "",
+    String placeholder = "",
+  }) {
     return Container(
       alignment: Alignment.center,
       width: OffsetWidget.setSc(200),
@@ -58,10 +62,13 @@ class CustomPageView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          LoadAssetsImage(
+          LoadNetworkImage(
             smallIconPath,
             width: OffsetWidget.setSc(26),
             height: OffsetWidget.setSc(26),
+            fit: BoxFit.contain,
+            scale: 2,
+            placeholder: placeholder,
           ),
           OffsetWidget.hGap(5),
           Column(
@@ -120,7 +127,7 @@ class CustomPageView extends StatelessWidget {
                                   }
                                 else
                                   {
-                                    Routers.goBackWithParams(context, null),
+                                    Routers.goBackWithParams(context, {}),
                                   }
                               },
                               child: Center(

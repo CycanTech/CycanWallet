@@ -190,35 +190,8 @@ class CurrentChooseWalletState with ChangeNotifier {
   MCurrencyType get currencyType => _currencyType;
 }
 
-// class SystemSettings with ChangeNotifier {
-//   MCurrencyType _currencyType;
-//   MLanguage _mLanguage;
-
-//   void loadSystemSettings() async {
-//     int type = await getAmountValue();
-//     int language = await getLanguageValue();
-//     _currencyType = type == 0 ? MCurrencyType.CNY : MCurrencyType.USD;
-//     _mLanguage = language == 0 ? MLanguage.zh_hans : MLanguage.en;
-//     notifyListeners();
-//   }
-
-//   void changeCurrencyType(MCurrencyType mCurrencyType) {
-//     _currencyType = mCurrencyType;
-//     updateAmountValue(mCurrencyType == MCurrencyType.CNY);
-//     notifyListeners();
-//   }
-
-//   void changeLanguageType(MLanguage language) {
-//     _mLanguage = language;
-//     updateLanguageValue(language.index);
-//     notifyListeners();
-//   }
-
-//   String get currencyTypeStr =>
-//       _currencyType == MCurrencyType.CNY ? "CNY" : "USD";
-
-//   String get currencySymbolStr =>
-//       _currencyType == MCurrencyType.CNY ? "￥" : "\$";
-
-//   MCurrencyType get currencyType => _currencyType;
-// }
+class TransListState with ChangeNotifier {
+  void initData() {
+    notifyListeners();
+  }
+}

@@ -60,8 +60,13 @@ class _MainPageState extends State<MainPage> {
     params["total"] = "≈$convert" + total;
     params["walletAddress"] = mwallet.walletAaddress;
     params["chainType"] = mwallet.chainType;
+    params["iconPath"] = map["contract"];
 
-    Routers.push(context, Routers.transListPage, params: params);
+    Routers.push(context, Routers.transListPage, params: params)
+        .then((value) => {
+              Provider.of<CurrentChooseWalletState>(context, listen: false)
+                  .requestAssets(),
+            });
   }
 
   _walletEditName() {
@@ -504,7 +509,6 @@ class _MainPageState extends State<MainPage> {
     String convert =
         Provider.of<CurrentChooseWalletState>(context).currencySymbolStr;
     Map<String, dynamic> map = collectionTokens[index];
-    print("_cellBuilder_cellBuilder_cellBuilder2 \n map $map");
     if (mwallet.hiddenAssets == true) {
       tokenAssets = "******";
       balance = "******";
