@@ -86,7 +86,7 @@ class _$FlutterDatabase extends FlutterDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `wallet_table` (`walletID` TEXT, `walletAaddress` TEXT, `pin` TEXT, `pinTip` TEXT, `createTime` TEXT, `updateTime` TEXT, `symbol` TEXT, `fullName` TEXT, `isChoose` INTEGER, `prvKey` TEXT, `pubKey` TEXT, `chainType` INTEGER, `isWegwit` INTEGER, `leadType` INTEGER, `originType` INTEGER, `subPrvKey` TEXT, `subPubKey` TEXT, `masterPubKey` TEXT, `macUUID` TEXT, `descName` TEXT, `didChoose` INTEGER, `hiddenAssets` INTEGER, PRIMARY KEY (`walletID`))');
+            'CREATE TABLE IF NOT EXISTS `wallet_table` (`walletID` TEXT, `walletAaddress` TEXT, `pin` TEXT, `pinTip` TEXT, `createTime` TEXT, `updateTime` TEXT, `symbol` TEXT, `fullName` TEXT, `isChoose` INTEGER, `prvKey` TEXT, `pubKey` TEXT, `chainType` INTEGER, `isWegwit` INTEGER, `leadType` INTEGER, `originType` INTEGER, `subPrvKey` TEXT, `subPubKey` TEXT, `masterPubKey` TEXT, `macUUID` TEXT, `descName` TEXT, `didChoose` INTEGER, `hiddenAssets` INTEGER, `index` INTEGER, PRIMARY KEY (`walletID`))');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `userid_table` (`walletName` TEXT, `pwd` TEXT, `tip` TEXT, `masterPubKey` TEXT, `memos` TEXT, `leadType` INTEGER, `mOriginType` INTEGER, PRIMARY KEY (`masterPubKey`))');
         await database.execute(
@@ -154,7 +154,8 @@ class _$MHWalletDao extends MHWalletDao {
                       item.didChoose == null ? null : (item.didChoose ? 1 : 0),
                   'hiddenAssets': item.hiddenAssets == null
                       ? null
-                      : (item.hiddenAssets ? 1 : 0)
+                      : (item.hiddenAssets ? 1 : 0),
+                  'index': item.index
                 },
             changeListener),
         _mHWalletUpdateAdapter = UpdateAdapter(
@@ -188,7 +189,8 @@ class _$MHWalletDao extends MHWalletDao {
                       item.didChoose == null ? null : (item.didChoose ? 1 : 0),
                   'hiddenAssets': item.hiddenAssets == null
                       ? null
-                      : (item.hiddenAssets ? 1 : 0)
+                      : (item.hiddenAssets ? 1 : 0),
+                  'index': item.index
                 },
             changeListener),
         _mHWalletDeletionAdapter = DeletionAdapter(
@@ -222,7 +224,8 @@ class _$MHWalletDao extends MHWalletDao {
                       item.didChoose == null ? null : (item.didChoose ? 1 : 0),
                   'hiddenAssets': item.hiddenAssets == null
                       ? null
-                      : (item.hiddenAssets ? 1 : 0)
+                      : (item.hiddenAssets ? 1 : 0),
+                  'index': item.index
                 },
             changeListener);
 
@@ -266,7 +269,8 @@ class _$MHWalletDao extends MHWalletDao {
             row['didChoose'] == null ? null : (row['didChoose'] as int) != 0,
             row['hiddenAssets'] == null
                 ? null
-                : (row['hiddenAssets'] as int) != 0));
+                : (row['hiddenAssets'] as int) != 0,
+            row['index'] as int));
   }
 
   @override
@@ -296,7 +300,8 @@ class _$MHWalletDao extends MHWalletDao {
             row['didChoose'] == null ? null : (row['didChoose'] as int) != 0,
             row['hiddenAssets'] == null
                 ? null
-                : (row['hiddenAssets'] as int) != 0));
+                : (row['hiddenAssets'] as int) != 0,
+            row['index'] as int));
   }
 
   @override
@@ -326,13 +331,14 @@ class _$MHWalletDao extends MHWalletDao {
             row['didChoose'] == null ? null : (row['didChoose'] as int) != 0,
             row['hiddenAssets'] == null
                 ? null
-                : (row['hiddenAssets'] as int) != 0));
+                : (row['hiddenAssets'] as int) != 0,
+            row['index'] as int));
   }
 
   @override
   Future<List<MHWallet>> findWalletsByChainType(int chainType) async {
     return _queryAdapter.queryList(
-        'SELECT * FROM wallet_table WHERE chainType = ?',
+        'SELECT * FROM wallet_table WHERE chainType = ? ORDER BY "index"',
         arguments: <dynamic>[chainType],
         mapper: (Map<String, dynamic> row) => MHWallet(
             row['walletID'] as String,
@@ -358,13 +364,14 @@ class _$MHWalletDao extends MHWalletDao {
             row['didChoose'] == null ? null : (row['didChoose'] as int) != 0,
             row['hiddenAssets'] == null
                 ? null
-                : (row['hiddenAssets'] as int) != 0));
+                : (row['hiddenAssets'] as int) != 0,
+            row['index'] as int));
   }
 
   @override
   Future<List<MHWallet>> findWalletsByType(int originType) async {
     return _queryAdapter.queryList(
-        'SELECT * FROM wallet_table WHERE originType = ?',
+        'SELECT * FROM wallet_table WHERE originType = ? ORDER BY "index"',
         arguments: <dynamic>[originType],
         mapper: (Map<String, dynamic> row) => MHWallet(
             row['walletID'] as String,
@@ -390,7 +397,8 @@ class _$MHWalletDao extends MHWalletDao {
             row['didChoose'] == null ? null : (row['didChoose'] as int) != 0,
             row['hiddenAssets'] == null
                 ? null
-                : (row['hiddenAssets'] as int) != 0));
+                : (row['hiddenAssets'] as int) != 0,
+            row['index'] as int));
   }
 
   @override
@@ -423,13 +431,15 @@ class _$MHWalletDao extends MHWalletDao {
             row['didChoose'] == null ? null : (row['didChoose'] as int) != 0,
             row['hiddenAssets'] == null
                 ? null
-                : (row['hiddenAssets'] as int) != 0));
+                : (row['hiddenAssets'] as int) != 0,
+            row['index'] as int));
   }
 
   @override
-  Future<List<MHWallet>> findWalletsBySymbol(String symbol) async {
-    return _queryAdapter.queryList('SELECT * FROM wallet_table WHERE ?',
-        arguments: <dynamic>[symbol],
+  Future<List<MHWallet>> findWalletsBySQL(String sql) async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM wallet_table WHERE $sql ORDER BY "index"',
+        // arguments: <dynamic>[sql],
         mapper: (Map<String, dynamic> row) => MHWallet(
             row['walletID'] as String,
             row['walletAaddress'] as String,
@@ -454,12 +464,14 @@ class _$MHWalletDao extends MHWalletDao {
             row['didChoose'] == null ? null : (row['didChoose'] as int) != 0,
             row['hiddenAssets'] == null
                 ? null
-                : (row['hiddenAssets'] as int) != 0));
+                : (row['hiddenAssets'] as int) != 0,
+            row['index'] as int));
   }
 
   @override
   Future<List<MHWallet>> findAllWallets() async {
-    return _queryAdapter.queryList('SELECT * FROM wallet_table',
+    return _queryAdapter.queryList(
+        'SELECT * FROM wallet_table ORDER BY "index"',
         mapper: (Map<String, dynamic> row) => MHWallet(
             row['walletID'] as String,
             row['walletAaddress'] as String,
@@ -484,7 +496,8 @@ class _$MHWalletDao extends MHWalletDao {
             row['didChoose'] == null ? null : (row['didChoose'] as int) != 0,
             row['hiddenAssets'] == null
                 ? null
-                : (row['hiddenAssets'] as int) != 0));
+                : (row['hiddenAssets'] as int) != 0,
+            row['index'] as int));
   }
 
   @override
@@ -516,7 +529,8 @@ class _$MHWalletDao extends MHWalletDao {
             row['didChoose'] == null ? null : (row['didChoose'] as int) != 0,
             row['hiddenAssets'] == null
                 ? null
-                : (row['hiddenAssets'] as int) != 0));
+                : (row['hiddenAssets'] as int) != 0,
+            row['index'] as int));
   }
 
   @override

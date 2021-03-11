@@ -73,6 +73,7 @@ class MHWallet extends BaseModel {
     this.descName,
     this.didChoose,
     this.hiddenAssets,
+    this.index,
   );
 
   MHWallet.instance(WalletObject object) {
@@ -126,6 +127,7 @@ class MHWallet extends BaseModel {
       descName,
       didChoose,
       hiddenAssets,
+      index,
     );
   }
 
@@ -313,12 +315,54 @@ class MHWallet extends BaseModel {
     }
   }
 
+  static Future<bool> moveItem(
+      String walletID, int oldIndex, int newIndex) async {
+    try {
+      FlutterDatabase database = await BaseModel.getDataBae();
+      List<MHWallet> datas = [];
+      MHWallet wallet = await MHWallet.findWalletByWalletID(walletID);
+      wallet.index = double.maxFinite.toInt();
+      database.walletDao.updateWallet(wallet);
+      String sql = "";
+      if (oldIndex < newIndex) {
+        //  (oldIndex  < index <= newIndex)  -1
+        sql = '"index" > $oldIndex and "index" <= $newIndex ';
+        datas = await database.walletDao.findWalletsBySQL(sql);
+        datas.forEach((element) {
+          element.index -= 1;
+        });
+      } else if (oldIndex > newIndex) {
+        // newIndex < index <= oldIndex  + 1
+        sql = '"index" >= $newIndex and "index" < $oldIndex ';
+        datas = await database.walletDao.findWalletsBySQL(sql);
+        datas.forEach((element) {
+          element.index += 1;
+        });
+      }
+      if (datas.length > 0) {
+        wallet.index = newIndex;
+        datas.add(wallet);
+        datas.forEach((element) {
+          print("444444444  " +
+              element.walletAaddress +
+              "  index " +
+              element.index.toString());
+        });
+        database.walletDao.updateWallets(datas);
+      }
+      return true;
+    } catch (e) {
+      LogUtil.v("失败" + e.toString());
+      return false;
+    }
+  }
+
   static Future<List<MHWallet>> findWalletsBySymbol(String symbol) async {
     try {
       FlutterDatabase database = await BaseModel.getDataBae();
       symbol = "symbol LIKE '%$symbol%'";
       List<MHWallet> wallet =
-          await database.walletDao.findWalletsBySymbol(symbol);
+          await database.walletDao.findWalletsBySQL(symbol);
       return wallet ??= [];
     } catch (e) {
       LogUtil.v("失败" + e.toString());
@@ -509,6 +553,7 @@ class MHWallet extends BaseModel {
       objects = await ChannelWallet.importWalletFrom(
           content.trim(), pin, mLeadType, mCoinType, mOriginType);
       List<WalletObject> mWalletObjects = objects.walletObjects;
+      int count = (await MHWallet.findAllWallets()).length;
       for (WalletObject w in mWalletObjects) {
         MHWallet wallet = MHWallet.instance(w);
         wallet.originType = mOriginType.index;
@@ -516,6 +561,7 @@ class MHWallet extends BaseModel {
         wallet.pin = hashPin;
         wallet.pinTip = pintip;
         wallet.descName = walletName;
+        wallet.index = count++;
         MHWallet oldWallets =
             await database.walletDao.findWalletByWalletID(wallet.walletID);
         if (oldWallets == null) {
@@ -723,10 +769,14 @@ abstract class MHWalletDao {
   @Query('SELECT * FROM ' + tableName + ' WHERE didChoose = 1')
   Future<MHWallet> finDidChooseWallet();
 
-  @Query('SELECT * FROM ' + tableName + ' WHERE chainType = :chainType')
+  @Query('SELECT * FROM ' +
+      tableName +
+      ' WHERE chainType = :chainType ORDER BY "index"')
   Future<List<MHWallet>> findWalletsByChainType(int chainType);
 
-  @Query('SELECT * FROM ' + tableName + ' WHERE originType = :originType')
+  @Query('SELECT * FROM ' +
+      tableName +
+      ' WHERE originType = :originType ORDER BY "index"')
   Future<List<MHWallet>> findWalletsByType(int originType);
 
   @Query('SELECT * FROM ' +
@@ -736,10 +786,10 @@ abstract class MHWalletDao {
       String walletAaddress, int chainType);
 
   //自动生成的有问题需要自己写sql
-  @Query("SELECT * FROM " + tableName + " WHERE :symbol")
-  Future<List<MHWallet>> findWalletsBySymbol(String symbol);
+  @Query('SELECT * FROM ' + tableName + ' WHERE :sql ' + ' ORDER BY "index"')
+  Future<List<MHWallet>> findWalletsBySQL(String sql);
 
-  @Query('SELECT * FROM ' + tableName)
+  @Query('SELECT * FROM ' + tableName + ' ORDER BY "index"')
   Future<List<MHWallet>> findAllWallets();
 
   @Query('SELECT * FROM ' + tableName)
