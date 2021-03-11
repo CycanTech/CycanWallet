@@ -35,6 +35,7 @@ To get started
 1. Clone the repo locally, via git clone https://github.com/CycanTech/ALLToken.git `<optional local path>`.
 2. Install the dependencies by running `flutter pub get`.
 3. In AndroidStudio, run `lib/main.dart` with arguments `--flavor=prod` on Android Devices, or just run `lib/main.dart` with no arguments on IOS.
+4. In Xcode ,open ios/Runner/OpenSouces/IOS_lib_V3.x.x/ , unzip the libv3.x.x.zip file 
 
 ## Contribution
 
