@@ -60,7 +60,7 @@ class _MainPageState extends State<MainPage> {
     params["total"] = "≈$convert" + total;
     params["walletAddress"] = mwallet.walletAaddress;
     params["chainType"] = mwallet.chainType;
-    params["iconPath"] = map["contract"];
+    params["iconPath"] = map["iconPath"];
 
     Routers.push(context, Routers.transListPage, params: params)
         .then((value) => {

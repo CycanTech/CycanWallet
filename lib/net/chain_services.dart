@@ -405,6 +405,9 @@ class ChainServices {
       "id": "getNonce"
     };
     String url = _doturl;
+    if (isTestNode == false) {
+      url += "/rpc";
+    }
     Map<String, dynamic> objects = Map();
     RequestMethod().requestNetwork(Method.POST, url, (result, code) {
       if (code == 200 && result is List) {

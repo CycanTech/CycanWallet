@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter_coinid/models/wallet/mh_wallet.dart';
 import 'package:flutter_coinid/public.dart';
+import 'package:flutter_coinid/utils/timer_util.dart';
+import 'package:flutter_intro/flutter_intro.dart';
 
 class WalletsSheetPage extends StatefulWidget {
   WalletsSheetPage({Key key}) : super(key: key);
@@ -17,11 +21,37 @@ class _WalletsSheetPageState extends State<WalletsSheetPage> {
   ];
   List<MHWallet> datas = [];
   MCoinType currentType = MCoinType.MCoinType_All;
+  Intro intro;
+
+  _WalletsSheetPageState() {
+    intro = Intro(
+      stepCount: 1,
+      widgetBuilder: StepWidgetBuilder.useDefaultTheme(
+          texts: null, buttonTextBuilder: null),
+      // useDefaultTheme(
+      //   texts: [
+      //     'Hello, I\'m Flutter Intro.',
+      //     'I can help you quickly implement the Step By Step guide in the Flutter project.',
+      //     'My usage is also very simple, you can quickly learn and use it through example and api documentation.',
+      //     'In order to quickly implement the guidance, I also provide a set of out-of-the-box themes, I wish you all a happy use, goodbye!',
+      //   ],
+      //   buttonTextBuilder: (currPage, totalPage) {
+      //     return currPage < totalPage - 1 ? 'Next' : 'Finish';
+      //   },
+      //   maskClosable: true,
+      // ),
+    );
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _findWalletsWithDB(MCoinType.MCoinType_All);
+    Timer(Duration(seconds: 1), () {
+      /// start the intro
+      intro.start(context);
+    });
   }
 
   void walletsManagetClick() {
@@ -51,9 +81,8 @@ class _WalletsSheetPageState extends State<WalletsSheetPage> {
     });
   }
 
-  void _cellContentSelectRowAt(int index) async {
+  void _cellContentSelectRowAt(MHWallet wallet) async {
     LogUtil.v("点击钱包整体");
-    MHWallet wallet = datas[index];
     Provider.of<CurrentChooseWalletState>(context, listen: false)
         .updateChoose(wallet);
     Routers.goBackWithParams(context, {"walletID": wallet.walletID});
@@ -97,10 +126,9 @@ class _WalletsSheetPageState extends State<WalletsSheetPage> {
     );
   }
 
-  Widget _cellBuilder(int index) {
+  Widget _cellBuilder(MHWallet wallet) {
     MHWallet chooseWallet =
         Provider.of<CurrentChooseWalletState>(context).currentWallet;
-    MHWallet wallet = datas[index];
     String logoPath = Constant.getChainLogo(wallet.chainType);
     String name = Constant.getChainSymbol(wallet.chainType);
     String address = wallet?.walletAaddress;
@@ -109,81 +137,81 @@ class _WalletsSheetPageState extends State<WalletsSheetPage> {
         wallet.symbol.toLowerCase() +
         ".png";
     bool visible = wallet.walletID == (chooseWallet?.walletID);
-    return Container(
-      alignment: Alignment.center,
-      padding: EdgeInsets.only(bottom: OffsetWidget.setSc(12)),
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () => _cellContentSelectRowAt(index),
-        child: Container(
-          height: OffsetWidget.setSc(60),
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(
-                bgPath,
-              ),
-              fit: BoxFit.contain,
+    int index = datas.indexOf(wallet);
+    return GestureDetector(
+      // key: Key(wallet.walletID),
+      key: index == 0 ? intro.keys[index] : Key(wallet.walletID),
+      behavior: HitTestBehavior.opaque,
+      onTap: () => _cellContentSelectRowAt(wallet),
+      child: Container(
+        height: OffsetWidget.setSc(60),
+        margin: EdgeInsets.only(bottom: OffsetWidget.setSc(12)),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(
+              bgPath,
             ),
+            fit: BoxFit.contain,
           ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Row(
-                children: [
-                  Container(
-                    padding: EdgeInsets.only(left: OffsetWidget.setSc(23)),
-                    child: LoadAssetsImage(
-                      logoPath,
-                      width: OffsetWidget.setSc(36),
-                      height: OffsetWidget.setSc(36),
-                      fit: BoxFit.contain,
-                    ),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Row(
+              children: [
+                Container(
+                  padding: EdgeInsets.only(left: OffsetWidget.setSc(23)),
+                  child: LoadAssetsImage(
+                    logoPath,
+                    width: OffsetWidget.setSc(36),
+                    height: OffsetWidget.setSc(36),
+                    fit: BoxFit.contain,
                   ),
-                  Container(
-                    padding: EdgeInsets.only(left: OffsetWidget.setSc(9)),
-                    width: OffsetWidget.setSc(116),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          name,
-                          style: TextStyle(
-                              fontSize: OffsetWidget.setSp(16),
-                              fontWeight: FontWightHelper.medium,
-                              color: Colors.white),
-                          maxLines: 1,
-                          softWrap: false,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        OffsetWidget.vGap(3),
-                        Text(
-                          address,
-                          style: TextStyle(
-                              fontSize: OffsetWidget.setSp(10),
-                              fontWeight: FontWightHelper.regular,
-                              color: Colors.white),
-                          maxLines: 1,
-                          softWrap: false,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              Visibility(
-                visible: visible,
-                child: LoadAssetsImage(
-                  Constant.ASSETS_IMG + "icon/icon_walletchoose.png",
-                  width: OffsetWidget.setSc(34),
-                  height: OffsetWidget.setSc(36),
                 ),
-              )
-            ],
-          ),
+                Container(
+                  padding: EdgeInsets.only(left: OffsetWidget.setSc(9)),
+                  width: OffsetWidget.setSc(116),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        name,
+                        style: TextStyle(
+                            fontSize: OffsetWidget.setSp(16),
+                            fontWeight: FontWightHelper.medium,
+                            color: Colors.white),
+                        maxLines: 1,
+                        softWrap: false,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      OffsetWidget.vGap(3),
+                      Text(
+                        address,
+                        style: TextStyle(
+                            fontSize: OffsetWidget.setSp(10),
+                            fontWeight: FontWightHelper.regular,
+                            color: Colors.white),
+                        maxLines: 1,
+                        softWrap: false,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            Visibility(
+              visible: visible,
+              child: LoadAssetsImage(
+                Constant.ASSETS_IMG + "icon/icon_walletchoose.png",
+                width: OffsetWidget.setSc(34),
+                height: OffsetWidget.setSc(36),
+              ),
+            )
+          ],
         ),
       ),
     );
@@ -245,7 +273,12 @@ class _WalletsSheetPageState extends State<WalletsSheetPage> {
           ),
           Expanded(
             child: Container(
-              color: Colors.white,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(15),
+                    topRight: Radius.circular(15)),
+                color: Colors.white,
+              ),
               margin: EdgeInsets.only(
                 left: OffsetWidget.setSc(10),
                 right: OffsetWidget.setSc(10),
@@ -271,10 +304,18 @@ class _WalletsSheetPageState extends State<WalletsSheetPage> {
                     ),
                   ),
                   Expanded(
-                    child: ListView.builder(
-                      itemCount: datas.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return _cellBuilder(index);
+                    child: ReorderableListView(
+                      children: datas.map((e) => _cellBuilder(e)).toList(),
+                      onReorder: (int oldIndex, int newIndex) {
+                        if (oldIndex < newIndex) {
+                          newIndex -= 1;
+                        }
+                        LogUtil.v("$oldIndex --- $newIndex");
+                        setState(() {
+                          var temp = datas.removeAt(oldIndex);
+                          datas.insert(newIndex, temp);
+                          MHWallet.moveItem(temp.walletID, oldIndex, newIndex);
+                        });
                       },
                     ),
                   ),
