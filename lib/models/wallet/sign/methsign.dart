@@ -27,27 +27,35 @@ extension METHSign on MHWallet {
         return null;
       }
       BigInt newGas = BigInt.from(10).pow(9) * BigInt.tryParse(gasPrice);
-      LogUtil.v(
-          "nonce $nonce gasPrice $newGas   gasLimit $gasLimit to $to value $value data $data $chainID");
-
+      String sign;
       if (signType == MSignType.MSignType_Token) {
+        contract = contract?.replaceAll("0x", "");
         ETHAbiModel model1 = ETHAbiModel(addrType: true, value: to);
         ETHAbiModel model2 =
             ETHAbiModel(numberType: true, value: newValue.toString());
         data = "a9059cbb" + ETHAbiModel.abiDataWithAbiModel([model1, model2]);
-        to = contract;
-        value = "0";
+        sign = await ChannelNative.sigETHTranByStr(
+            nonce: nonce,
+            gasprice: newGas.toString(),
+            startgas: gasLimit,
+            to: contract,
+            value: "0",
+            data: data.isValid() == false ? "0x" : data,
+            chainId: chainID,
+            prvKey: prvKey);
+      } else {
+        sign = await ChannelNative.sigETHTranByStr(
+            nonce: nonce,
+            gasprice: newGas.toString(),
+            startgas: gasLimit,
+            to: to,
+            value: newValue.toString(),
+            data: data.isValid() == false ? "0x" : data,
+            chainId: chainID,
+            prvKey: prvKey);
       }
-
-      String sign = await ChannelNative.sigETHTranByStr(
-          nonce: nonce,
-          gasprice: newGas.toString(),
-          startgas: gasLimit,
-          to: to,
-          value: newValue.toString(),
-          data: data.isValid() == false ? "0x" : data,
-          chainId: chainID,
-          prvKey: prvKey);
+      LogUtil.v(
+          "nonce $nonce gasPrice $newGas   gasLimit $gasLimit to $to value $value data $data $chainID signType $signType");
       //只在主代币交易中校验有效性
       if (signType == MSignType.MSignType_Main ||
           signType == MSignType.MSignType_Token ||
@@ -59,7 +67,7 @@ extension METHSign on MHWallet {
               sign, to, value, decimal, "");
         } else {
           isValid = await ChannelNative.checkETHpushValid(
-              sign, to, value, decimal, to);
+              sign, to, value, decimal, contract);
         }
         LogUtil.v("eth 签名 check $isValid sign $sign");
         return isValid == true ? sign : null;

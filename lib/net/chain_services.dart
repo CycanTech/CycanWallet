@@ -334,18 +334,19 @@ class ChainServices {
       "method": "eth_getTransactionCount",
       "params": [from, "latest"]
     };
-    Map version = {
-      "jsonrpc": "2.0",
-      "method": "net_version",
-      "params": [],
-      "id": "v"
-    };
+    // Map version = {
+    //   "jsonrpc": "2.0",
+    //   "method": "net_version",
+    //   "params": [],
+    //   "id": "v"
+    // };
 
     RequestMethod().requestNetwork(Method.POST, _ethurl, (response, code) {
       if (code == 200) {
         if (response as List != null) {
           Map<String, dynamic> values = Map();
           values["g"] = "23788";
+          values["v"] = "1";
           if (contract.isValid()) {
             values["g"] = "60000";
           }
@@ -373,7 +374,7 @@ class ChainServices {
           block(null, 500);
         }
       }
-    }, data: [gasPrice, nonce, version]);
+    }, data: [gasPrice, nonce]);
   }
 
   static void _requestDotChainInfo(

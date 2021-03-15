@@ -1,5 +1,3 @@
-
-
 import 'package:flutter_coinid/utils/instruction_data_format.dart';
 
 class ETHAbiModel {
@@ -31,10 +29,7 @@ class ETHAbiModel {
             hexData.length - hexString.length, hexData.length, hexString);
         dataArr.addAll(hexData);
       } else if (model.bytesData == true) {
-     
-      } else {
-    
-      }
+      } else {}
     }
     return dataArr.join("");
   }

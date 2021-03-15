@@ -19,6 +19,9 @@ class InstructionDataFormat {
   static List<String> intParseHex(String value) {
     List<String> list = [];
     String hexNum = int.tryParse(value).toRadixString(16);
+    if (hexNum.length % 2 != 0) {
+      hexNum = "0" + hexNum;
+    }
     for (int i = 0; i < hexNum.length; i += 2) {
       String instruction;
       try {
@@ -26,7 +29,6 @@ class InstructionDataFormat {
       } catch (e) {
         instruction = hexNum.substring(i, i + 1);
       }
-      LogUtil.v("instruction $instruction hexNum $hexNum");
       list.add(instruction);
     }
     return list;
