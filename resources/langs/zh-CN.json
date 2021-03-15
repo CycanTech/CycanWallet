@@ -228,5 +228,7 @@
     "wallets_transin":"转入",
     "wallets_transerr":"失败",
     "translist_transoutsuccess":"转账成功",
-    "translist_transinsuccess":"收款成功"
+    "translist_transinsuccess":"收款成功",
+    "intro_knowit":"知道了",
+    "intro_longpressmodify":"长按这里可快速拖动调换顺序"
 }

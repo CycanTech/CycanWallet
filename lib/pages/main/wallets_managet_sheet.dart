@@ -1,9 +1,123 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter_coinid/models/wallet/mh_wallet.dart';
 import 'package:flutter_coinid/public.dart';
+import 'package:flutter_coinid/utils/sharedPrefer.dart';
 import 'package:flutter_coinid/utils/timer_util.dart';
 import 'package:flutter_intro/flutter_intro.dart';
+
+class SheetIntro {
+  final List<String> tipsary;
+
+  Intro intro;
+  List setps = [];
+
+  SheetIntro(this.tipsary);
+
+  void profileIntro(BuildContext context) {
+    intro = Intro(
+      stepCount: tipsary.length,
+      padding: EdgeInsets.all(0),
+      borderRadius: BorderRadius.all(Radius.circular(8)),
+      widgetBuilder: (StepWidgetParams stepWidgetParams) {
+        int currentStepIndex = stepWidgetParams.currentStepIndex;
+        int stepCount = stepWidgetParams.stepCount;
+        double bottomArea =
+            stepWidgetParams.offset.dy + stepWidgetParams.size.height;
+        return GestureDetector(
+          onTap: () {
+            if (false) {
+              stepCount - 1 == currentStepIndex
+                  ? stepWidgetParams.onFinish()
+                  : stepWidgetParams.onNext();
+            }
+          },
+          behavior: HitTestBehavior.opaque,
+          child: Stack(
+            children: [
+              Positioned(
+                child: Container(
+                  alignment: Alignment.center,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          LoadAssetsImage(
+                            Constant.ASSETS_IMG + "icon/icon_longpress.png",
+                            width: OffsetWidget.setSc(27),
+                            height: OffsetWidget.setSc(44),
+                          ),
+                          OffsetWidget.hGap(12),
+                          Expanded(
+                            child: Text(
+                              currentStepIndex > tipsary.length - 1
+                                  ? ''
+                                  : tipsary[currentStepIndex],
+                              style: TextStyle(
+                                fontSize: OffsetWidget.setSp(15),
+                                fontWeight: FontWightHelper.regular,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      OffsetWidget.vGap(22),
+                      GestureDetector(
+                        onTap: () {
+                          stepCount - 1 == currentStepIndex
+                              ? stepWidgetParams.onFinish()
+                              : stepWidgetParams.onNext();
+                          updateFirstInstall();
+                        },
+                        behavior: HitTestBehavior.opaque,
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: OffsetWidget.setSc(30),
+                          width: OffsetWidget.setSc(80),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Color(0x47FFFFFF),
+                            ),
+                            color: Color(0x47FFFFFF),
+                            borderRadius:
+                                BorderRadius.circular(OffsetWidget.setSc(15)),
+                          ),
+                          child: Text(
+                            "intro_knowit".local(),
+                            style: TextStyle(
+                                fontSize: OffsetWidget.setSc(13),
+                                fontWeight: FontWightHelper.regular,
+                                color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                left: OffsetWidget.setSc(62),
+                top: bottomArea,
+                right: OffsetWidget.setSc(62),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+    this.setps = intro.keys;
+  }
+
+  void startIntro(BuildContext context) {
+    Timer(Duration(milliseconds: 500), () {
+      /// start the intro
+      intro.start(context);
+    });
+  }
+}
 
 class WalletsSheetPage extends StatefulWidget {
   WalletsSheetPage({Key key}) : super(key: key);
@@ -21,37 +135,19 @@ class _WalletsSheetPageState extends State<WalletsSheetPage> {
   ];
   List<MHWallet> datas = [];
   MCoinType currentType = MCoinType.MCoinType_All;
-  Intro intro;
-
-  _WalletsSheetPageState() {
-    intro = Intro(
-      stepCount: 1,
-      widgetBuilder: StepWidgetBuilder.useDefaultTheme(
-          texts: null, buttonTextBuilder: null),
-      // useDefaultTheme(
-      //   texts: [
-      //     'Hello, I\'m Flutter Intro.',
-      //     'I can help you quickly implement the Step By Step guide in the Flutter project.',
-      //     'My usage is also very simple, you can quickly learn and use it through example and api documentation.',
-      //     'In order to quickly implement the guidance, I also provide a set of out-of-the-box themes, I wish you all a happy use, goodbye!',
-      //   ],
-      //   buttonTextBuilder: (currPage, totalPage) {
-      //     return currPage < totalPage - 1 ? 'Next' : 'Finish';
-      //   },
-      //   maskClosable: true,
-      // ),
-    );
-  }
-
+  SheetIntro intro = SheetIntro(['intro_longpressmodify'.local()]);
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _findWalletsWithDB(MCoinType.MCoinType_All);
-    Timer(Duration(seconds: 1), () {
-      /// start the intro
-      intro.start(context);
-    });
+    intro.profileIntro(context);
+    isFirstInstall().then((value) => {
+          if (value == true)
+            {
+              intro.startIntro(context),
+            }
+        });
   }
 
   void walletsManagetClick() {
@@ -139,8 +235,7 @@ class _WalletsSheetPageState extends State<WalletsSheetPage> {
     bool visible = wallet.walletID == (chooseWallet?.walletID);
     int index = datas.indexOf(wallet);
     return GestureDetector(
-      // key: Key(wallet.walletID),
-      key: index == 0 ? intro.keys[index] : Key(wallet.walletID),
+      key: Key(wallet.walletID),
       behavior: HitTestBehavior.opaque,
       onTap: () => _cellContentSelectRowAt(wallet),
       child: Container(
@@ -152,10 +247,12 @@ class _WalletsSheetPageState extends State<WalletsSheetPage> {
             image: AssetImage(
               bgPath,
             ),
-            fit: BoxFit.contain,
+            fit: BoxFit.fill,
           ),
+          borderRadius: BorderRadius.all(Radius.circular(5)),
         ),
         child: Row(
+          key: index == 0 ? intro.setps[index] : Key(wallet.walletID + "1"),
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
