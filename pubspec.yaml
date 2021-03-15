@@ -45,7 +45,8 @@ dependencies:
   flutter_swiper: ^1.1.4
   isolate: ^2.0.3
   provider: ^4.3.3
-
+  flutter_intro:
+    path: plugins/flutter_intro
 dev_dependencies:
   flutter_test:
     sdk: flutter

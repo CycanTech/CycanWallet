@@ -272,6 +272,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.0.6"
+  flutter_intro:
+    dependency: "direct main"
+    description:
+      path: "plugins/flutter_intro"
+      relative: true
+    source: path
+    version: "1.1.0"
   flutter_localizations:
     dependency: transitive
     description: flutter
