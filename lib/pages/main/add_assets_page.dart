@@ -64,7 +64,7 @@ class _AddAssetsPageState extends State<AddAssetsPage> {
           left: OffsetWidget.setSc(19),
           right: OffsetWidget.setSc(19),
           bottom: OffsetWidget.setSc(10)),
-      height: OffsetWidget.setSp(48),
+      height: OffsetWidget.setSc(48),
       child: Row(
         children: [
           OffsetWidget.hGap(10),
@@ -113,7 +113,7 @@ class _AddAssetsPageState extends State<AddAssetsPage> {
               _collectToken(index);
             },
             child: Container(
-              height: OffsetWidget.setSp(48),
+              height: OffsetWidget.setSc(48),
               child: LoadAssetsImage(
                 map["state"] == 1
                     ? Constant.ASSETS_IMG + "icon/icon_switch_close.png"
@@ -177,7 +177,7 @@ class _AddAssetsPageState extends State<AddAssetsPage> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: Container(
-                    height: OffsetWidget.setSp(54),
+                    height: OffsetWidget.setSc(54),
                     color: Color(Constant.TextFileld_FillColor),
                     child: Row(
                       children: [
@@ -194,7 +194,7 @@ class _AddAssetsPageState extends State<AddAssetsPage> {
                         // ),
                         Container(
                           width: OffsetWidget.setSc(270),
-                          height: OffsetWidget.setSp(54),
+                          height: OffsetWidget.setSc(54),
                           child: CustomTextField(
                             controller: searchEC,
                             maxLines: 1,
@@ -208,7 +208,7 @@ class _AddAssetsPageState extends State<AddAssetsPage> {
                                 fontSize: OffsetWidget.setSp(10),
                                 color: Color(0xFFACBBCF)),
                             contentPadding:
-                                EdgeInsets.all(OffsetWidget.setSp(4)),
+                                EdgeInsets.all(OffsetWidget.setSc(4)),
                           ),
                         ),
                       ],

@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_coinid/channel/channel_scan.dart';
+import 'package:flutter_coinid/models/tokens/collection_tokens.dart';
 import 'package:flutter_coinid/models/wallet/mh_wallet.dart';
 import 'package:flutter_coinid/pages/main/wallets_managet_sheet.dart';
 import 'package:flutter_coinid/utils/ver_upgrade_util.dart';
@@ -32,41 +33,12 @@ class _MainPageState extends State<MainPage> {
   }
 
   void _cellDidSelectRowAt(int index) {
-    List collectionTokens =
-        Provider.of<CurrentChooseWalletState>(context, listen: false)
-            .collectionTokens;
-    String convert =
-        Provider.of<CurrentChooseWalletState>(context, listen: false)
-            .currencySymbolStr;
-    MHWallet mwallet =
-        Provider.of<CurrentChooseWalletState>(context, listen: false)
-            .currentWallet;
-    Map<String, dynamic> map = collectionTokens[index];
-    double price = double.tryParse(map["price"].toString());
-    double balance =
-        double.tryParse(map["balance"].replaceAll(" " + map["token"], ""));
-    price ??= 0;
-    balance ??= 0;
-    String total = StringUtil.dataFormat(balance * price, 2);
-
-    if (!StringUtil.isNotEmpty(total)) {
-      total = "0.00";
-    }
-    Map<String, dynamic> params = HashMap();
-    params["token"] = map["token"];
-    params["decimals"] = map["decimals"];
-    params["contract"] = map["contract"];
-    params["balance"] = balance.toString();
-    params["total"] = "≈$convert" + total;
-    params["walletAddress"] = mwallet.walletAaddress;
-    params["chainType"] = mwallet.chainType;
-    params["iconPath"] = map["iconPath"];
-
-    Routers.push(context, Routers.transListPage, params: params)
-        .then((value) => {
-              Provider.of<CurrentChooseWalletState>(context, listen: false)
-                  .requestAssets(),
-            });
+    Provider.of<CurrentChooseWalletState>(context, listen: false)
+        .updateTokenChoose(index);
+    Routers.push(context, Routers.transListPage).then((value) => {
+          Provider.of<CurrentChooseWalletState>(context, listen: false)
+              .requestAssets(),
+        });
   }
 
   _walletEditName() {
@@ -112,6 +84,8 @@ class _MainPageState extends State<MainPage> {
   }
 
   _payment() {
+    Provider.of<CurrentChooseWalletState>(context, listen: false)
+        .updateTokenChoose(0);
     MHWallet mwallet =
         Provider.of<CurrentChooseWalletState>(context, listen: false)
             .currentWallet;
@@ -127,6 +101,8 @@ class _MainPageState extends State<MainPage> {
   }
 
   _scan() async {
+    Provider.of<CurrentChooseWalletState>(context, listen: false)
+        .updateTokenChoose(0);
     MHWallet mwallet =
         Provider.of<CurrentChooseWalletState>(context, listen: false)
             .currentWallet;
@@ -501,63 +477,59 @@ class _MainPageState extends State<MainPage> {
   Widget _cellBuilder(int index) {
     String tokenAssets = "0.00";
     String balance = "0.0000";
-    String iconPath = "";
     MHWallet mwallet =
         Provider.of<CurrentChooseWalletState>(context).currentWallet;
-    List collectionTokens =
+    List<MCollectionTokens> collectionTokens =
         Provider.of<CurrentChooseWalletState>(context).collectionTokens;
     String convert =
         Provider.of<CurrentChooseWalletState>(context).currencySymbolStr;
-    Map<String, dynamic> map = collectionTokens[index];
+    MCollectionTokens map = collectionTokens[index];
     if (mwallet.hiddenAssets == true) {
       tokenAssets = "******";
       balance = "******";
     } else {
-      if (StringUtil.isNotEmpty(map["balance"]) &&
-          StringUtil.isNotEmpty(map["token"])) {
-        tokenAssets = StringUtil.dataFormat(
-            double.parse(map["balance"].replaceAll(" " + map["token"], "")) *
-                double.parse(map["price"].toString()),
-            2);
-      }
+      tokenAssets = map.assets ;
       tokenAssets = "≈$convert" + tokenAssets;
-      balance = StringUtil.isNotEmpty(map["balance"])
-          ? StringUtil.dataFormat(
-              double.parse(map["balance"].replaceAll(" " + map["token"], "")),
-              4)
-          : '0.0000';
+      balance = map.balance == null
+          ? "0.0000"
+          : StringUtil.dataFormat(map.balance.toDouble(), 4);
     }
+    String iconPath = map.iconPath;
+    String placeholderPath = Constant.ASSETS_IMG +
+        "wallet/icon_" +
+        map.coinType.toLowerCase() +
+        "_token_default.png";
+    String token = map.token;
+
     return Container(
       padding: EdgeInsets.only(
           left: OffsetWidget.setSc(20), right: OffsetWidget.setSc(20)),
       child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
         onTap: () => {
           _cellDidSelectRowAt(index),
         },
         child: Container(
-          padding: EdgeInsets.only(left: OffsetWidget.setSp(19)),
-          height: OffsetWidget.setSp(55),
-          decoration: BoxDecoration(
-            border: Border(
-              bottom: BorderSide(
-                color: Color(0XFFEAEFF2),
-                width: 1,
-                style: BorderStyle.solid,
-              ),
-            ),
-          ),
+          padding: EdgeInsets.only(left: OffsetWidget.setSc(19)),
+          height: OffsetWidget.setSc(55),
+          // decoration: BoxDecoration(
+          //   border: Border(
+          //     bottom: BorderSide(
+          //       color: Color(0XFFEAEFF2),
+          //       width: 1,
+          //       style: BorderStyle.solid,
+          //     ),
+          //   ),
+          // ),
           child: Row(
             children: <Widget>[
               LoadNetworkImage(
-                map["iconPath"],
+                iconPath,
                 width: OffsetWidget.setSc(36),
                 height: OffsetWidget.setSc(36),
                 fit: BoxFit.contain,
                 scale: 2,
-                placeholder: Constant.ASSETS_IMG +
-                    "wallet/icon_" +
-                    map["coinType"].toLowerCase() +
-                    "_token_default.png",
+                placeholder: placeholderPath,
               ),
               OffsetWidget.hGap(8),
               Container(
@@ -567,7 +539,7 @@ class _MainPageState extends State<MainPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      map["token"],
+                      token,
                       style: TextStyle(
                           fontWeight: FontWightHelper.semiBold,
                           fontSize: OffsetWidget.setSp(18),
@@ -576,7 +548,7 @@ class _MainPageState extends State<MainPage> {
                       maxLines: 1,
                     ),
                     Text(
-                      map["token"],
+                      token,
                       style: TextStyle(
                           fontWeight: FontWightHelper.medium,
                           fontSize: OffsetWidget.setSp(10),

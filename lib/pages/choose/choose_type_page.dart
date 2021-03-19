@@ -25,7 +25,7 @@ class ChooseTypePageState extends State<ChooseTypePage> {
     super.initState();
     //版本检测
     initData();
-    VerSionUpgradeUtil.getAppInfo(context);
+    // VerSionUpgradeUtil.getAppInfo(context);
   }
 
   initData() async {

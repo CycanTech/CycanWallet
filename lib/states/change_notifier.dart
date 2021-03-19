@@ -1,4 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_coinid/models/tokens/collection_tokens.dart';
+import 'package:flutter_coinid/models/transrecord/trans_record.dart';
 import 'package:flutter_coinid/models/wallet/mh_wallet.dart';
 import 'package:flutter_coinid/net/chain_services.dart';
 import 'package:flutter_coinid/net/wallet_services.dart';
@@ -8,11 +10,12 @@ import 'package:provider/provider.dart';
 
 class CurrentChooseWalletState with ChangeNotifier {
   MHWallet _mhWallet;
-  Map<String, List> _collectionTokens = {}; //我的资产
+  Map<String, List<MCollectionTokens>> _collectionTokens = {}; //我的资产
   Map<String, List> _allTokens = {}; //我的所有资产
   Map<String, Map> _mainToken = {}; //主币的价格和数量
   Map<String, String> _totalAssets = {}; //资产数额
   MCurrencyType _currencyType;
+  MCollectionTokens _chooseTokens;
 
   void loadWallet() async {
     _mhWallet = await MHWallet.findChooseWallet();
@@ -49,13 +52,46 @@ class CurrentChooseWalletState with ChangeNotifier {
     _findCurrencyTokenPriceAndTokenCount();
   }
 
+  void updateTokenChoose(int index) {
+    if (index < collectionTokens.length && index != -1) {
+      _chooseTokens = collectionTokens[index];
+    } else {
+      _chooseTokens = null;
+    }
+    LogUtil.v(
+        "updateTokenChoose index $index " + _chooseTokens?.toJson().toString());
+  }
+
   void requestAssets() {
     if (_mhWallet == null) return;
     final String walletAaddress = _mhWallet.walletAaddress;
     final String symbol = _mhWallet.symbol.toUpperCase();
-    Map cacheValue = _mainToken[walletAaddress];
-    if (cacheValue == null) {
+    final int chainType = _mhWallet.chainType;
+    final String convert = currencyTypeStr;
+    Map cachePrice = _mainToken[walletAaddress];
+    if (cachePrice == null) {
       _mainToken[walletAaddress] = {};
+    }
+    List cacheValue = _collectionTokens[walletAaddress];
+    if (cacheValue == null) {
+      num mainCNYPrice =
+          num.tryParse(_mainToken[walletAaddress]["p"].toString());
+      num mainUSDPrice =
+          num.tryParse(_mainToken[walletAaddress]["up"].toString());
+      num mainBalance =
+          num.tryParse(_mainToken[walletAaddress]["c"].toString());
+      MCollectionTokens cacheMap = MCollectionTokens();
+      cacheMap.token = symbol;
+      cacheMap.coinType = symbol;
+      cacheMap.decimals = Constant.getChainDecimals(chainType);
+      if (convert == "CNY") {
+        cacheMap.price = mainCNYPrice;
+      } else {
+        cacheMap.price = mainUSDPrice;
+      }
+      cacheMap.balance = mainBalance;
+      _collectionTokens[walletAaddress] = [cacheMap];
+      notifyListeners();
     }
     ChainServices.requestAssets(
       chainType: symbol,
@@ -72,7 +108,6 @@ class CurrentChooseWalletState with ChangeNotifier {
         }
       },
     );
-    _findMyCollectionTokens();
   }
 
   void _findMyCollectionTokens() async {
@@ -82,45 +117,25 @@ class CurrentChooseWalletState with ChangeNotifier {
     final String walletAaddress = _mhWallet.walletAaddress;
     final String symbol = _mhWallet.symbol.toUpperCase();
     final int chainType = _mhWallet.chainType;
-    List cacheValue = _collectionTokens[walletAaddress];
-    Map<String, dynamic> cacheMap = Map();
-    cacheMap["id"] = "";
-    cacheMap["contract"] = "";
-    cacheMap["token"] = symbol;
-    cacheMap["coinType"] = symbol;
-    cacheMap["iconPath"] = null;
-    cacheMap["state"] = "";
-    if (chainType == MCoinType.MCoinType_BTC.index) {
-      cacheMap["decimals"] = "8";
-    } else if (chainType == MCoinType.MCoinType_ETH.index) {
-      cacheMap["decimals"] = "18";
-    } else if (chainType == MCoinType.MCoinType_DOT.index) {
-      cacheMap["decimals"] = "10";
-    }
-    if (convert == "CNY") {
-      cacheMap["price"] = _mainToken[walletAaddress]["p"];
-    } else {
-      cacheMap["price"] = _mainToken[walletAaddress]["up"];
-    }
-    cacheMap["balance"] = _mainToken[walletAaddress]["c"].toString();
-    if (cacheValue == null) {
-      _collectionTokens[walletAaddress] = [cacheMap];
-      notifyListeners();
-    }
+    num mainCNYPrice = num.tryParse(_mainToken[walletAaddress]["p"].toString());
+    num mainUSDPrice =
+        num.tryParse(_mainToken[walletAaddress]["up"].toString());
+    num mainBalance = num.tryParse(_mainToken[walletAaddress]["c"].toString());
     WalletServices.requestMyCollectionTokens(walletAaddress, convert, symbol,
         (result, code) {
       if (result == null || result.length == 0) {
-        result = [];
-        result.add(cacheMap);
       } else {
+        MCollectionTokens tokens = result[0] as MCollectionTokens;
         if (convert == "CNY") {
-          result[0]["price"] = _mainToken[walletAaddress]["p"];
+          tokens.price = mainCNYPrice;
         } else {
-          result[0]["price"] = _mainToken[walletAaddress]["up"];
+          tokens.price = mainUSDPrice;
         }
-        result[0]["balance"] = _mainToken[walletAaddress]["c"].toString();
+        tokens.balance = mainBalance;
+        tokens.decimals = Constant.getChainDecimals(chainType);
+        result[0] = tokens;
+        _collectionTokens[walletAaddress] = result;
       }
-      _collectionTokens[walletAaddress] = result;
       notifyListeners();
     });
   }
@@ -172,7 +187,7 @@ class CurrentChooseWalletState with ChangeNotifier {
   }
 
   MHWallet get currentWallet => _mhWallet;
-  List get collectionTokens => _mhWallet != null
+  List<MCollectionTokens> get collectionTokens => _mhWallet != null
       ? _collectionTokens[_mhWallet.walletAaddress] ??= []
       : [];
   List get allTokens =>
@@ -188,10 +203,18 @@ class CurrentChooseWalletState with ChangeNotifier {
   String get currencySymbolStr =>
       _currencyType == MCurrencyType.CNY ? "￥" : "\$";
   MCurrencyType get currencyType => _currencyType;
+  MCollectionTokens get chooseTokens => _chooseTokens;
 }
 
 class TransListState with ChangeNotifier {
+  List<MHTransRecordModel> _pendingDatas;
+  List<MHTransRecordModel> _transDats;
+
   void initData() {
     notifyListeners();
+  }
+
+  List<MHTransRecordModel> get datas {
+    return _transDats;
   }
 }

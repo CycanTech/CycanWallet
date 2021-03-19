@@ -113,11 +113,8 @@ enum MLanguage {
 
 class Constant {
   static const bool inProduction = kReleaseMode;
-  static bool isDriverTest = false;
-
   static bool isAndroid = Platform.isAndroid;
   static bool isIOS = Platform.isIOS;
-
   static const String ASSETS_IMG = './assets/images/';
   static const int BUTTON_BACKGROUND_COLOR = 0xff46556F;
   static const int TextFileld_FillColor = 0xffffffff;

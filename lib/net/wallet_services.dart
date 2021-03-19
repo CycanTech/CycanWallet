@@ -1,3 +1,5 @@
+import 'package:flutter_coinid/models/tokens/collection_tokens.dart';
+
 import '../public.dart';
 
 class WalletServices {
@@ -172,46 +174,10 @@ class WalletServices {
         (response, code) {
       if (code == 200 && response as Map != null) {
         List datas = response["data"] as List;
-        List<Map<String, dynamic>> results = [];
-        datas.forEach(
-          (element) {
-            if (element as Map != null) {
-              Map data = element as Map;
-              int id = data["id"];
-              String contract = data["contract"] as String;
-              String token = data["token"] as String;
-              String coinType = data["coinType"] as String;
-              String iconPath = data["iconPath"] as String;
-              int state = data["state"];
-              int decimals = 0;
-              double price = 0;
-              String balance = "0";
-              if (data["decimals"] != null) {
-                decimals = data["decimals"];
-              }
-              if (data["price"] != null) {
-                price = double.parse(data["price"].toString());
-              }
-              if (data["balance"] != null) {
-                balance = data["balance"] as String;
-              }
-
-              Map<String, dynamic> dic = Map();
-              dic["id"] = id;
-              dic["contract"] = contract;
-              dic["token"] = token;
-              dic["coinType"] = coinType;
-              dic["iconPath"] = iconPath;
-              dic["state"] = state;
-              dic["decimals"] = decimals;
-              dic["price"] = price;
-              dic["balance"] = balance;
-              results.insert(0, dic);
-            }
-          },
-        );
+        datas = datas.reversed.toList();
+        datas = datas.map((e) => MCollectionTokens.fromJson(e)).toList();
         if (block != null) {
-          block(results, 200);
+          block(datas, 200);
         }
       } else {
         if (block != null) {

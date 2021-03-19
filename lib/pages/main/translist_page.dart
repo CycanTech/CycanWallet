@@ -3,7 +3,9 @@ import 'dart:math' as math;
 
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_coinid/models/tokens/collection_tokens.dart';
 import 'package:flutter_coinid/models/transrecord/trans_record.dart';
+import 'package:flutter_coinid/models/wallet/mh_wallet.dart';
 import 'package:flutter_coinid/net/chain_services.dart';
 import 'package:flutter_coinid/utils/sharedPrefer.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -22,12 +24,11 @@ class TransListPage extends StatefulWidget {
 
 class _TransListPageState extends State<TransListPage> {
   double tokenPrice = 0;
-
-  String chainType;
-  String token;
-  String decimals;
-  String contract;
-  String walletAddress;
+  // String chainType;
+  // String token;
+  // String decimals;
+  // String contract;
+  // String walletAddress;
   String balance;
   String total;
 
@@ -42,29 +43,42 @@ class _TransListPageState extends State<TransListPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    if (widget.params != null) {
-      chainType = widget.params["chainType"][0];
-      token = widget.params["token"][0];
-      decimals = widget.params["decimals"][0];
-      contract = widget.params["contract"][0];
-      walletAddress = widget.params["walletAddress"][0];
-      balance = widget.params["balance"][0];
-      total = widget.params["total"][0];
-    }
+    int amountType =
+        Provider.of<CurrentChooseWalletState>(context, listen: false)
+            .currencyType
+            .index;
+    MCollectionTokens tokens =
+        Provider.of<CurrentChooseWalletState>(context, listen: false)
+            .chooseTokens;
+    String assets = "≈" + (amountType == 0 ? "￥" : "\$");
+    total = assets + tokens.assets;
+    balance = tokens.balance.toString();
     _initData();
   }
 
   _initData() async {
-    int amountType = await getAmountValue();
+    MHWallet wallets =
+        Provider.of<CurrentChooseWalletState>(context, listen: false)
+            .currentWallet;
+    MCollectionTokens tokens =
+        Provider.of<CurrentChooseWalletState>(context, listen: false)
+            .chooseTokens;
+    int amountType =
+        Provider.of<CurrentChooseWalletState>(context, listen: false)
+            .currencyType
+            .index;
+    String walletAddress = wallets.walletAaddress;
+    String contract = tokens.contract;
+    String token = tokens.token;
+    int decimals = tokens.decimals;
+    String coinType = Constant.getChainSymbol(wallets.chainType);
     String assets = "≈" + (amountType == 0 ? "￥" : "\$");
-    LogUtil.v(
-        "_initData $chainType walletAddress $walletAddress contract $contract");
-    String coinType = Constant.getChainSymbol(int.tryParse(chainType));
     ChainServices.requestAssets(
       chainType: coinType,
       from: walletAddress,
       contract: contract,
       token: token,
+      tokenDecimal: decimals,
       block: (result, code) {
         if (code == 200 && result is Map && mounted) {
           String newValue = result["c"] as String;
@@ -89,20 +103,20 @@ class _TransListPageState extends State<TransListPage> {
 
   void _receiveClick() {
     Map<String, dynamic> params = HashMap();
-    params["walletAddress"] = walletAddress;
-    params["contract"] = contract;
-    params["token"] = token;
-    params["decimals"] = decimals;
-    params["chainType"] = chainType;
-    params["onlyAddress"] = 0;
+    // params["walletAddress"] = walletAddress;
+    // params["contract"] = contract;
+    // params["token"] = token;
+    // params["decimals"] = decimals;
+    // params["chainType"] = chainType;
+    // params["onlyAddress"] = 0;
     Routers.push(context, Routers.recervePaymentPage, params: params);
   }
 
   void _paymentClick() {
     Map<String, dynamic> params = Map();
-    params["contract"] = contract;
-    params["token"] = token;
-    params["decimals"] = decimals;
+    // params["contract"] = contract;
+    // params["token"] = token;
+    // params["decimals"] = decimals;
     Routers.push(context, Routers.paymentPage, params: params).then((value) => {
           Future.delayed(Duration(seconds: 3)).then((value) => {
                 _initData(),
@@ -112,6 +126,10 @@ class _TransListPageState extends State<TransListPage> {
   }
 
   Widget _headerBuilder() {
+    String walletAddress = Provider.of<CurrentChooseWalletState>(context)
+        .currentWallet
+        .walletAaddress;
+    walletAddress ??= "";
     return GestureDetector(
       onTap: () {},
       child: Container(
@@ -119,6 +137,7 @@ class _TransListPageState extends State<TransListPage> {
         children: [
           OffsetWidget.vGap(25),
           GestureDetector(
+            behavior: HitTestBehavior.opaque,
             onTap: () {
               if (walletAddress.isValid() == false) return;
               Clipboard.setData(ClipboardData(text: walletAddress));
@@ -188,17 +207,21 @@ class _TransListPageState extends State<TransListPage> {
 
   @override
   Widget build(BuildContext context) {
+    MHWallet wallet =
+        Provider.of<CurrentChooseWalletState>(context).currentWallet;
+    MCollectionTokens tokens =
+        Provider.of<CurrentChooseWalletState>(context).chooseTokens;
     return DefaultTabController(
       length: _myTabs.length,
       child: CustomPageView(
         hiddenScrollView: true,
         title: CustomPageView.getIconSmallTitle(
-          smallIconPath: widget.params["iconPath"][0],
-          smallTitle: Constant.getChainFullName(int.tryParse(chainType)),
-          bigTitle: token,
+          smallIconPath: tokens.iconPath,
+          smallTitle: wallet.fullName,
+          bigTitle: tokens.token,
           placeholder: Constant.ASSETS_IMG +
               "wallet/icon_" +
-              Constant.getChainSymbol(int.tryParse(chainType)).toLowerCase() +
+              Constant.getChainSymbol(wallet.chainType).toLowerCase() +
               "_token_default.png",
         ),
         bottom: PreferredSize(
@@ -248,45 +271,29 @@ class _TransListPageState extends State<TransListPage> {
                 physics: NeverScrollableScrollPhysics(), //禁止左右滑动
                 children: [
                   MTransListPage(
-                    token: token,
                     selectIndex: MTransType.MTransType_All,
-                    contract: contract,
-                    walletAddress: walletAddress,
                     tokenPrice: tokenPrice,
-                    chainType: chainType,
                     refreshBack: () => {
                       _initData(),
                     },
                   ),
                   MTransListPage(
-                    token: token,
                     selectIndex: MTransType.MTransType_Out,
-                    contract: contract,
-                    walletAddress: walletAddress,
                     tokenPrice: tokenPrice,
-                    chainType: chainType,
                     refreshBack: () => {
                       _initData(),
                     },
                   ),
                   MTransListPage(
-                    token: token,
                     selectIndex: MTransType.MTransType_In,
-                    contract: contract,
-                    walletAddress: walletAddress,
                     tokenPrice: tokenPrice,
-                    chainType: chainType,
                     refreshBack: () => {
                       _initData(),
                     },
                   ),
                   MTransListPage(
-                    token: token,
                     selectIndex: MTransType.MTransType_Err,
-                    contract: contract,
-                    walletAddress: walletAddress,
                     tokenPrice: tokenPrice,
-                    chainType: chainType,
                     refreshBack: () => {
                       _initData(),
                     },
@@ -360,22 +367,14 @@ class _TransListPageState extends State<TransListPage> {
 }
 
 class MTransListPage extends StatefulWidget {
-  MTransListPage(
-      {Key key,
-      this.tokenPrice,
-      this.selectIndex,
-      this.contract,
-      this.walletAddress,
-      this.token,
-      this.chainType,
-      this.refreshBack})
+  MTransListPage({Key key, this.tokenPrice, this.selectIndex, this.refreshBack})
       : super(key: key);
   final double tokenPrice;
   final MTransType selectIndex;
-  final String contract;
-  final String walletAddress;
-  final String token;
-  final String chainType;
+  // final String contract;
+  // final String walletAddress;
+  // final String token;
+  // final String chainType;
   final VoidCallback refreshBack;
 
   @override
@@ -403,12 +402,19 @@ class _MTransListPageState extends State<MTransListPage>
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 
-  void _requestTransListWithNet(int page) async {
+  void _requestTransListWithNet(int page) {
     _page = page;
+
+    MHWallet mhWallet =
+        Provider.of<CurrentChooseWalletState>(context, listen: false)
+            .currentWallet;
+    MCollectionTokens tokens =
+        Provider.of<CurrentChooseWalletState>(context, listen: false)
+            .chooseTokens;
     MTransType selectIndex = widget.selectIndex;
-    int chainType = int.tryParse(widget.chainType);
-    String from = widget.walletAddress;
-    String contract = widget.contract;
+    int chainType = mhWallet.chainType;
+    String from = mhWallet.walletAaddress;
+    String contract = tokens.contract;
     LogUtil.v(
         "_requestTransListWithNet $from chainType $chainType  selectIndex $selectIndex _page $_page");
     HWToast.showLoading(clickClose: true);

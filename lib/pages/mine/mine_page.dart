@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_coinid/models/wallet/mh_wallet.dart';
 import 'package:flutter_coinid/models/wallet/user.dart';
 import 'package:flutter_coinid/pages/shared/shared_sheet_page.dart';
@@ -172,7 +173,8 @@ class _MinePageState extends State<MinePage> {
     Map map = _datas()[index];
     if (index == 0) {
       return Container(
-        height: OffsetWidget.setSc(160),
+        height: OffsetWidget.setSc(207),
+        color: Colors.red,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -187,90 +189,44 @@ class _MinePageState extends State<MinePage> {
           ],
         ),
       );
-    } else if (index == _datas().length - 1) {
-      return Visibility(
-          visible: isShow,
-          child: GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () => {
-              _cellTap(index, context),
-            },
-            child: Container(
-              height: OffsetWidget.setSc(48),
-              alignment: Alignment.center,
-              margin: EdgeInsets.only(
-                  left: OffsetWidget.setSc(29),
-                  right: OffsetWidget.setSc(29),
-                  top: OffsetWidget.setSc(15)),
-              decoration: new BoxDecoration(
-                image: new DecorationImage(
-                  image: new AssetImage(
-                    Constant.ASSETS_IMG + "background/bg_delet_wallet.png",
-                  ),
-                  fit: BoxFit.fill,
-                ),
-              ),
-              child: Text("delete_wallet".local(),
-                  style: TextStyle(
-                      color: Color(0xFF4A4A4A),
-                      fontSize: OffsetWidget.setSp(13))),
-            ),
-          ));
     } else {
-      if (index == 4 && !isShow) {
-        //app钱包已删除
-        return Container(
-            child: OffsetWidget.vLineWhitColor(1, Color(0xFFD7DDE1)));
-      }
       return GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () => {
           _cellTap(index, context),
         },
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: EdgeInsets.only(
-                  left: OffsetWidget.setSc(27),
-                  right: OffsetWidget.setSc(24),
-                  top: OffsetWidget.setSc(10),
-                  bottom: OffsetWidget.setSc(10)),
-              child: Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Image.asset(
-                          Constant.ASSETS_IMG + "icon/" + map[_kImageName],
-                          fit: BoxFit.cover,
-                          scale: 2,
-                        ),
-                        OffsetWidget.hGap(9),
-                        Text(
-                          map[_kContent],
-                          style: TextStyle(
-                            color: Color(0xFF444444),
-                            fontSize: OffsetWidget.setSp(12),
-                          ),
-                        ),
-                      ],
+        child: Container(
+          color: Colors.blue,
+          // height: OffsetWidget.setSc(50),
+          padding: EdgeInsets.only(
+            left: OffsetWidget.setSc(20),
+            right: OffsetWidget.setSc(20),
+            top: OffsetWidget.setSc(36),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  LoadAssetsImage(
+                    Constant.ASSETS_IMG + "icon/" + map[_kImageName],
+                  ),
+                  OffsetWidget.hGap(11),
+                  Text(
+                    map[_kContent],
+                    style: TextStyle(
+                      color: Color(0xFF161D2D),
+                      fontWeight: FontWightHelper.bold,
+                      fontSize: OffsetWidget.setSp(15),
                     ),
-                    Image.asset(
-                      Constant.ASSETS_IMG + "icon/arrow_black_right.png",
-                      fit: BoxFit.cover,
-                      scale: 2.0,
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ),
-            Visibility(
-                visible: (index == 2 || index == 4) ? true : false,
-                child: OffsetWidget.vLineWhitColor(1, Color(0xFFD7DDE1))),
-          ],
+              LoadAssetsImage(
+                Constant.ASSETS_IMG + "icon/arrow_black_right.png",
+              ),
+            ],
+          ),
         ),
       );
     }
@@ -320,11 +276,10 @@ class _MinePageState extends State<MinePage> {
 
   @override
   Widget build(BuildContext context) {
-    OffsetWidget.screenInit(context, 360);
     return CustomPageView(
       hiddenScrollView: true,
       hiddenAppBar: true,
-      hiddenResizeToAvoidBottomInset: false,
+      hiddenLeading: true,
       child: ListView.builder(
         itemCount: _datas().length,
         itemBuilder: (BuildContext context, int index) {
