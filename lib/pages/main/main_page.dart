@@ -378,7 +378,7 @@ class _MainPageState extends State<MainPage> {
                     ),
                     OffsetWidget.vGap(5),
                     Text(
-                      "trans_receive".local(),
+                      "trans_receive".local(context: context),
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                           color: Color(0xFF161D2D),
@@ -405,7 +405,7 @@ class _MainPageState extends State<MainPage> {
                     ),
                     OffsetWidget.vGap(5),
                     Text(
-                      "wallet_payment".local(),
+                      "wallet_payment".local(context: context),
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                           color: Color(0xFF161D2D),
@@ -431,7 +431,7 @@ class _MainPageState extends State<MainPage> {
                     ),
                     OffsetWidget.vGap(5),
                     Text(
-                      "wallet_manager".local(),
+                      "wallet_manager".local(context: context),
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                           color: Color(0xFF161D2D),
@@ -457,7 +457,7 @@ class _MainPageState extends State<MainPage> {
                     ),
                     OffsetWidget.vGap(5),
                     Text(
-                      "wallet_scans".local(),
+                      "wallet_scans".local(context: context),
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                           color: Color(0xFF161D2D),
@@ -488,7 +488,7 @@ class _MainPageState extends State<MainPage> {
       tokenAssets = "******";
       balance = "******";
     } else {
-      tokenAssets = map.assets ;
+      tokenAssets = map.assets;
       tokenAssets = "≈$convert" + tokenAssets;
       balance = map.balance == null
           ? "0.0000"
@@ -643,7 +643,7 @@ class _MainPageState extends State<MainPage> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    "main_assets".local(),
+                                    "main_assets".local(context: context),
                                     style: TextStyle(
                                         fontSize: OffsetWidget.setSp(14),
                                         fontWeight: FontWightHelper.medium,

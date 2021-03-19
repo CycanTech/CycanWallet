@@ -12,47 +12,35 @@ class MinePage extends StatefulWidget {
 }
 
 class _MinePageState extends State<MinePage> {
-  String walletName = "";
-
   static String _kImageName = "kImageName";
   static String _kContent = "kContent";
 
-  bool isShow = false; //app钱包已删除
-
-  List<Map> _datas() {
-    return [
-      {_kImageName: "menu_wallet.png", _kContent: "wallet_management".local()},
-      {_kImageName: "menu_wallet.png", _kContent: "wallet_management".local()},
-      {_kImageName: "menu_message.png", _kContent: "my_message".local()},
-      {_kImageName: "menu_set.png", _kContent: "system_settings".local()},
-      {_kImageName: "menu_back.png", _kContent: "backup_identity".local()},
-      {
-        _kImageName: "menu_recommended.png",
-        _kContent: "recommend_friends".local()
-      },
-      {_kImageName: "menu_about.png", _kContent: "about_us".local()},
-      {_kImageName: "menu_about.png", _kContent: "about_us".local()},
-    ];
-  }
-
-  Future<void> _getWalletName() async {
-    List<MHWallet> wallets =
-        await MHWallet.findWalletsByType(MOriginType.MOriginType_Create.index);
-    if (wallets == null || wallets.length == 0) {
-      wallets = await MHWallet.findWalletsByType(
-          MOriginType.MOriginType_Restore.index);
-    }
-
-    if (wallets != null && wallets.length > 0) {
-      UserModel userModel =
-          await UserModel.findUsersByMasterPubKey(wallets.first.masterPubKey);
-      if (userModel != null) {
-        walletName = userModel.walletName;
-        isShow = true;
-        setState(() {});
-      }
-    }
-  }
+  List<Map> get _datas => [
+        {
+          _kImageName: "menu_wallet.png",
+          _kContent: "wallet_management".local(context: context)
+        },
+        {
+          _kImageName: "menu_message.png",
+          _kContent: "my_message".local(context: context)
+        },
+        {
+          _kImageName: "menu_set.png",
+          _kContent: "system_settings".local(context: context)
+        },
+        {
+          _kImageName: "menu_back.png",
+          _kContent: "backup_identity".local(context: context)
+        },
+        {
+          _kImageName: "menu_recommended.png",
+          _kContent: "recommend_friends".local(context: context)
+        },
+        {
+          _kImageName: "menu_about.png",
+          _kContent: "about_us".local(context: context)
+        },
+      ];
 
   Future<void> _shared() async {
     _sharedImage(Constant.ASSETS_IMG.replaceAll("./", "") +
@@ -70,176 +58,66 @@ class _MinePageState extends State<MinePage> {
         });
   }
 
-  Future<void> _deleteWallet(BuildContext mContext) async {
-    showCupertinoDialog(
-        context: context,
-        builder: (context) {
-          return CupertinoAlertDialog(
-            title: Text("exit_status".local()),
-            content: Column(
-              children: [
-                OffsetWidget.vGap(5),
-                Text("exit_status_tips1".local()),
-              ],
-            ),
-            actions: <Widget>[
-              CupertinoDialogAction(
-                child: Text("dialog_cancel".local()),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-              CupertinoDialogAction(
-                  child: Text("dialog_confirm".local()),
-                  onPressed: () async {
-                    Navigator.pop(context);
-                    List<MHWallet> wallets = await MHWallet.findWalletsByType(
-                        MOriginType.MOriginType_Create.index);
-                    if (wallets == null || wallets.length == 0) {
-                      wallets = await MHWallet.findWalletsByType(
-                          MOriginType.MOriginType_Restore.index);
-                    }
-                    if (wallets != null && wallets.length > 0) {
-                      MHWallet mhWallet = wallets.first;
-                      UserModel user = await UserModel.findUsersByMasterPubKey(
-                          mhWallet.masterPubKey);
-                      if (user == null) return;
-                      mhWallet?.showLockPinDialog(
-                          context: mContext,
-                          tips: "exit_status_tips2".local(),
-                          ok: (value) async {
-                            List<MHWallet> allWallets = [];
-
-                            List<MHWallet> createWallets =
-                                await MHWallet.findWalletsByType(
-                                    MOriginType.MOriginType_Create.index);
-                            List<MHWallet> restoreWallets =
-                                await MHWallet.findWalletsByType(
-                                    MOriginType.MOriginType_Restore.index);
-
-                            if (createWallets != null &&
-                                createWallets.length > 0) {
-                              allWallets.addAll(createWallets);
-                            }
-
-                            if (restoreWallets != null &&
-                                restoreWallets.length > 0) {
-                              allWallets.addAll(restoreWallets);
-                            }
-
-                            await UserModel.deleteWallet(user);
-
-                            if (allWallets != null && allWallets.length > 0) {
-                              bool flag =
-                                  await MHWallet.deleteWallets(allWallets);
-                              if (flag) {
-                                List<MHWallet> wallets =
-                                    await MHWallet.findAllWallets();
-                                if (wallets != null && wallets.length > 0) {
-                                  MHWallet wallet = wallets[0];
-                                  wallet.isChoose = true;
-                                  flag = await MHWallet.updateWallet(wallet);
-                                  if (flag) {
-                                    //跳回首页
-                                    Routers.push(mContext, Routers.tabbarPage,
-                                        clearStack: true);
-                                  }
-                                } else {
-                                  Routers.push(mContext, Routers.chooseTypePage,
-                                      clearStack: true);
-                                }
-                              }
-                            }
-                          },
-                          cancle: null,
-                          wrong: () => {
-                                HWToast.showText(
-                                    text: "payment_pwdwrong".local())
-                              });
-                    }
-                  }),
-            ],
-          );
-        });
-  }
-
   @override
   void initState() {
     super.initState();
-    _getWalletName();
   }
 
-  Widget _getCellWidget(int index, BuildContext context) {
-    Map map = _datas()[index];
-    if (index == 0) {
-      return Container(
-        height: OffsetWidget.setSc(207),
-        color: Colors.red,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+  Widget _getCellWidget(int index) {
+    Map map = _datas[index];
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () => {
+        _cellTap(index),
+      },
+      child: Container(
+        // color: Colors.blue,
+        padding: EdgeInsets.only(
+          left: OffsetWidget.setSc(20),
+          right: OffsetWidget.setSc(20),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            LoadAssetsImage(Constant.ASSETS_IMG + "icon/icon_app.png",
-                width: OffsetWidget.setSc(73), height: OffsetWidget.setSc(73)),
-            OffsetWidget.vGap(6),
-            Text(walletName,
-                style: TextStyle(
-                    color: Color(0xFF000000),
-                    fontSize: OffsetWidget.setSp(12))),
+            Row(
+              children: <Widget>[
+                LoadAssetsImage(
+                  Constant.ASSETS_IMG + "icon/" + map[_kImageName],
+                  // scale: 1,
+                  width: OffsetWidget.setSc(22),
+                  height: OffsetWidget.setSc(20),
+                ),
+                OffsetWidget.hGap(11),
+                Text(
+                  map[_kContent],
+                  style: TextStyle(
+                    color: Color(0xFF161D2D),
+                    fontWeight: FontWightHelper.bold,
+                    fontSize: OffsetWidget.setSp(15),
+                  ),
+                ),
+              ],
+            ),
+            LoadAssetsImage(
+              Constant.ASSETS_IMG + "icon/arrow_black_right.png",
+              width: OffsetWidget.setSc(8),
+              height: OffsetWidget.setSc(15),
+              // scale: 3,
+            ),
           ],
         ),
-      );
-    } else {
-      return GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () => {
-          _cellTap(index, context),
-        },
-        child: Container(
-          color: Colors.blue,
-          // height: OffsetWidget.setSc(50),
-          padding: EdgeInsets.only(
-            left: OffsetWidget.setSc(20),
-            right: OffsetWidget.setSc(20),
-            top: OffsetWidget.setSc(36),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  LoadAssetsImage(
-                    Constant.ASSETS_IMG + "icon/" + map[_kImageName],
-                  ),
-                  OffsetWidget.hGap(11),
-                  Text(
-                    map[_kContent],
-                    style: TextStyle(
-                      color: Color(0xFF161D2D),
-                      fontWeight: FontWightHelper.bold,
-                      fontSize: OffsetWidget.setSp(15),
-                    ),
-                  ),
-                ],
-              ),
-              LoadAssetsImage(
-                Constant.ASSETS_IMG + "icon/arrow_black_right.png",
-              ),
-            ],
-          ),
-        ),
-      );
-    }
+      ),
+    );
   }
 
-  void _cellTap(int index, BuildContext context) async {
-    if (index == 1) {
+  void _cellTap(int index) async {
+    if (index == 0) {
       Routers.push(context, Routers.walletManagerPage);
-    } else if (index == 2) {
+    } else if (index == 1) {
       Routers.push(context, Routers.systemPage);
-    } else if (index == 3) {
+    } else if (index == 2) {
       Routers.push(context, Routers.systemSetPage);
-    } else if (index == 4) {
+    } else if (index == 3) {
       List<MHWallet> wallets = await MHWallet.findWalletsByType(
           MOriginType.MOriginType_Create.index);
       if (wallets == null || wallets.length == 0) {
@@ -265,26 +143,73 @@ class _MinePageState extends State<MinePage> {
             cancle: null,
             wrong: () => {HWToast.showText(text: "payment_pwdwrong".local())});
       }
-    } else if (index == 5) {
+    } else if (index == 4) {
       _shared();
-    } else if (index == 6) {
+    } else if (index == 5) {
       Routers.push(context, Routers.aboutUsPage);
-    } else if (index == _datas().length - 1) {
-      _deleteWallet(context);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return CustomPageView(
-      hiddenScrollView: true,
       hiddenAppBar: true,
       hiddenLeading: true,
-      child: ListView.builder(
-        itemCount: _datas().length,
-        itemBuilder: (BuildContext context, int index) {
-          return _getCellWidget(index, context);
-        },
+      hiddenResizeToAvoidBottomInset: false,
+      child: Column(
+        children: [
+          Container(
+            height: OffsetWidget.setSc(207),
+            alignment: Alignment.center,
+            color: Colors.red,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                LoadAssetsImage(Constant.ASSETS_IMG + "icon/icon_app.png",
+                    width: OffsetWidget.setSc(65),
+                    height: OffsetWidget.setSc(65)),
+                OffsetWidget.vGap(8),
+                Text("AllToken",
+                    style: TextStyle(
+                        color: Color(0xFF171F24),
+                        fontWeight: FontWightHelper.regular,
+                        fontSize: OffsetWidget.setSp(16))),
+              ],
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: OffsetWidget.setSc(32)),
+            child: _getCellWidget(0),
+          ),
+          Padding(
+            padding: EdgeInsets.only(
+              top: OffsetWidget.setSc(36),
+              bottom: OffsetWidget.setSc(33),
+            ),
+            child: _getCellWidget(1),
+          ),
+          Container(
+            height: 5,
+            color: Color(0xFFFAFCFC),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: OffsetWidget.setSc(30)),
+            child: _getCellWidget(2),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: OffsetWidget.setSc(32)),
+            child: _getCellWidget(3),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: OffsetWidget.setSc(36)),
+            child: _getCellWidget(4),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: OffsetWidget.setSc(32)),
+            child: _getCellWidget(5),
+          ),
+        ],
       ),
     );
   }

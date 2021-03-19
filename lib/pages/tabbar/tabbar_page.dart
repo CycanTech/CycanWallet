@@ -11,54 +11,40 @@ class TabbarPage extends StatefulWidget {
 }
 
 class _TabbarPageState extends State<TabbarPage> {
-  final items = [
-    BottomNavigationBarItem(
-        icon: LoadAssetsImage(
-            Constant.ASSETS_IMG + "tabbar/tabbar_wallet_unselect.png",
-            width: 20,
-            height: 20),
-        activeIcon: LoadAssetsImage(
-            Constant.ASSETS_IMG + "tabbar/tabbar_wallet_select.png",
-            width: 20,
-            height: 20),
-        label: "wallet".local()),
-    // BottomNavigationBarItem(
-    //     icon: LoadAssetsImage(
-    //         Constant.ASSETS_IMG + "tabbar/tabbar_market_unselect.png",
-    //         width: 30,
-    //         height: 30),
-    //     activeIcon: LoadAssetsImage(
-    //         Constant.ASSETS_IMG + "tabbar/tabbar_market_select.png",
-    //         width: 30,
-    //         height: 30),
-    //     label: "market".local()),
-    BottomNavigationBarItem(
-        icon: LoadAssetsImage(
-            Constant.ASSETS_IMG + "tabbar/tabbar_app_unselect.png",
-            width: 20,
-            height: 20),
-        activeIcon: LoadAssetsImage(
-            Constant.ASSETS_IMG + "tabbar/tabbar_app_select.png",
-            width: 20,
-            height: 20),
-        label: "application".local()),
-    BottomNavigationBarItem(
-        icon: LoadAssetsImage(
-            Constant.ASSETS_IMG + "tabbar/tabbar_mine_unselect.png",
-            width: 20,
-            height: 20),
-        activeIcon: LoadAssetsImage(
-            Constant.ASSETS_IMG + "tabbar/tabbar_mine_select.png",
-            width: 20,
-            height: 20),
-        label: "my".local()),
-  ];
-  final bodyList = [
-    MainPage(),
-    // CurrencyMarket(),
-    ApplicationPage(),
-    MinePage()
-  ];
+  get items => [
+        BottomNavigationBarItem(
+            icon: LoadAssetsImage(
+                Constant.ASSETS_IMG + "tabbar/tabbar_wallet_unselect.png",
+                width: 20,
+                height: 20),
+            activeIcon: LoadAssetsImage(
+                Constant.ASSETS_IMG + "tabbar/tabbar_wallet_select.png",
+                width: 20,
+                height: 20),
+            label: "wallet".local(context: context)),
+        BottomNavigationBarItem(
+            icon: LoadAssetsImage(
+                Constant.ASSETS_IMG + "tabbar/tabbar_app_unselect.png",
+                width: 20,
+                height: 20),
+            activeIcon: LoadAssetsImage(
+                Constant.ASSETS_IMG + "tabbar/tabbar_app_select.png",
+                width: 20,
+                height: 20),
+            label: "application".local(context: context)),
+        BottomNavigationBarItem(
+            icon: LoadAssetsImage(
+                Constant.ASSETS_IMG + "tabbar/tabbar_mine_unselect.png",
+                width: 20,
+                height: 20),
+            activeIcon: LoadAssetsImage(
+                Constant.ASSETS_IMG + "tabbar/tabbar_mine_select.png",
+                width: 20,
+                height: 20),
+            label: "my".local(context: context)),
+      ];
+
+  final bodyList = [MainPage(), ApplicationPage(), MinePage()];
   int currentIndex = 0;
   int exitTime = 0;
 

@@ -78,8 +78,12 @@ class StringUtil {
 extension StringTranslateExtension on String {
   /// {@macro tr}
   String local(
-          {List<String> args, Map<String, String> namedArgs, String gender}) =>
-      ez.tr(this, args: args, namedArgs: namedArgs, gender: gender);
+          {BuildContext context,
+          List<String> args,
+          Map<String, String> namedArgs,
+          String gender}) =>
+      ez.tr(this,
+          context: context, args: args, namedArgs: namedArgs, gender: gender);
 
   /// {@macro plural}
   String plural(num value, {NumberFormat format}) =>
