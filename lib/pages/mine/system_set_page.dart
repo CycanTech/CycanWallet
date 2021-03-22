@@ -82,7 +82,7 @@ class _SystemSetPageState extends State<SystemSetPage> {
   void getSetType() async {
     int newamount = await getAmountValue();
     int newlanguage = await getLanguageValue();
-    print("getSetType $newamount $newlanguage");
+
     setState(() {
       amount = newamount;
       language = newlanguage;
@@ -103,148 +103,152 @@ class _SystemSetPageState extends State<SystemSetPage> {
   @override
   Widget build(BuildContext context) {
     return CustomPageView(
+        title: CustomPageView.getDefaultTitle(
+            titleStr: "system_settings".local(context: context)),
         child: Column(
-      children: <Widget>[
-        GestureDetector(
-          onTap: () => {
-            _cellTap(0),
-          },
-          child: Container(
-            alignment: Alignment.centerRight,
-            margin: EdgeInsets.only(left: 20, right: 20, top: 20),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: Color(Constant.TextFileld_FillColor),
-            ),
-            height: 50,
-            child: Container(
-              margin: EdgeInsets.only(
-                left: 18,
-                right: 18,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    "货币",
-                    style: TextStyle(
-                      color: Color(0xffACBBCF),
-                      fontSize: 12,
-                    ),
-                  ),
-                  Row(
-                    children: <Widget>[
+          children: <Widget>[
+            GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () => {
+                _cellTap(0),
+              },
+              child: Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.only(
+                  bottom: OffsetWidget.setSc(27),
+                ),
+                margin: EdgeInsets.only(
+                    left: OffsetWidget.setSc(19),
+                    right: OffsetWidget.setSc(19),
+                    top: OffsetWidget.setSc(40)),
+                decoration: BoxDecoration(
+                  border: Border(
+                      bottom: BorderSide(color: Color(0xFFEAEFF2), width: 0.5)),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Row(children: <Widget>[
+                      LoadAssetsImage(
+                        Constant.ASSETS_IMG + "icon/icon_currency.png",
+                      ),
+                      OffsetWidget.hGap(12),
                       Text(
-                        amount == 0 ? "CNY" : "USDT",
+                        "system_currency".local(context: context),
                         style: TextStyle(
-                          color: Color(0xff586883),
-                          fontSize: 12,
+                            color: Color(0xFF161D2D),
+                            fontSize: OffsetWidget.setSp(15),
+                            fontWeight: FontWightHelper.medium),
+                      ),
+                    ]),
+                    Row(
+                      children: <Widget>[
+                        Text(
+                          amount == 0 ? "CNY" : "USD",
+                          style: TextStyle(
+                              color: Color(0xFFACBBCF),
+                              fontSize: OffsetWidget.setSp(15),
+                              fontWeight: FontWightHelper.regular),
                         ),
-                      ),
-                      OffsetWidget.hGap(16),
-                      Image.asset(
-                        Constant.ASSETS_IMG + "icon/arrow_black_right.png",
-                        fit: BoxFit.cover,
-                        scale: 2.0,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-        GestureDetector(
-          onTap: () => {
-            _cellTap(1),
-          },
-          child: Container(
-            alignment: Alignment.centerRight,
-            margin: EdgeInsets.only(left: 20, right: 20, top: 20),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: Color(Constant.TextFileld_FillColor),
-            ),
-            height: 50,
-            child: Container(
-              margin: EdgeInsets.only(
-                left: 18,
-                right: 18,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    "语言",
-                    style: TextStyle(
-                      color: Color(0xffACBBCF),
-                      fontSize: 12,
+                        OffsetWidget.hGap(8),
+                        LoadAssetsImage(
+                          Constant.ASSETS_IMG + "icon/arrow_black_right.png",
+                        ),
+                      ],
                     ),
-                  ),
-                  Row(
-                    children: <Widget>[
+                  ],
+                ),
+              ),
+            ),
+            GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () => {
+                _cellTap(1),
+              },
+              child: Container(
+                alignment: Alignment.center,
+                height: OffsetWidget.setSc(80),
+                margin: EdgeInsets.only(
+                  left: OffsetWidget.setSc(19),
+                  right: OffsetWidget.setSc(19),
+                ),
+                decoration: BoxDecoration(
+                  border: Border(
+                      bottom: BorderSide(color: Color(0xFFEAEFF2), width: 0.5)),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Row(children: <Widget>[
+                      LoadAssetsImage(
+                        Constant.ASSETS_IMG + "icon/icon_language.png",
+                      ),
+                      OffsetWidget.hGap(12),
                       Text(
-                        language == 0 ? "简体中文" : "英文",
+                        "language".local(context: context),
                         style: TextStyle(
-                          color: Color(0xff586883),
-                          fontSize: 12,
+                            color: Color(0xFF161D2D),
+                            fontSize: OffsetWidget.setSp(15),
+                            fontWeight: FontWightHelper.medium),
+                      ),
+                    ]),
+                    Row(
+                      children: <Widget>[
+                        Text(
+                          language == 0
+                              ? "system_zh_hans".local(context: context)
+                              : "system_en".local(context: context),
+                          style: TextStyle(
+                              color: Color(0xFFACBBCF),
+                              fontSize: OffsetWidget.setSp(15),
+                              fontWeight: FontWightHelper.regular),
                         ),
-                      ),
-                      OffsetWidget.hGap(16),
-                      Image.asset(
-                        Constant.ASSETS_IMG + "icon/arrow_black_right.png",
-                        fit: BoxFit.cover,
-                        scale: 2.0,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-        GestureDetector(
-          onTap: () => {
-            _cellTap(2),
-          },
-          child: Container(
-            alignment: Alignment.centerRight,
-            margin: EdgeInsets.only(left: 20, right: 20, top: 20),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: Color(Constant.TextFileld_FillColor),
-            ),
-            height: 50,
-            child: Container(
-              margin: EdgeInsets.only(
-                left: 18,
-                right: 18,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    "节点设置",
-                    style: TextStyle(
-                      color: Color(0xffACBBCF),
-                      fontSize: 12,
+                        OffsetWidget.hGap(8),
+                        LoadAssetsImage(
+                          Constant.ASSETS_IMG + "icon/arrow_black_right.png",
+                        ),
+                      ],
                     ),
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Image.asset(
-                        Constant.ASSETS_IMG + "icon/arrow_black_right.png",
-                        fit: BoxFit.cover,
-                        scale: 2.0,
-                      ),
-                    ],
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-        ),
-      ],
-    ));
+            GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () => {
+                _cellTap(2),
+              },
+              child: Container(
+                alignment: Alignment.center,
+                height: OffsetWidget.setSc(80),
+                margin: EdgeInsets.only(
+                  left: OffsetWidget.setSc(19),
+                  right: OffsetWidget.setSc(19),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Row(children: <Widget>[
+                      LoadAssetsImage(
+                        Constant.ASSETS_IMG + "icon/icon_nodes.png",
+                      ),
+                      OffsetWidget.hGap(12),
+                      Text(
+                        "nodelist_title".local(context: context),
+                        style: TextStyle(
+                            color: Color(0xFF161D2D),
+                            fontSize: OffsetWidget.setSp(15),
+                            fontWeight: FontWightHelper.medium),
+                      ),
+                    ]),
+                    LoadAssetsImage(
+                      Constant.ASSETS_IMG + "icon/arrow_black_right.png",
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ));
   }
 }

@@ -92,9 +92,9 @@ class _MinePageState extends State<MinePage> {
                   map[_kContent],
                   style: TextStyle(
                     color: Color(0xFF161D2D),
-                    fontWeight: FontWightHelper.bold,
+                    fontWeight: FontWightHelper.medium,
                     fontSize: OffsetWidget.setSp(15),
-                  ),
+                ),
                 ),
               ],
             ),

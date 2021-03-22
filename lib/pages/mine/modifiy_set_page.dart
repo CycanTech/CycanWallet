@@ -47,11 +47,11 @@ class _ModifiySetPageState extends State<ModifiySetPage> {
       datastate = await getLanguageValue();
       data = [
         {
-          kName: "简体中文",
+          kName: "system_zh_hans".local(context: context),
           kState: false.toString(),
         },
         {
-          kName: "英文",
+          kName: "system_en".local(context: context),
           kState: false.toString(),
         },
       ];
@@ -76,8 +76,9 @@ class _ModifiySetPageState extends State<ModifiySetPage> {
     setState(() {});
     if (widget.setType == 0) {
       updateAmountValue(index == 0 ? true : false);
-      Provider.of<CurrentChooseWalletState>(context, listen: false).updateCurrencyType(
-          index == 0 ? MCurrencyType.CNY : MCurrencyType.USD);
+      Provider.of<CurrentChooseWalletState>(context, listen: false)
+          .updateCurrencyType(
+              index == 0 ? MCurrencyType.CNY : MCurrencyType.USD);
     } else {
       updateLanguageValue(index);
       if (index == 0) {
@@ -92,46 +93,50 @@ class _ModifiySetPageState extends State<ModifiySetPage> {
   Widget build(BuildContext context) {
     return CustomPageView(
         hiddenScrollView: true,
+        title: CustomPageView.getDefaultTitle(
+            titleStr: widget.setType == 0
+                ? "system_currencychoose".local(context: context)
+                : "system_languagechoose".local(context: context)),
         child: ListView.builder(
           itemCount: datas.length,
           itemBuilder: (BuildContext context, int index) {
             Map map = datas[index];
-
             return GestureDetector(
+              behavior: HitTestBehavior.opaque,
               onTap: () => {
                 _cellTap(index),
               },
               child: Container(
-                margin: EdgeInsets.only(left: 20, right: 20, top: 20),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: Color(Constant.TextFileld_FillColor),
+                padding: EdgeInsets.only(
+                  bottom: OffsetWidget.setSc(27),
                 ),
-                height: 50,
-                child: Container(
-                  margin: EdgeInsets.only(
-                    left: 18,
-                    right: 18,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        map[kName],
-                        style: TextStyle(
-                          color: Color(0XFF586883),
-                          fontSize: 12,
-                        ),
-                      ),
-                      Image.asset(
-                        map[kState] == true.toString()
-                            ? Constant.ASSETS_IMG + "icon/menu_select.png"
-                            : Constant.ASSETS_IMG + "icon/menu_normal.png",
-                        fit: BoxFit.cover,
-                        scale: 2.0,
-                      ),
-                    ],
-                  ),
+                margin: EdgeInsets.only(
+                    left: OffsetWidget.setSc(19),
+                    right: OffsetWidget.setSc(19),
+                    top: OffsetWidget.setSc(40)),
+                decoration: index == 0
+                    ? BoxDecoration(
+                        border: Border(
+                            bottom: BorderSide(
+                                color: Color(0xFFEAEFF2), width: 0.5)),
+                      )
+                    : null,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      map[kName],
+                      style: TextStyle(
+                          color: Color(0xFF161D2D),
+                          fontSize: OffsetWidget.setSp(15),
+                          fontWeight: FontWightHelper.medium),
+                    ),
+                    LoadAssetsImage(
+                      map[kState] == true.toString()
+                          ? Constant.ASSETS_IMG + "icon/menu_select.png"
+                          : Constant.ASSETS_IMG + "icon/menu_normal.png",
+                    ),
+                  ],
                 ),
               ),
             );

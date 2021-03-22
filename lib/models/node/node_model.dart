@@ -71,20 +71,24 @@ class NodeModel {
     }
   }
 
-  static Future<List<NodeModel>> queryNodeByIsOriginAndChainType(bool isOrigin, int chainType) async {
+  static Future<List<NodeModel>> queryNodeByIsOriginAndChainType(
+      bool isOrigin, int chainType) async {
     try {
       FlutterDatabase database = await BaseModel.getDataBae();
-      return database.nodeDao.queryNodeByIsOriginAndChainType(isOrigin, chainType);
+      return database.nodeDao
+          .queryNodeByIsOriginAndChainType(isOrigin, chainType);
     } catch (e) {
       LogUtil.v("失败" + e.toString());
       return null;
     }
   }
 
-  static Future<List<NodeModel>> queryNodeByContentAndChainType(String content, int chainType) async {
+  static Future<List<NodeModel>> queryNodeByContentAndChainType(
+      String content, int chainType) async {
     try {
       FlutterDatabase database = await BaseModel.getDataBae();
-      return database.nodeDao.queryNodeByContentAndChainType(content, chainType);
+      return database.nodeDao
+          .queryNodeByContentAndChainType(content, chainType);
     } catch (e) {
       LogUtil.v("失败" + e.toString());
       return null;
@@ -131,11 +135,15 @@ abstract class NodeDao {
   @Query('SELECT * FROM $tableName WHERE content = :content')
   Future<List<NodeModel>> queryNodeByContent(String content);
 
-  @Query('SELECT * FROM $tableName WHERE isOrigin = :isOrigin And chainType = :chainType')
-  Future<List<NodeModel>> queryNodeByIsOriginAndChainType(bool isOrigin, int chainType);
+  @Query(
+      'SELECT * FROM $tableName WHERE isOrigin = :isOrigin And chainType = :chainType')
+  Future<List<NodeModel>> queryNodeByIsOriginAndChainType(
+      bool isOrigin, int chainType);
 
-    @Query('SELECT * FROM $tableName WHERE content = :content And chainType = :chainType')
-  Future<List<NodeModel>> queryNodeByContentAndChainType(String content, int chainType);
+  @Query(
+      'SELECT * FROM $tableName WHERE content = :content And chainType = :chainType')
+  Future<List<NodeModel>> queryNodeByContentAndChainType(
+      String content, int chainType);
 
   @update
   Future<void> updateNode(NodeModel model);
