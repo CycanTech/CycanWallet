@@ -23,7 +23,7 @@ import 'package:flutter_coinid/pages/mine/modifiy_set_page.dart';
 import 'package:flutter_coinid/pages/mine/msg_system_detail_page.dart';
 import 'package:flutter_coinid/pages/mine/node_add_page.dart';
 import 'package:flutter_coinid/pages/mine/nodelist_page.dart';
-import 'package:flutter_coinid/pages/mine/system_page.dart';
+import 'package:flutter_coinid/pages/mine/mymsg_page.dart';
 import 'package:flutter_coinid/pages/mine/system_set_page.dart';
 import 'package:flutter_coinid/pages/mine/version_log_page.dart';
 import 'package:flutter_coinid/pages/pdf_screen.dart';
@@ -248,5 +248,5 @@ var nodeAddPageHandler =
 
 var systemPageHandler =
     Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-  return SystemPage();
+  return MyMsgPage();
 });

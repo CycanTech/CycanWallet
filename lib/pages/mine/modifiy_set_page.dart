@@ -73,7 +73,6 @@ class _ModifiySetPageState extends State<ModifiySetPage> {
         element[kState] = true.toString();
       }
     });
-    setState(() {});
     if (widget.setType == 0) {
       updateAmountValue(index == 0 ? true : false);
       Provider.of<CurrentChooseWalletState>(context, listen: false)
@@ -87,6 +86,7 @@ class _ModifiySetPageState extends State<ModifiySetPage> {
         EasyLocalization.of(context).locale = Locale('en', 'US');
       }
     }
+    getDatas();
   }
 
   @override
@@ -135,6 +135,8 @@ class _ModifiySetPageState extends State<ModifiySetPage> {
                       map[kState] == true.toString()
                           ? Constant.ASSETS_IMG + "icon/menu_select.png"
                           : Constant.ASSETS_IMG + "icon/menu_normal.png",
+                      width: OffsetWidget.setSc(21),
+                      height: OffsetWidget.setSc(21),
                     ),
                   ],
                 ),

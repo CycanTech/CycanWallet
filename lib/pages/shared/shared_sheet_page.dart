@@ -53,190 +53,87 @@ class _SharedSheetPageState extends State<SharedSheetPage> {
     }
   }
 
+  Widget _getItem(VoidCallback tap, String imgName, String content) {
+    return Expanded(
+        child: GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: tap,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          LoadAssetsImage(
+            Constant.ASSETS_IMG + imgName,
+            width: OffsetWidget.setSc(50),
+            height: OffsetWidget.setSc(50),
+            fit: BoxFit.contain,
+          ),
+          OffsetWidget.vGap(7),
+          Text(
+            content,
+            maxLines: 2,
+            textAlign: TextAlign.center,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+                fontSize: OffsetWidget.setSp(12),
+                color: Color(0xFF161D2D),
+                fontWeight: FontWightHelper.regular),
+          ),
+        ],
+      ),
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     OffsetWidget.screenInit(context, 360);
-    return GestureDetector(
-      onTap: () {
-        Navigator.pop(context);
-      },
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: Stack(
-          children: [
-            Positioned(
-              bottom: OffsetWidget.setSc(42),
-              child: Container(
-                color: Color(0xffffffff),
-                width: OffsetWidget.setSc(360),
-                height: OffsetWidget.setSc(115),
-                padding: EdgeInsets.only(bottom: OffsetWidget.setSc(27)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        _sharedImage(UMSharePlatform.WechatSession);
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          LoadAssetsImage(
-                            Constant.ASSETS_IMG + "icon/ic_share_wx.png",
-                            width: OffsetWidget.setSc(38),
-                            height: OffsetWidget.setSc(38),
-                            fit: BoxFit.contain,
-                          ),
-                          OffsetWidget.vGap(5),
-                          Text(
-                            "weChat_friends".local(),
-                            textAlign: TextAlign.end,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontSize: OffsetWidget.setSp(10),
-                              color: Color(0xFF000000),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        _sharedImage(UMSharePlatform.WechatTimeLine);
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          LoadAssetsImage(
-                            Constant.ASSETS_IMG + "icon/ic_share_wx_circle.png",
-                            width: OffsetWidget.setSc(38),
-                            height: OffsetWidget.setSc(38),
-                            fit: BoxFit.contain,
-                          ),
-                          OffsetWidget.vGap(5),
-                          Text(
-                            "circle_friends".local(),
-                            textAlign: TextAlign.end,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontSize: OffsetWidget.setSp(10),
-                              color: Color(0xFF000000),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        _sharedImage(UMSharePlatform.Sina);
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          LoadAssetsImage(
-                            Constant.ASSETS_IMG + "icon/ic_share_sina.png",
-                            width: OffsetWidget.setSc(38),
-                            height: OffsetWidget.setSc(38),
-                            fit: BoxFit.contain,
-                          ),
-                          OffsetWidget.vGap(5),
-                          Text(
-                            "sina".local(),
-                            textAlign: TextAlign.end,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontSize: OffsetWidget.setSp(10),
-                              color: Color(0xFF000000),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () async {
-                        _sharedImage(UMSharePlatform.QQ);
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          LoadAssetsImage(
-                            Constant.ASSETS_IMG + "icon/ic_share_qq.png",
-                            width: OffsetWidget.setSc(38),
-                            height: OffsetWidget.setSc(38),
-                            fit: BoxFit.contain,
-                          ),
-                          OffsetWidget.vGap(5),
-                          Text(
-                            "qq_friends".local(),
-                            textAlign: TextAlign.end,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontSize: OffsetWidget.setSp(10),
-                              color: Color(0xFF000000),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        _sharedImage(UMSharePlatform.Qzone);
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          LoadAssetsImage(
-                            Constant.ASSETS_IMG + "icon/ic_share_qzone.png",
-                            width: OffsetWidget.setSc(38),
-                            height: OffsetWidget.setSc(38),
-                            fit: BoxFit.contain,
-                          ),
-                          OffsetWidget.vGap(5),
-                          Text(
-                            "qq_space".local(),
-                            textAlign: TextAlign.end,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontSize: OffsetWidget.setSp(10),
-                              color: Color(0xFF000000),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+    return Container(
+      height: OffsetWidget.setSc(150),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+        color: Color(0xFFFFFFFF),
+      ),
+      child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(top: OffsetWidget.setSc(17)),
+            child: Text(
+              "mine_sharewith".local(),
+              style: TextStyle(
+                color: Color(0xFFACBBCF),
+                fontWeight: FontWightHelper.medium,
+                fontSize: OffsetWidget.setSp(15),
               ),
             ),
-            Positioned(
-              bottom: 0,
-              child: Container(
-                color: Color(0xffffffff),
-                width: OffsetWidget.setSc(360),
-                height: OffsetWidget.setSc(41),
-                child: FlatButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text(
-                    "dialog_cancel".local(),
-                    textAlign: TextAlign.end,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: OffsetWidget.setSp(15),
-                      color: Color(0xFF000000),
-                    ),
-                  ),
-                ),
+          ),
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.only(top: OffsetWidget.setSc(16)),
+              alignment: Alignment.center,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  _getItem(() {
+                    _sharedImage(UMSharePlatform.WechatSession);
+                  }, "icon/ic_share_wx.png", "weChat_friends".local()),
+                  _getItem(() {
+                    _sharedImage(UMSharePlatform.WechatTimeLine);
+                  }, "icon/ic_share_wx_circle.png", "circle_friends".local()),
+                  _getItem(() {
+                    _sharedImage(UMSharePlatform.Sina);
+                  }, "icon/ic_share_sina.png", "sina".local()),
+                  _getItem(() {
+                    _sharedImage(UMSharePlatform.QQ);
+                  }, "icon/ic_share_qq.png", "qq_friends".local()),
+                  _getItem(() {
+                    _sharedImage(UMSharePlatform.Qzone);
+                  }, "icon/ic_share_qzone.png", "qq_space".local()),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

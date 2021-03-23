@@ -18,18 +18,7 @@ class NodeAddPage extends StatefulWidget {
 
 class _NodeAddPageState extends State<NodeAddPage> {
   int chainType = 0;
-  TextEditingController nodeEC = TextEditingController();
-
-  List customizeNodes = [];
-  List defaultNodes = [];
-
-  Future<List<NodeModel>> _getNodes(bool isOrigin, int chainType) async {
-    return await NodeModel.queryNodeByIsOriginAndChainType(isOrigin, chainType);
-  }
-
-  Future<String> _getIpPingValue(String url) async {
-    return await ChannelWallet.getAvgRTT(url) + "ms";
-  }
+  List<NodeModel> datas = [];
 
   @override
   void initState() {
@@ -38,119 +27,153 @@ class _NodeAddPageState extends State<NodeAddPage> {
     if (widget.params != null) {
       chainType = int.parse(widget.params["chainType"][0]);
     }
-    setState(() {
-      nodeEC.text = "https://";
-    });
   }
 
-  Widget _buildCell(int index, bool isOrigin) {
-    NodeModel nodeModel;
-    if (isOrigin) {
-      nodeModel = defaultNodes[index];
-    } else {
-      nodeModel = customizeNodes[index];
-    }
+  Future<List<NodeModel>> _getNodes(int chainType) async {
+    datas = await NodeModel.queryNodeByChainType(chainType);
+    return datas;
+  }
+
+  Future<String> _getIpPingValue(String url) async {
+    return ChannelWallet.getAvgRTT(url);
+  }
+
+  Widget _buildCell(NodeModel nodeModel) {
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: () {
         _clickAt(nodeModel);
       },
       child: Container(
-        height: OffsetWidget.setSc(43),
+        height: OffsetWidget.setSc(56),
         margin: EdgeInsets.only(
-            left: OffsetWidget.setSc(28), right: OffsetWidget.setSc(28)),
-        child: Column(
+            left: OffsetWidget.setSc(19), right: OffsetWidget.setSc(19)),
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              color: Color(0xFFEAEFF2),
+              width: 0.5,
+            ),
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            OffsetWidget.vGap(16),
+            Container(
+              width: OffsetWidget.setSc(220),
+              child: Text(nodeModel.content,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                      fontWeight: FontWightHelper.regular,
+                      fontSize: OffsetWidget.setSp(15),
+                      color: Color(0xFFACBBCF))),
+            ),
             Row(
               children: [
-                Container(
-                  width: OffsetWidget.setSc(220),
-                  child: Text(nodeModel.content,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          fontSize: OffsetWidget.setSp(12),
-                          color: Color(0xFF9B9B9B))),
-                ),
                 FutureBuilder(
                   future: _getIpPingValue(nodeModel.content),
-                  initialData: "",
+                  initialData: "0",
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
                     String ping = snapshot.data;
-                    return Container(
-                      width: OffsetWidget.setSc(60),
-                      child: Text(ping,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              fontSize: OffsetWidget.setSp(12),
-                              color: Color(0xFF4A4A4A))),
-                    );
+                    return Text(ping + "ms",
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            fontSize: OffsetWidget.setSp(15),
+                            fontWeight: FontWightHelper.regular,
+                            color: Color(0xFF161D2D)));
                   },
                 ),
-                Visibility(
-                  visible: nodeModel.isChoose,
-                  child: LoadAssetsImage(
-                    Constant.ASSETS_IMG + "icon/icon_node_choose.png",
-                    width: OffsetWidget.setSc(15),
-                    height: OffsetWidget.setSc(15),
-                    scale: 1,
+                OffsetWidget.hGap(15),
+                Container(
+                  width: OffsetWidget.setSc(22),
+                  child: Visibility(
+                    visible: nodeModel.isChoose,
+                    child: LoadAssetsImage(
+                      Constant.ASSETS_IMG + "icon/icon_node_choose.png",
+                    ),
                   ),
                 ),
               ],
             ),
-            OffsetWidget.vGap(11),
-            OffsetWidget.vLineWhitColor(1, Color(0xFFCFCFCF)),
           ],
         ),
       ),
     );
   }
 
-  _addNode(BuildContext cxt) {
-    _showDialog(cxt, () async {
-      String str = nodeEC.text;
-      if(!StringUtil.isValidIp(str.replaceAll("https://", ""))&& !StringUtil.isValidIpAndPort(str.replaceAll("https://", "")) && !StringUtil.isValidUrl(str)){
-        HWToast.showText(text: "node_error".local());
-        return;
-      }
-      if (StringUtil.isNotEmpty(str) &&str != "https://") {
-        List<NodeModel> nodes = await NodeModel.queryNodeByContentAndChainType(
-            str, chainType);
-        if (nodes != null && nodes.length > 0) {
-          HWToast.showText(text: "node_exists".local());
-        } else {
-          NodeModel node = NodeModel(str, chainType, false, false,
-              MNodeNetType.MNodeNetType_Main.index);
-          bool flag = await NodeModel.insertNodeData(node);
-          if (flag) {
-            customizeNodes.add(node);
-            Navigator.pop(context);
-            setState(() {
-              
-            });
-          }
-        }
-      } else {
-        HWToast.showText(text: "node_add_input".local());
-      }
-    }, () {});
+  _addNode() {
+    TextEditingController nodeEC = TextEditingController(text: "https://");
+    showCupertinoDialog(
+        context: context,
+        builder: (context) {
+          return CupertinoAlertDialog(
+            title: Text("node_add_custom".local()),
+            content: CupertinoTextField(
+              maxLines: 1,
+              controller: nodeEC,
+              autofocus: true,
+            ),
+            actions: <Widget>[
+              CupertinoDialogAction(
+                child: Text(
+                  "dialog_cancel".local(),
+                  style: TextStyle(
+                    color: Color(0xFFACBBCF),
+                    fontSize: OffsetWidget.setSp(14),
+                    fontWeight: FontWightHelper.regular,
+                  ),
+                ),
+                onPressed: () {
+                  nodeEC.text = "";
+                  Navigator.pop(context);
+                },
+              ),
+              CupertinoDialogAction(
+                  child: Text(
+                    "dialog_confirm".local(),
+                    style: TextStyle(
+                      color: Color(0xFF586883),
+                      fontSize: OffsetWidget.setSp(14),
+                      fontWeight: FontWightHelper.medium,
+                    ),
+                  ),
+                  onPressed: () async {
+                    String str = nodeEC.text;
+                    Navigator.pop(context);
+                    if (!StringUtil.isValidIp(str.replaceAll("https://", "")) &&
+                        !StringUtil.isValidIpAndPort(
+                            str.replaceAll("https://", "")) &&
+                        !StringUtil.isValidUrl(str)) {
+                      HWToast.showText(text: "node_error".local());
+                      return;
+                    }
+                    if (StringUtil.isNotEmpty(str) && str != "https://") {
+                      List<NodeModel> nodes =
+                          await NodeModel.queryNodeByContentAndChainType(
+                              str, chainType);
+                      if (nodes != null && nodes.length > 0) {
+                        HWToast.showText(text: "node_exists".local());
+                      } else {
+                        NodeModel node = NodeModel(str, chainType, false, false,
+                            MNodeNetType.MNodeNetType_Main.index);
+                        bool flag = await NodeModel.insertNodeData(node);
+                        if (flag) {
+                          Navigator.pop(context);
+                          setState(() {});
+                        }
+                      }
+                    } else {
+                      HWToast.showText(text: "node_add_input".local());
+                    }
+                  }),
+            ],
+          );
+        });
   }
 
   _clickAt(NodeModel nodeModel) async {
     List<NodeModel> nodes = [];
-    defaultNodes.forEach((element) {
-      NodeModel node = element;
-      if (node.content == nodeModel.content &&
-          node.chainType == nodeModel.chainType) {
-        node.isChoose = true;
-      } else {
-        node.isChoose = false;
-      }
-      nodes.add(node);
-    });
-
-    customizeNodes.forEach((element) {
+    datas.forEach((element) {
       NodeModel node = element;
       if (node.content == nodeModel.content &&
           node.chainType == nodeModel.chainType) {
@@ -166,7 +189,6 @@ class _NodeAddPageState extends State<NodeAddPage> {
         setState(() {});
       }
     }
-
     //替换成设置成的节点
     if (nodeModel.chainType == MCoinType.MCoinType_BTC.index) {
       ChainServices.btcMainChain = nodeModel.content;
@@ -175,175 +197,67 @@ class _NodeAddPageState extends State<NodeAddPage> {
     }
   }
 
-  _showDialog(BuildContext cxt, ok(), cancel()) {
-    showCupertinoDialog<int>(
-        context: cxt,
-        builder: (cxt) {
-          return CupertinoAlertDialog(
-            title: Text("node_add_custom".local(),
-                style: TextStyle(
-                    fontSize: OffsetWidget.setSp(13),
-                    color: Color(0xFF4A4A4A))),
-            content: Card(
-              elevation: 0.0,
-              child: Container(
-                width: OffsetWidget.setSc(200),
-                child: CustomTextField(
-                  controller: nodeEC,
-                  maxLines: 1,
-                  fillColor: Colors.white,
-                  obscureText: false,
-                  contentPadding: EdgeInsets.all(OffsetWidget.setSc(8)),
-                ),
-              ),
-            ),
-            actions: <Widget>[
-              CupertinoDialogAction(
-                child: Text("dialog_cancel".local(),
-                    style: TextStyle(
-                        fontSize: OffsetWidget.setSp(13),
-                        color: Color(0xFF9B9B9B))),
-                onPressed: () {
-                  setState(() {
-                    nodeEC.text = "https://";
-                  });
-                  Navigator.pop(context);
-                  cancel();
-                },
-              ),
-              CupertinoDialogAction(
-                child: Text("dialog_confirm".local(),
-                    style: TextStyle(
-                        fontSize: OffsetWidget.setSp(13),
-                        color: Color(0xFF4A4A4A))),
-                onPressed: () {
-                  ok();
-                  setState(() {
-                    nodeEC.text = "https://";
-                  });
-                },
-              ),
-            ],
-          );
-        });
-  }
-
   @override
   Widget build(BuildContext context) {
-    OffsetWidget.screenInit(context, 360);
     return CustomPageView(
       hiddenScrollView: true,
       hiddenResizeToAvoidBottomInset: false,
-      title: Text(Constant.getChainSymbol(chainType),
-          style: TextStyle(
-              fontSize: OffsetWidget.setSp(17), color: Color(0xFF4A4A4A))),
+      title: CustomPageView.getDefaultTitle(
+          titleStr: Constant.getChainSymbol(chainType)),
       child: Column(
         children: [
           Container(
-            height: OffsetWidget.setSc(430),
-            child: Column(
-              children: [
-                OffsetWidget.vGap(OffsetWidget.setSc(32)),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  margin: EdgeInsets.only(
-                      left: OffsetWidget.setSc(28),
-                      right: OffsetWidget.setSc(28),
-                      bottom: OffsetWidget.setSc(10)),
-                  child: Text(
-                    "node_default".local(),
-                    style: TextStyle(
-                        fontSize: OffsetWidget.setSp(13),
-                        color: Color(0xFF4A4A4A)),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(
-                      left: OffsetWidget.setSc(28),
-                      right: OffsetWidget.setSc(28)),
-                  child: OffsetWidget.vLineWhitColor(1, Color(0xFFCFCFCF)),
-                ),
-                FutureBuilder(
-                  future: _getNodes(true, chainType),
-                  initialData: [],
-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    List nodes = snapshot.data;
-                    if (nodes != null && nodes.length > 0) {
-                      defaultNodes.clear();
-                      defaultNodes.addAll(nodes);
-                    }
-                    return Container(
-                        height: OffsetWidget.setSc(50),
-                        child: ListView.builder(
-                          itemCount: defaultNodes.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return _buildCell(index, true);
-                          },
-                        ));
+            alignment: Alignment.centerLeft,
+            padding: EdgeInsets.only(top: OffsetWidget.setSc(40)),
+            margin: EdgeInsets.only(
+                left: OffsetWidget.setSc(19),
+                right: OffsetWidget.setSc(19),
+                bottom: OffsetWidget.setSc(15)),
+            child: Text(
+              "node_default".local(),
+              style: TextStyle(
+                  fontSize: OffsetWidget.setSp(15),
+                  fontWeight: FontWightHelper.medium,
+                  color: Color(0xFF161D2D)),
+            ),
+          ),
+          Expanded(
+            child: FutureBuilder(
+              future: _getNodes(chainType),
+              initialData: [],
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                List nodes = snapshot.data;
+                return ListView.builder(
+                  itemCount: nodes.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return _buildCell(nodes[index]);
                   },
-                ),
-                OffsetWidget.vGap(OffsetWidget.setSc(14)),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  margin: EdgeInsets.only(
-                      left: OffsetWidget.setSc(28),
-                      right: OffsetWidget.setSc(28),
-                      bottom: OffsetWidget.setSc(10)),
-                  child: Text(
-                    "node_custom".local(),
-                    style: TextStyle(
-                        fontSize: OffsetWidget.setSp(13),
-                        color: Color(0xFF4A4A4A)),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(
-                      left: OffsetWidget.setSc(28),
-                      right: OffsetWidget.setSc(28)),
-                  child: OffsetWidget.vLineWhitColor(1, Color(0xFFCFCFCF)),
-                ),
-                FutureBuilder(
-                  future: _getNodes(false, chainType),
-                  initialData: [],
-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    List nodes = snapshot.data;
-                    if (nodes != null && nodes.length > 0) {
-                      customizeNodes.clear();
-                      customizeNodes.addAll(nodes);
-                    }
-                    return Container(
-                        height: OffsetWidget.setSc(260),
-                        child: ListView.builder(
-                          itemCount: customizeNodes.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return _buildCell(index, false);
-                          },
-                        ));
-                  },
-                ),
-              ],
+                );
+              },
             ),
           ),
           GestureDetector(
+            behavior: HitTestBehavior.opaque,
             onTap: () {
-              _addNode(context);
+              _addNode();
             },
             child: Container(
               margin: EdgeInsets.only(
-                  left: OffsetWidget.setSc(30),
-                  top: OffsetWidget.setSc(30),
-                  right: OffsetWidget.setSc(30)),
-              height: OffsetWidget.setSc(38),
+                  left: OffsetWidget.setSc(54),
+                  bottom: OffsetWidget.setSc(90),
+                  right: OffsetWidget.setSc(54)),
+              height: OffsetWidget.setSc(40),
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(OffsetWidget.setSc(50)),
-                  color: Color(0xFF1308FE)),
+                  borderRadius: BorderRadius.circular(OffsetWidget.setSc(10)),
+                  border: Border.all(color: Color(0xFF586883)),
+                  color: Colors.white),
               child: Text(
-                "node_add_custom".local(),
+                "+ " + "node_add_custom".local(),
                 style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: OffsetWidget.setSp(13),
-                    color: Colors.white),
+                    fontWeight: FontWightHelper.medium,
+                    fontSize: OffsetWidget.setSp(15),
+                    color: Color(0xFF586883)),
               ),
             ),
           ),

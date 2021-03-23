@@ -131,6 +131,8 @@ class _SystemSetPageState extends State<SystemSetPage> {
                     Row(children: <Widget>[
                       LoadAssetsImage(
                         Constant.ASSETS_IMG + "icon/icon_currency.png",
+                        width: OffsetWidget.setSc(22),
+                        height: OffsetWidget.setSc(22),
                       ),
                       OffsetWidget.hGap(12),
                       Text(
@@ -153,6 +155,8 @@ class _SystemSetPageState extends State<SystemSetPage> {
                         OffsetWidget.hGap(8),
                         LoadAssetsImage(
                           Constant.ASSETS_IMG + "icon/arrow_black_right.png",
+                          width: OffsetWidget.setSc(8),
+                          height: OffsetWidget.setSc(15),
                         ),
                       ],
                     ),
@@ -182,6 +186,8 @@ class _SystemSetPageState extends State<SystemSetPage> {
                     Row(children: <Widget>[
                       LoadAssetsImage(
                         Constant.ASSETS_IMG + "icon/icon_language.png",
+                        width: OffsetWidget.setSc(22),
+                        height: OffsetWidget.setSc(22),
                       ),
                       OffsetWidget.hGap(12),
                       Text(
@@ -206,6 +212,8 @@ class _SystemSetPageState extends State<SystemSetPage> {
                         OffsetWidget.hGap(8),
                         LoadAssetsImage(
                           Constant.ASSETS_IMG + "icon/arrow_black_right.png",
+                          width: OffsetWidget.setSc(8),
+                          height: OffsetWidget.setSc(15),
                         ),
                       ],
                     ),
@@ -231,6 +239,8 @@ class _SystemSetPageState extends State<SystemSetPage> {
                     Row(children: <Widget>[
                       LoadAssetsImage(
                         Constant.ASSETS_IMG + "icon/icon_nodes.png",
+                        width: OffsetWidget.setSc(22),
+                        height: OffsetWidget.setSc(22),
                       ),
                       OffsetWidget.hGap(12),
                       Text(
@@ -243,6 +253,8 @@ class _SystemSetPageState extends State<SystemSetPage> {
                     ]),
                     LoadAssetsImage(
                       Constant.ASSETS_IMG + "icon/arrow_black_right.png",
+                      width: OffsetWidget.setSc(8),
+                      height: OffsetWidget.setSc(15),
                     ),
                   ],
                 ),

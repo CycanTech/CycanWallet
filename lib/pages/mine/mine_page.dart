@@ -48,13 +48,19 @@ class _MinePageState extends State<MinePage> {
   }
 
   _sharedImage(String image) {
-    showDialog(
+    showModalBottomSheet(
         context: context,
+        backgroundColor: Colors.white,
+        elevation: 0,
+        isDismissible: true,
+        isScrollControlled: true,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         builder: (context) {
-          return SharedSheetPage(
+          return SafeArea(
+              child: SharedSheetPage(
             imageByte: image,
             isPath: true,
-          );
+          ));
         });
   }
 
@@ -94,7 +100,7 @@ class _MinePageState extends State<MinePage> {
                     color: Color(0xFF161D2D),
                     fontWeight: FontWightHelper.medium,
                     fontSize: OffsetWidget.setSp(15),
-                ),
+                  ),
                 ),
               ],
             ),

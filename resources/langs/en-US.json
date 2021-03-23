@@ -226,5 +226,15 @@
     "wallets_inputName": "Enter Token name",
     "wallets_choosewallet": "Choose wallet",
     "wallets_transin": "Transfer in",
-    "wallets_transerr": "Failure"
+    "wallets_transerr": "Failure",
+    "translist_transoutsuccess": "Successful",
+    "translist_transinsuccess": "Successful",
+    "intro_knowit": "Know it",
+    "intro_longpressmodify": "Long press here to quickly drag and change the order",
+    "system_currency": "Currency",
+    "system_zh_hans": "Simplified Chinese",
+    "system_en": "English",
+    "system_currencychoose": "Currency selection",
+    "system_languagechoose": "Language selection",
+    "mine_sharewith": "Share to"
 }
