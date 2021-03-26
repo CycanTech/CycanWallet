@@ -20,6 +20,7 @@ typedef NS_ENUM(NSInteger,MCoinType) {
   MCoinType_USDT,
   MCoinType_GPS,
   MCoinType_DOT,
+  MCoinType_BSC,
 };
 
 typedef NS_ENUM(NSInteger,MLeadWalletType) {

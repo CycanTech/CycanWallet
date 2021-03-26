@@ -20,7 +20,7 @@ class ChainServices {
   static String btcMainChain = "https://btc-api.coinid.pro";
   static String _btcurl = isTestNode ? _btcTestChain : btcMainChain;
 
-  static const String _dotTestChain = "http://103.46.128.21:45979";
+  static const String _dotTestChain = "http://3.1.109.88:9955";
   static const String _dotMainChain = "https://mainnet-dot.coinid.pro";
   static const String _doturl = isTestNode ? _dotTestChain : _dotMainChain;
 

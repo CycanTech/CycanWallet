@@ -46,7 +46,7 @@ class _TransListPageState extends State<TransListPage> {
     int amountType =
         Provider.of<CurrentChooseWalletState>(context, listen: false)
             .currencyType
-            .index;
+            ?.index;
     MCollectionTokens tokens =
         Provider.of<CurrentChooseWalletState>(context, listen: false)
             .chooseTokens;
@@ -66,7 +66,7 @@ class _TransListPageState extends State<TransListPage> {
     int amountType =
         Provider.of<CurrentChooseWalletState>(context, listen: false)
             .currencyType
-            .index;
+            ?.index;
     String walletAddress = wallets.walletAaddress;
     String contract = tokens.contract;
     String token = tokens.token;
@@ -113,10 +113,14 @@ class _TransListPageState extends State<TransListPage> {
   }
 
   void _paymentClick() {
+    MCollectionTokens tokens =
+        Provider.of<CurrentChooseWalletState>(context, listen: false)
+            .chooseTokens;
+
     Map<String, dynamic> params = Map();
-    // params["contract"] = contract;
-    // params["token"] = token;
-    // params["decimals"] = decimals;
+    params["contract"] = tokens.contract;
+    params["token"] = tokens.token;
+    params["decimals"] = tokens.decimals;
     Routers.push(context, Routers.paymentPage, params: params).then((value) => {
           Future.delayed(Duration(seconds: 3)).then((value) => {
                 _initData(),
@@ -235,7 +239,9 @@ class _TransListPageState extends State<TransListPage> {
               children: [
                 Container(
                   height: OffsetWidget.setSc(140),
-                  padding: EdgeInsets.only(left: 16, right: 16),
+                  padding: EdgeInsets.only(
+                      left: OffsetWidget.setSc(65),
+                      right: OffsetWidget.setSc(65)),
                   child: _headerBuilder(),
                 ),
                 Material(
@@ -258,6 +264,7 @@ class _TransListPageState extends State<TransListPage> {
                         unselectedLabelStyle: TextStyle(
                           fontSize: OffsetWidget.setSp(14),
                           fontWeight: FontWeight.w500,
+                          // color: Colors.red,
                         ),
                         onTap: (page) => {
                           _walletCategoryClick(page),

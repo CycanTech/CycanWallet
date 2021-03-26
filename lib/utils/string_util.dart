@@ -111,6 +111,9 @@ extension StringTranslateExtension on String {
       case MCoinType.MCoinType_ETH:
         len = 64;
         break;
+      case MCoinType.MCoinType_BSC:
+        len = 64;
+        break;
       case MCoinType.MCoinType_DOT:
         len = 128;
         break;

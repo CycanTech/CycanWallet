@@ -36,7 +36,8 @@ class WalletObject {
     coinType = wallet.chainType;
     walletID = wallet.walletID;
     originType = wallet.originType;
-    descName = StringUtil.isNotEmpty(wallet.descName) ? wallet.descName : "null";
+    descName =
+        StringUtil.isNotEmpty(wallet.descName) ? wallet.descName : "null";
     didChoose = wallet.didChoose != null ? wallet.didChoose : false;
   }
 
@@ -69,18 +70,31 @@ class WalletObject {
       'coinType': this.coinType,
       'masterPubKey': this.masterPubKey,
       'walletID': this.walletID,
-      'originType' : this.originType,
-      'descName' : this.descName,
+      'originType': this.originType,
+      'descName': this.descName,
       'didChoose': this.didChoose,
     };
     return params;
   }
 }
 
-class ChannelWalletsObjects {
-  List<WalletObject> walletObjects = [];
-  ChannelWalletsObjects.fromJson(List json) {
-    for (Map m in json) {
+//助记词相关
+class ChannelWallet {
+  static const channel_wallets = MethodChannel(Constant.CHANNEL_Wallets);
+
+  // 生成钱包数据
+  static Future<List<WalletObject>> importWalletFrom(String content, String pin,
+      MLeadType mLeadType, MCoinType mCoinType, MOriginType mOriginType) async {
+    Map params = Map();
+    params["content"] = content;
+    params["pin"] = pin;
+    params["mLeadType"] = mLeadType.index;
+    params["mCoinType"] = mCoinType.index;
+    params["mOriginType"] = mOriginType.index;
+    final List result =
+        await channel_wallets.invokeMethod('importWalletFrom', params);
+    List<WalletObject> datas = [];
+    for (var m in result) {
       LogUtil.v("钱包数据" + m.toString());
       String prvKey = m["prvKey"] as String;
       if (prvKey == null || prvKey.length == 0) {
@@ -97,33 +111,9 @@ class ChannelWalletsObjects {
           m["coinType"] as int,
           m["masterPubKey"] as String);
       LogUtil.v("构造object" + m.toString());
-      walletObjects.add(walletObject);
+      datas.add(walletObject);
     }
-  }
-}
-
-//助记词相关
-class ChannelWallet {
-  static const channel_wallets = MethodChannel(Constant.CHANNEL_Wallets);
-
-  // 生成钱包数据
-  static Future<ChannelWalletsObjects> importWalletFrom(
-      String content,
-      String pin,
-      MLeadType mLeadType,
-      MCoinType mCoinType,
-      MOriginType mOriginType) async {
-    Map params = Map();
-    params["content"] = content;
-    params["pin"] = pin;
-    params["mLeadType"] = mLeadType.index;
-    params["mCoinType"] = mCoinType.index;
-    params["mOriginType"] = mOriginType.index;
-    final List result =
-        await channel_wallets.invokeMethod('importWalletFrom', params);
-    ChannelWalletsObjects channelWalletsObjects =
-        ChannelWalletsObjects.fromJson(result);
-    return Future.value(channelWalletsObjects);
+    return datas;
   }
 
   // 导出私钥

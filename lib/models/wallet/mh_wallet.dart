@@ -361,8 +361,7 @@ class MHWallet extends BaseModel {
     try {
       FlutterDatabase database = await BaseModel.getDataBae();
       symbol = "symbol LIKE '%$symbol%'";
-      List<MHWallet> wallet =
-          await database.walletDao.findWalletsBySQL(symbol);
+      List<MHWallet> wallet = await database.walletDao.findWalletsBySQL(symbol);
       return wallet ??= [];
     } catch (e) {
       LogUtil.v("失败" + e.toString());
@@ -406,14 +405,14 @@ class MHWallet extends BaseModel {
               ),
               actions: <Widget>[
                 CupertinoDialogAction(
-                    child: Text("dialog_confirm".local()),
-                    onPressed: () {
-                      String text = controller.text;
-                      Navigator.pop(context);
-                      lockPin(text: text, ok: ok, wrong: wrong);
-                    }),
-                CupertinoDialogAction(
-                  child: Text("dialog_cancel".local()),
+                  child: Text(
+                    "dialog_cancel".local(),
+                    style: TextStyle(
+                      color: Color(0xFFACBBCF),
+                      fontSize: OffsetWidget.setSp(14),
+                      fontWeight: FontWightHelper.regular,
+                    ),
+                  ),
                   onPressed: () {
                     controller.text = "";
                     Navigator.pop(context);
@@ -421,7 +420,21 @@ class MHWallet extends BaseModel {
                       cancle();
                     }
                   },
-                )
+                ),
+                CupertinoDialogAction(
+                    child: Text(
+                      "dialog_confirm".local(),
+                      style: TextStyle(
+                        color: Color(0xFF586883),
+                        fontSize: OffsetWidget.setSp(14),
+                        fontWeight: FontWightHelper.medium,
+                      ),
+                    ),
+                    onPressed: () {
+                      String text = controller.text;
+                      Navigator.pop(context);
+                      lockPin(text: text, ok: ok, wrong: wrong);
+                    }),
               ],
             );
           });
@@ -547,14 +560,13 @@ class MHWallet extends BaseModel {
       bool isExist = false;
       String masterPubKey = "";
       List<MHWallet> currentWallets = [];
-      ChannelWalletsObjects objects;
+      List<WalletObject> objects;
       String hashPin = InstructionDataFormat.SHA1(pin);
       FlutterDatabase database = await BaseModel.getDataBae();
       objects = await ChannelWallet.importWalletFrom(
           content.trim(), pin, mLeadType, mCoinType, mOriginType);
-      List<WalletObject> mWalletObjects = objects.walletObjects;
       int count = (await MHWallet.findAllWallets()).length;
-      for (WalletObject w in mWalletObjects) {
+      for (WalletObject w in objects) {
         MHWallet wallet = MHWallet.instance(w);
         wallet.originType = mOriginType.index;
         wallet.leadType = mLeadType.index;

@@ -51,7 +51,8 @@ class InstructionDataFormat {
       String a = string.substring(i - 2, i);
       bigeEndian += a;
     }
-    return int.tryParse(bigeEndian, radix: 16);
+    int value = int.tryParse(bigeEndian, radix: 16);
+    return value ??= 0;
   }
 
   //10进制数组转换成字符串

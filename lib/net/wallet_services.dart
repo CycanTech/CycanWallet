@@ -285,7 +285,7 @@ class WalletServices {
               dic["title"] = title;
               dic["message"] = message;
               dic["author"] = author;
-              dic["dataTime"] = datatime;
+              dic["dataTime"] = DateUtil.formatDateMs(datatime);
               dic["state"] = state;
               results.add(dic);
             }

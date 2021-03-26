@@ -57,7 +57,7 @@ class _MyMsgPageState extends State<MyMsgPage> {
   Widget _buildCell(int index) {
     Map map = allDatas[index];
     bool isRead = map["state"] == 1 ? false : true;
-    String title = map["title"] + isRead.toString();
+    String title = map["title"];
     String dataTime = map["dataTime"];
     String message = map["message"];
     return GestureDetector(

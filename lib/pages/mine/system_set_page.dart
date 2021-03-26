@@ -19,64 +19,6 @@ class _SystemSetPageState extends State<SystemSetPage> {
     // TODO: implement initState
     super.initState();
     getSetType();
-    _configNodeList();
-  }
-
-  Future<void> _configNodeList() async {
-    List<NodeModel> nodes = await NodeModel.queryNodeByIsChoose(true);
-    if (nodes == null || nodes.length == 0) {
-      nodes = [];
-      NodeModel node = NodeModel(
-          "https://btc-api.coinid.pro",
-          MCoinType.MCoinType_BTC.index,
-          true,
-          true,
-          MNodeNetType.MNodeNetType_Main.index);
-      nodes.add(node);
-      // node = NodeModel(
-      //     "https://mainnet-eos.coinid.pro",
-      //     MCoinType.MCoinType_EOS.index,
-      //     true,
-      //     true,
-      //     MNodeNetType.MNodeNetType_Main.index);
-      // nodes.add(node);
-      node = NodeModel(
-          "https://mainnet-eth.coinid.pro",
-          MCoinType.MCoinType_ETH.index,
-          true,
-          true,
-          MNodeNetType.MNodeNetType_Main.index);
-      nodes.add(node);
-      // node = NodeModel(
-      //     "https://mainnet-gvns.coinid.pro",
-      //     MCoinType.MCoinType_VNS.index,
-      //     true,
-      //     true,
-      //     MNodeNetType.MNodeNetType_Main.index);
-      // nodes.add(node);
-      // node = NodeModel(
-      //     "https://mainnet-bytom.coinid.pro",
-      //     MCoinType.MCoinType_BTM.index,
-      //     true,
-      //     true,
-      //     MNodeNetType.MNodeNetType_Main.index);
-      // nodes.add(node);
-      // node = NodeModel(
-      //     "https://ltc-explorer.coinid.pro",
-      //     MCoinType.MCoinType_LTC.index,
-      //     true,
-      //     true,
-      //     MNodeNetType.MNodeNetType_Main.index);
-      // nodes.add(node);
-      // node = NodeModel(
-      //     "https://btc-api.coinid.pro",
-      //     MCoinType.MCoinType_USDT.index,
-      //     true,
-      //     true,
-      //     MNodeNetType.MNodeNetType_Main.index);
-      // nodes.add(node);
-      NodeModel.insertNodeDatas(nodes);
-    }
   }
 
   void getSetType() async {

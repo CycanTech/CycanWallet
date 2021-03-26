@@ -219,7 +219,7 @@ public class CreateWalletUtil {
                         wallets.add(map);
                     }
 
-                    if(chainType == Constants.COIN_TYPE.TYPE_ALL || chainType == Constants.COIN_TYPE.TYPE_ETH){
+                    if(chainType == Constants.COIN_TYPE.TYPE_ALL || chainType == Constants.COIN_TYPE.TYPE_ETH || chainType == Constants.COIN_TYPE.TYPE_BSC ){
                         //eth
                         if(common == Constants.LEAD_TYPE.STANDARMEMO){
                             String ethStr = XMHCoinUtitls.CoinID_deriveKeyByPath("44'/60'/0'/0/0");
@@ -241,13 +241,26 @@ public class CreateWalletUtil {
                         eth_public = "0x" + CommonUtil.byteArrayToStr(XMHCoinUtitls.CoinID_ExportETHPubKey(eth_public_result));
                         eth_private = DigitalTrans.byte2hex(DigitalTrans.encKeyByAES128CBC(CommonUtil.strToByteArrayNotAddEnd(DigitalTrans.byte2hex(eth_private_result)), pin));
 
-                        Map map = new HashMap();
-                        map.put("pubKey", DigitalTrans.byte2hex(eth_public_result));
-                        map.put("prvKey", eth_private);
-                        map.put("coinType", Constants.COIN_TYPE.TYPE_ETH);
-                        map.put("address", eth_public);
-                        map.put("masterPubKey", masterPubKey);
-                        wallets.add(map);
+                        if (chainType == Constants.COIN_TYPE.TYPE_ALL || chainType == Constants.COIN_TYPE.TYPE_ETH){
+
+                            Map map = new HashMap();
+                            map.put("pubKey", DigitalTrans.byte2hex(eth_public_result));
+                            map.put("prvKey", eth_private);
+                            map.put("coinType", Constants.COIN_TYPE.TYPE_ETH);
+                            map.put("address", eth_public);
+                            map.put("masterPubKey", masterPubKey);
+                            wallets.add(map);
+                        }
+                        if (chainType == Constants.COIN_TYPE.TYPE_ALL || chainType == Constants.COIN_TYPE.TYPE_BSC){
+
+                            Map map = new HashMap();
+                            map.put("pubKey", DigitalTrans.byte2hex(eth_public_result));
+                            map.put("prvKey", eth_private);
+                            map.put("coinType", Constants.COIN_TYPE.TYPE_BSC);
+                            map.put("address", eth_public);
+                            map.put("masterPubKey", masterPubKey);
+                            wallets.add(map);
+                        }
                     }
 
                     if(chainType == Constants.COIN_TYPE.TYPE_ALL || chainType == Constants.COIN_TYPE.TYPE_POLKADOT){

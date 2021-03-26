@@ -36,6 +36,7 @@ enum MCoinType {
   MCoinType_USDT,
   MCoinType_GPS,
   MCoinType_DOT,
+  MCoinType_BSC,
 }
 
 enum MStatusCode {
@@ -151,6 +152,8 @@ class Constant {
       symbol = "USDT";
     } else if (MCoinType.MCoinType_DOT.index == coinType) {
       symbol = "DOT";
+    } else if (MCoinType.MCoinType_BSC.index == coinType) {
+      symbol = "BSC";
     }
     return symbol;
   }
@@ -175,6 +178,8 @@ class Constant {
       coinType = MCoinType.MCoinType_USDT;
     } else if (symbol.toLowerCase() == "dot") {
       coinType = MCoinType.MCoinType_DOT;
+    } else if (symbol.toLowerCase() == "bsc") {
+      coinType = MCoinType.MCoinType_BSC;
     }
     return coinType;
   }
@@ -199,6 +204,8 @@ class Constant {
       fullName = "USDT";
     } else if (MCoinType.MCoinType_DOT.index == coinType) {
       fullName = "Polkadot";
+    } else if (MCoinType.MCoinType_BSC.index == coinType) {
+      fullName = "Binance Chain";
     }
     return fullName;
   }
@@ -223,6 +230,8 @@ class Constant {
       decimals = 8;
     } else if (MCoinType.MCoinType_DOT.index == coinType) {
       decimals = 10;
+    } else if (MCoinType.MCoinType_BSC.index == coinType) {
+      decimals = 18;
     } else {
       assert(false, "getChainDecimals");
     }

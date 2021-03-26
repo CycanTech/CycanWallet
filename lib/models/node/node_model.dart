@@ -2,6 +2,7 @@
 
 import 'package:floor/floor.dart';
 import 'package:flutter_coinid/db/database.dart';
+import 'package:flutter_coinid/net/chain_services.dart';
 
 import '../../public.dart';
 import '../base_model.dart';
@@ -114,6 +115,43 @@ class NodeModel {
     } catch (e) {
       LogUtil.v("失败" + e.toString());
       return false;
+    }
+  }
+
+  static void configNodeList() async {
+    List<NodeModel> nodes = await NodeModel.queryNodeByIsChoose(true);
+    if (nodes == null || nodes.length == 0) {
+      nodes = [];
+      NodeModel node = NodeModel(
+          "https://btc-api.coinid.pro",
+          MCoinType.MCoinType_BTC.index,
+          true,
+          true,
+          MNodeNetType.MNodeNetType_Main.index);
+      nodes.add(node);
+      node = NodeModel(
+          "https://mainnet-eth.coinid.pro",
+          MCoinType.MCoinType_ETH.index,
+          true,
+          true,
+          MNodeNetType.MNodeNetType_Main.index);
+      nodes.add(node);
+      node = NodeModel(
+          "https://mainnet-dot.coinid.pro",
+          MCoinType.MCoinType_DOT.index,
+          true,
+          true,
+          MNodeNetType.MNodeNetType_Main.index);
+      nodes.add(node);
+      NodeModel.insertNodeDatas(nodes);
+    } else {
+      nodes.forEach((element) {
+        if (element.chainType == MCoinType.MCoinType_BTC.index) {
+          ChainServices.btcMainChain = element.content;
+        } else if (element.chainType == MCoinType.MCoinType_ETH.index) {
+          ChainServices.ethMainChain = element.content;
+        }
+      });
     }
   }
 }

@@ -35,6 +35,7 @@ class _EmptyDataPageState extends State<EmptyDataPage> {
             ),
             OffsetWidget.vGap(7),
             Text("empay_data".local(),
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Color(0xFFACBBCF),
                   fontSize: OffsetWidget.setSp(14),

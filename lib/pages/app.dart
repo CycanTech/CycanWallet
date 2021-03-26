@@ -30,7 +30,7 @@ class _MyAppState extends State<MyApp> {
   Future<void> initState() {
     super.initState();
     getSkip();
-    getChooseNodes();
+    NodeModel.configNodeList();
     Constant.getAppFile().then((value) => {
           LogUtil.v("app file " + value.absolute.path),
         });
@@ -65,19 +65,6 @@ class _MyAppState extends State<MyApp> {
     return Container();
   }
 
-  //替换成设置成的节点
-  Future<void> getChooseNodes() async {
-    List<NodeModel> nodes = await NodeModel.queryNodeByIsChoose(true);
-    if (nodes != null && nodes.length > 0) {
-      nodes.forEach((element) {
-        if (element.chainType == MCoinType.MCoinType_BTC.index) {
-          ChainServices.btcMainChain = element.content;
-        } else if (element.chainType == MCoinType.MCoinType_ETH.index) {
-          ChainServices.ethMainChain = element.content;
-        }
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {

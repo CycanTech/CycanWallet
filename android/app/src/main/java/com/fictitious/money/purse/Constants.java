@@ -14,8 +14,9 @@ public class Constants {
         int TYPE_USDT = 7;// 7:usdt
         int TYPE_GPS = 8;// 8:gps
         int TYPE_POLKADOT = 9;// 9:polkadot
-        int TYPE_BCH = 10;// 10:bch
-        int TYPE_DASH = 11;// 11:dash
+        int TYPE_BSC = 10 ; //BSC
+        int TYPE_BCH = 11;// 10:bch
+        int TYPE_DASH = 12;// 11:dash
     }
 
     public interface URL_TYPE {

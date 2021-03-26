@@ -42,23 +42,16 @@ class _NodeListPageState extends State<NodeListPage> {
     }
   }
 
-  _getIpPingValue() async {
-    await Future.wait<dynamic>([
-      ChannelWallet.getAvgRTT(_datas[0][_kIp]),
-      ChannelWallet.getAvgRTT(_datas[1][_kIp]),
-      // ChannelWallet.getAvgRTT(_datas[2][_kIp]),
-      // ChannelWallet.getAvgRTT(_datas[3][_kIp]),
-      // ChannelWallet.getAvgRTT(_datas[4][_kIp]),
-      // ChannelWallet.getAvgRTT(_datas[5][_kIp]),
-      // ChannelWallet.getAvgRTT(_datas[6][_kIp]),
-    ]).then((e) {
-      print(e); //[true,true,false]
+  _getIpPingValue() {
+    Future.wait(_datas.map((e) => ChannelWallet.getAvgRTT(e[_kIp])).toList())
+        .then((value) {
+      LogUtil.v("value $value");
       int i = 0;
-      for (i = 0; i < e.length; i++) {
-        _datas[i][_kPingValue] = e[i] + "ms";
+      for (i = 0; i < value.length; i++) {
+        _datas[i][_kPingValue] = value[i] + "ms";
       }
       setState(() {});
-    }).catchError((e) {});
+    });
   }
 
   Widget _getCellWidget(int index) {
