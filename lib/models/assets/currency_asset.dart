@@ -203,7 +203,7 @@ class CurrencyAssetModel extends BaseModel {
       for (MHWallet wallet in wallets) {
         String from = wallet.walletAaddress;
         var result = await ChainServices.requestAssets(
-            chainType: coinType,
+            chainType: chinType,
             from: from,
             contract: contract,
             tokenDecimal: int.tryParse(decimal),

@@ -74,7 +74,7 @@ class _TransListPageState extends State<TransListPage> {
     String coinType = Constant.getChainSymbol(wallets.chainType);
     String assets = "≈" + (amountType == 0 ? "￥" : "\$");
     ChainServices.requestAssets(
-      chainType: coinType,
+      chainType: wallets.chainType,
       from: walletAddress,
       contract: contract,
       token: token,

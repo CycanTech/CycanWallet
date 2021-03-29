@@ -24,12 +24,14 @@ class ChainServices {
   static const String _dotMainChain = "https://mainnet-dot.coinid.pro";
   static const String _doturl = isTestNode ? _dotTestChain : _dotMainChain;
 
+  static const String _bscurl = "http://54.169.100.174:8545";
+
   static const String regtestBtcSend = "/api/BTC/regtest/tx/send";
   static const String regtestBtcList = "/api/BTC/regtest";
   static const String mainnetBtcList = "/api/BTC/mainnet";
 
   static void requestChainInfo(
-      {String chainType,
+      {int chainType,
       String from,
       String amount,
       int m,
@@ -41,10 +43,11 @@ class ChainServices {
     assert(amount != null, "requestChainInfo");
     assert(block != null, "requestChainInfo");
 
-    if (chainType.toLowerCase() == "eth") {
+    if (chainType == MCoinType.MCoinType_ETH.index ||
+        chainType == MCoinType.MCoinType_BSC.index) {
       return _requestETHAddresssInfo(
-          from: from, contract: contract, block: block);
-    } else if (chainType.toLowerCase() == "dot") {
+          from: from, contract: contract, chainType: chainType, block: block);
+    } else if (chainType == MCoinType.MCoinType_DOT.index) {
       return _requestDotChainInfo(from: from, contract: contract, block: block);
     } else {
       return _requesUnSpendList(chainType, from, amount, (result, code) async {
@@ -75,47 +78,45 @@ class ChainServices {
       return _requestBTCTransRecord(transType, from, page, block);
     } else if (chainType == MCoinType.MCoinType_DOT.index) {
       return _requestDOTTransRecord(transType, from, page, block);
+    } else if (chainType == MCoinType.MCoinType_BSC.index) {
     } else {
       assert(false, "补充请求");
     }
   }
 
   static void pushData(
-      String chainType, String packByteString, complationBlock block) {
-    if (chainType == null) {
-      LogUtil.v("链类型为空");
-      return;
-    }
-    if (packByteString == null || packByteString.length == 0) {
-      LogUtil.v("签名数据为空");
-      return;
-    }
-
-    if (chainType.toLowerCase() == "eth") {
+      int chainType, String packByteString, complationBlock block) {
+    assert(chainType != null, "pushData 链类型为空");
+    assert(chainType != null, "pushData 签名数据为空");
+    if (chainType == MCoinType.MCoinType_ETH.index ||
+        chainType == MCoinType.MCoinType_BSC.index) {
       packByteString = "0x" + packByteString;
-      return _pushETHData(packByteString, block);
-    }
-    if (chainType.toLowerCase() == "btc") {
+      return _pushETHData(
+          packByteString: packByteString, chainType: chainType, block: block);
+    } else if (chainType == MCoinType.MCoinType_BTC.index) {
       return _pushBTCData(packByteString, block);
-    }
-    if (chainType.toLowerCase() == "dot") {
+    } else if (chainType == MCoinType.MCoinType_DOT.index) {
       return _pushDOTData(packByteString, block);
+    } else {
+      assert(false, "补充请求pushData");
     }
   }
 
   static Future<dynamic> requestAssets(
-      {@required String chainType,
+      {@required int chainType,
       @required String from,
       @required String contract,
       @required String token,
       int tokenDecimal = 18,
       bool neePrice = true,
       complationBlock block}) {
-    assert(chainType != null);
+    assert(chainType != null, "requestAssets");
     assert(from != null);
 
-    if (chainType.toLowerCase() == "eth") {
+    if (chainType == MCoinType.MCoinType_ETH.index ||
+        chainType == MCoinType.MCoinType_BSC.index) {
       return _requestETHAssets(
+          chainType: chainType,
           from: from,
           contract: contract,
           neePrice: neePrice,
@@ -123,12 +124,12 @@ class ChainServices {
           token: token,
           block: block);
     }
-    if (chainType.toLowerCase() == "btc") {
+    if (chainType == MCoinType.MCoinType_BTC.index) {
       return _requestBTCAssets(from, neePrice, block);
-    } else if (chainType.toLowerCase() == "dot") {
+    } else if (chainType == MCoinType.MCoinType_DOT.index) {
       return _requestDotAssets(from, neePrice, block);
     } else {
-      return null;
+      assert(false, "补充请求requestAssets");
     }
   }
 
@@ -321,7 +322,7 @@ class ChainServices {
   }
 
   static void _requestETHAddresssInfo(
-      {String from, String contract, complationBlock block}) {
+      {String from, String contract, int chainType, complationBlock block}) {
     Map gasPrice = {
       "jsonrpc": "2.0",
       "method": "eth_gasPrice",
@@ -334,14 +335,14 @@ class ChainServices {
       "method": "eth_getTransactionCount",
       "params": [from, "latest"]
     };
-    // Map version = {
-    //   "jsonrpc": "2.0",
-    //   "method": "net_version",
-    //   "params": [],
-    //   "id": "v"
-    // };
-
-    RequestMethod().requestNetwork(Method.POST, _ethurl, (response, code) {
+    Map version = {
+      "jsonrpc": "2.0",
+      "method": "net_version",
+      "params": [],
+      "id": "v"
+    };
+    String url = chainType == MCoinType.MCoinType_ETH.index ? _ethurl : _bscurl;
+    RequestMethod().requestNetwork(Method.POST, url, (response, code) {
       if (code == 200) {
         if (response as List != null) {
           Map<String, dynamic> values = Map();
@@ -358,9 +359,13 @@ class ChainServices {
                 if (params.keys.contains("result")) {
                   String result = params["result"] as String;
                   String id = params["id"] as String;
-                  result = result.replaceFirst("0x", '');
-                  BigInt bigValue = BigInt.parse(result, radix: 16);
-                  values[id] = bigValue.toString();
+                  if (id != "v") {
+                    result = result.replaceFirst("0x", '');
+                    BigInt bigValue = BigInt.parse(result, radix: 16);
+                    values[id] = bigValue.toString();
+                  } else {
+                    values[id] = result;
+                  }
                 }
               }
             },
@@ -374,7 +379,7 @@ class ChainServices {
           block(null, 500);
         }
       }
-    }, data: [gasPrice, nonce]);
+    }, data: [gasPrice, nonce, version]);
   }
 
   static void _requestDotChainInfo(
@@ -470,8 +475,8 @@ class ChainServices {
   }
 
   static void _requesUnSpendList(
-      String chainType, String from, String amount, complationBlock block) {
-    if (chainType.toLowerCase() == "btc" || chainType.toLowerCase() == "usdt") {
+      int chainType, String from, String amount, complationBlock block) {
+    if (chainType == MCoinType.MCoinType_BTC.index) {
       return _requesBTCUnSpendList(from, amount, block);
     }
   }
@@ -508,15 +513,16 @@ class ChainServices {
     });
   }
 
-  static void _pushETHData(String packByteString, complationBlock block) {
+  static void _pushETHData(
+      {String packByteString, int chainType, complationBlock block}) {
     final Map<String, dynamic> params = {
       "id": "1",
       "jsonrpc": "2.0",
       "method": "eth_sendRawTransaction",
       "params": [packByteString]
     };
-
-    RequestMethod().requestNetwork(Method.POST, _ethurl, (response, code) {
+    String url = chainType == MCoinType.MCoinType_ETH.index ? _ethurl : _bscurl;
+    RequestMethod().requestNetwork(Method.POST, url, (response, code) {
       if (code == 200 && response as Map != null) {
         if (response.keys.contains("error")) {
           Map<String, dynamic> err = response["error"] as Map;
@@ -630,7 +636,8 @@ class ChainServices {
   }
 
   static Future<dynamic> _requestETHAssets(
-      {String from,
+      {int chainType,
+      String from,
       String contract,
       String token,
       int tokenDecimal = 18,
@@ -654,9 +661,10 @@ class ChainServices {
       balanceParams["params"] = [from, "latest"];
       balanceParams["id"] = 1;
     }
+    String url = chainType == MCoinType.MCoinType_ETH.index ? _ethurl : _bscurl;
     Map<String, dynamic> assetResult = {"c": "0", "p": "0", "up": "0"};
     dynamic balresult = await RequestMethod()
-        .futureRequestData(Method.POST, _ethurl, null, data: balanceParams);
+        .futureRequestData(Method.POST, url, null, data: balanceParams);
     if (balresult != null && tokenDecimal != 0) {
       String bal = balresult["result"] as String;
       bal = bal?.replaceFirst("0x", "");

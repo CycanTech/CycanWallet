@@ -75,12 +75,9 @@ class CurrentChooseWalletState with ChangeNotifier {
     }
     List cacheValue = _collectionTokens[walletID];
     if (cacheValue == null) {
-      num mainCNYPrice =
-          num.tryParse(_mainToken[walletID]["p"].toString());
-      num mainUSDPrice =
-          num.tryParse(_mainToken[walletID]["up"].toString());
-      num mainBalance =
-          num.tryParse(_mainToken[walletID]["c"].toString());
+      num mainCNYPrice = num.tryParse(_mainToken[walletID]["p"].toString());
+      num mainUSDPrice = num.tryParse(_mainToken[walletID]["up"].toString());
+      num mainBalance = num.tryParse(_mainToken[walletID]["c"].toString());
       MCollectionTokens cacheMap = MCollectionTokens();
       cacheMap.token = symbol;
       cacheMap.coinType = symbol;
@@ -95,7 +92,7 @@ class CurrentChooseWalletState with ChangeNotifier {
       notifyListeners();
     }
     ChainServices.requestAssets(
-      chainType: symbol,
+      chainType: chainType,
       from: walletAaddress,
       contract: null,
       token: null,
@@ -120,8 +117,7 @@ class CurrentChooseWalletState with ChangeNotifier {
     final String symbol = _mhWallet.symbol.toUpperCase();
     final int chainType = _mhWallet.chainType;
     num mainCNYPrice = num.tryParse(_mainToken[walletID]["p"].toString());
-    num mainUSDPrice =
-        num.tryParse(_mainToken[walletID]["up"].toString());
+    num mainUSDPrice = num.tryParse(_mainToken[walletID]["up"].toString());
     num mainBalance = num.tryParse(_mainToken[walletID]["c"].toString());
     WalletServices.requestMyCollectionTokens(walletAaddress, convert, symbol,
         (result, code) {
@@ -194,16 +190,14 @@ class CurrentChooseWalletState with ChangeNotifier {
   }
 
   MHWallet get currentWallet => _mhWallet;
-  List<MCollectionTokens> get collectionTokens => _mhWallet != null
-      ? _collectionTokens[_mhWallet.walletID] ??= []
-      : [];
+  List<MCollectionTokens> get collectionTokens =>
+      _mhWallet != null ? _collectionTokens[_mhWallet.walletID] ??= [] : [];
   List get allTokens =>
       _mhWallet != null ? _allTokens[_mhWallet.walletID] ??= [] : [];
   String get totalAssets => _mhWallet != null
       ? _mhWallet.hiddenAssets == true
           ? "******"
-          : _totalAssets[_mhWallet.walletID] ??=
-              "≈${currencySymbolStr}0.00"
+          : _totalAssets[_mhWallet.walletID] ??= "≈${currencySymbolStr}0.00"
       : "≈{$currencySymbolStr}0.00";
   String get currencyTypeStr =>
       _currencyType == MCurrencyType.CNY ? "CNY" : "USD";

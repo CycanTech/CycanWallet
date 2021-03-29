@@ -428,15 +428,16 @@ class ChannelNative {
   }
 
   //验证地址格式
-  static Future<bool> checkAddressValid(
-      String chainType, String address) async {
-    if (chainType == null ||
-        chainType.length == 0 ||
-        address == null ||
-        address.length == 0) {
+  static Future<bool> checkAddressValid(int chainType, String address) async {
+    if (chainType == null || address == null || address.length == 0) {
       return false;
     }
-    var map = {'chainType': chainType, 'address': address};
+
+    String value = Constant.getChainSymbol(chainType);
+    if (value.toUpperCase() == "BSC") {
+      value = "ETH";
+    }
+    var map = {'chainType': value, 'address': address};
     dynamic a = await _channel.invokeMethod('CoinID_checkAddressValid', map);
     return a;
   }

@@ -97,7 +97,7 @@ class _PaymentPageState extends State<PaymentPage> {
     amountConvert = amountType == 0 ? "￥" : "\$";
 
     ChainServices.requestAssets(
-        chainType: chainStr,
+        chainType: chainType,
         from: from,
         contract: contract,
         token: null,
@@ -116,7 +116,7 @@ class _PaymentPageState extends State<PaymentPage> {
           }
         });
     ChainServices.requestChainInfo(
-        chainType: chainStr,
+        chainType: chainType,
         from: from,
         amount: "",
         m: m,
@@ -243,8 +243,7 @@ class _PaymentPageState extends State<PaymentPage> {
       return;
     }
     try {
-      isValid = await ChannelNative.checkAddressValid(
-          coinTypeString.toLowerCase(), to);
+      isValid = await ChannelNative.checkAddressValid(coinType, to);
     } catch (e) {
       LogUtil.v("校验失败" + e.toString());
     }
@@ -320,7 +319,7 @@ class _PaymentPageState extends State<PaymentPage> {
     } else {
       String feeValue = "0";
       if (coinType == MCoinType.MCoinType_ETH.index ||
-          coinType == MCoinType.MCoinType_VNS.index) {
+          coinType == MCoinType.MCoinType_BSC.index) {
         feeValue = MHWallet.configFeeValue(
             cointype: coinType,
             beanValue: _feeBean.toString(),
@@ -436,7 +435,7 @@ class _PaymentPageState extends State<PaymentPage> {
     String signValue;
 
     if (params.coinType == MCoinType.MCoinType_ETH.index ||
-        params.coinType == MCoinType.MCoinType_VNS.index) {
+        params.coinType == MCoinType.MCoinType_BSC.index) {
       int decimal = 18;
       MSignType signType = MSignType.MSignType_Main;
       if (isToken() == true) {
@@ -491,15 +490,13 @@ class _PaymentPageState extends State<PaymentPage> {
     }
     LogUtil.v("签名数据 $signValue");
     if (signValue.isValid()) {
-      ChainServices.pushData(
-          Constant.getChainSymbol(_wallet.chainType), signValue,
-          (result, code) {
+      ChainServices.pushData(_wallet.chainType, signValue, (result, code) {
         if (code == 200) {
           HWToast.showText(text: "payment_transsuccess".local());
           Future.delayed(Duration(seconds: 3))
               .then((value) => {Routers.goBackWithParams(context, {})});
         } else {
-          HWToast.showText(text: "payment_transfailere".local());
+          HWToast.showText(text: "payment_transfailere".local() + result);
         }
       });
     } else {

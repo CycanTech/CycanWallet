@@ -218,7 +218,7 @@ class _TestNativePageState extends State<TestNativePage> {
 
   checkAddressValid() async {
     bool result = await ChannelNative.checkAddressValid(
-        "btc", "1PX7MaEHU4e2Lrv1vSVdYzWBq6chNY6U7Z");
+        1, "1PX7MaEHU4e2Lrv1vSVdYzWBq6chNY6U7Z");
     print("检测地址格式: $result");
   }
 

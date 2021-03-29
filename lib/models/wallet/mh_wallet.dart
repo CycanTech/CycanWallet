@@ -479,7 +479,7 @@ class MHWallet extends BaseModel {
         assert(jsonTran != null, "btc json");
         return this.btcsign(jsonTran: jsonTran, to: to, pin: pin);
       } else if (this.chainType == MCoinType.MCoinType_ETH.index ||
-          this.chainType == MCoinType.MCoinType_VNS.index) {
+          this.chainType == MCoinType.MCoinType_BSC.index) {
         assert(ethSignParams != null, "eth签名数据不能为空");
         return this.ethsign(
           to: to,
