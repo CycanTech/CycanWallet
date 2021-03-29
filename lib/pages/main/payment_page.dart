@@ -456,14 +456,15 @@ class _PaymentPageState extends State<PaymentPage> {
       String blockHash = chaininfo["blockHash"];
       int eraPeriod = 64;
       String address = params.to;
-      String value = (double.tryParse(params.amount) * pow(10, 15)).toString();
+      String value =
+          (double.tryParse(params.amount) * pow(10, 15)).toInt().toString();
       String tip = "10";
       String genesisHash = chaininfo["genesisHash"];
       int nonce = chaininfo["nonce"] as int;
       int txVersion = chaininfo["txVersion"] as int;
       int specVersion = chaininfo["specVersion"] as int;
       DotSignParams dotsign = DotSignParams(
-          "polkadot",
+          "phoenix",
           "1",
           blockNum,
           blockHash,
