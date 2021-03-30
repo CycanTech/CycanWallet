@@ -166,9 +166,7 @@
     }
     if (coinType == MCoinType_All||coinType == MCoinType_BSC) {
         
-        WalletObject * wallet = [self importETHWallet:object];
-        wallet.coinType = MCoinType_BSC;
-        [datas addObject:wallet];
+        [datas addObject: [self importBSCWallet:object]];
     }
     if (coinType == MCoinType_All||coinType == MCoinType_DOT) {
         

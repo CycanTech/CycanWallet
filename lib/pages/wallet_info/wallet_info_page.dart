@@ -149,7 +149,7 @@ class _WalletInfoPageState extends State<WalletInfoPage> {
     MHWallet mwallet =
         Provider.of<CurrentChooseWalletState>(context).currentWallet;
     String descName = mwallet.descName;
-    String symbol = mwallet.symbol;
+    String fullName = mwallet.fullName;
     return CustomPageView(
       // hiddenResizeToAvoidBottomInset: false,
       title: CustomPageView.getDefaultTitle(
@@ -161,7 +161,7 @@ class _WalletInfoPageState extends State<WalletInfoPage> {
         children: [
           getPageWidget(
             leftName: "wallet_type".local(),
-            contentValue: symbol,
+            contentValue: fullName,
             padding: EdgeInsets.only(
               left: OffsetWidget.setSc(20),
               right: OffsetWidget.setSc(20),

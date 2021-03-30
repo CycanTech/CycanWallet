@@ -86,7 +86,7 @@ class _$FlutterDatabase extends FlutterDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `wallet_table` (`walletID` TEXT, `walletAaddress` TEXT, `pin` TEXT, `pinTip` TEXT, `createTime` TEXT, `updateTime` TEXT, `symbol` TEXT, `fullName` TEXT, `isChoose` INTEGER, `prvKey` TEXT, `pubKey` TEXT, `chainType` INTEGER, `isWegwit` INTEGER, `leadType` INTEGER, `originType` INTEGER, `subPrvKey` TEXT, `subPubKey` TEXT, `masterPubKey` TEXT, `macUUID` TEXT, `descName` TEXT, `didChoose` INTEGER, `hiddenAssets` INTEGER, `index` INTEGER, PRIMARY KEY (`walletID`))');
+            'CREATE TABLE IF NOT EXISTS `wallet_table` (`walletID` TEXT, `walletAaddress` TEXT, `pin` TEXT, `pinTip` TEXT, `createTime` TEXT, `updateTime` TEXT, `isChoose` INTEGER, `prvKey` TEXT, `pubKey` TEXT, `chainType` INTEGER, `isWegwit` INTEGER, `leadType` INTEGER, `originType` INTEGER, `subPrvKey` TEXT, `subPubKey` TEXT, `masterPubKey` TEXT, `macUUID` TEXT, `descName` TEXT, `didChoose` INTEGER, `hiddenAssets` INTEGER, `index` INTEGER, PRIMARY KEY (`walletID`))');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `userid_table` (`walletName` TEXT, `pwd` TEXT, `tip` TEXT, `masterPubKey` TEXT, `memos` TEXT, `leadType` INTEGER, `mOriginType` INTEGER, PRIMARY KEY (`masterPubKey`))');
         await database.execute(
@@ -134,8 +134,6 @@ class _$MHWalletDao extends MHWalletDao {
                   'pinTip': item.pinTip,
                   'createTime': item.createTime,
                   'updateTime': item.updateTime,
-                  'symbol': item.symbol,
-                  'fullName': item.fullName,
                   'isChoose':
                       item.isChoose == null ? null : (item.isChoose ? 1 : 0),
                   'prvKey': item.prvKey,
@@ -169,8 +167,6 @@ class _$MHWalletDao extends MHWalletDao {
                   'pinTip': item.pinTip,
                   'createTime': item.createTime,
                   'updateTime': item.updateTime,
-                  'symbol': item.symbol,
-                  'fullName': item.fullName,
                   'isChoose':
                       item.isChoose == null ? null : (item.isChoose ? 1 : 0),
                   'prvKey': item.prvKey,
@@ -204,8 +200,6 @@ class _$MHWalletDao extends MHWalletDao {
                   'pinTip': item.pinTip,
                   'createTime': item.createTime,
                   'updateTime': item.updateTime,
-                  'symbol': item.symbol,
-                  'fullName': item.fullName,
                   'isChoose':
                       item.isChoose == null ? null : (item.isChoose ? 1 : 0),
                   'prvKey': item.prvKey,
@@ -252,8 +246,6 @@ class _$MHWalletDao extends MHWalletDao {
             row['pinTip'] as String,
             row['createTime'] as String,
             row['updateTime'] as String,
-            row['symbol'] as String,
-            row['fullName'] as String,
             row['isChoose'] == null ? null : (row['isChoose'] as int) != 0,
             row['prvKey'] as String,
             row['pubKey'] as String,
@@ -283,8 +275,6 @@ class _$MHWalletDao extends MHWalletDao {
             row['pinTip'] as String,
             row['createTime'] as String,
             row['updateTime'] as String,
-            row['symbol'] as String,
-            row['fullName'] as String,
             row['isChoose'] == null ? null : (row['isChoose'] as int) != 0,
             row['prvKey'] as String,
             row['pubKey'] as String,
@@ -314,8 +304,6 @@ class _$MHWalletDao extends MHWalletDao {
             row['pinTip'] as String,
             row['createTime'] as String,
             row['updateTime'] as String,
-            row['symbol'] as String,
-            row['fullName'] as String,
             row['isChoose'] == null ? null : (row['isChoose'] as int) != 0,
             row['prvKey'] as String,
             row['pubKey'] as String,
@@ -347,8 +335,6 @@ class _$MHWalletDao extends MHWalletDao {
             row['pinTip'] as String,
             row['createTime'] as String,
             row['updateTime'] as String,
-            row['symbol'] as String,
-            row['fullName'] as String,
             row['isChoose'] == null ? null : (row['isChoose'] as int) != 0,
             row['prvKey'] as String,
             row['pubKey'] as String,
@@ -380,8 +366,6 @@ class _$MHWalletDao extends MHWalletDao {
             row['pinTip'] as String,
             row['createTime'] as String,
             row['updateTime'] as String,
-            row['symbol'] as String,
-            row['fullName'] as String,
             row['isChoose'] == null ? null : (row['isChoose'] as int) != 0,
             row['prvKey'] as String,
             row['pubKey'] as String,
@@ -414,8 +398,6 @@ class _$MHWalletDao extends MHWalletDao {
             row['pinTip'] as String,
             row['createTime'] as String,
             row['updateTime'] as String,
-            row['symbol'] as String,
-            row['fullName'] as String,
             row['isChoose'] == null ? null : (row['isChoose'] as int) != 0,
             row['prvKey'] as String,
             row['pubKey'] as String,
@@ -447,8 +429,6 @@ class _$MHWalletDao extends MHWalletDao {
             row['pinTip'] as String,
             row['createTime'] as String,
             row['updateTime'] as String,
-            row['symbol'] as String,
-            row['fullName'] as String,
             row['isChoose'] == null ? null : (row['isChoose'] as int) != 0,
             row['prvKey'] as String,
             row['pubKey'] as String,
@@ -479,8 +459,6 @@ class _$MHWalletDao extends MHWalletDao {
             row['pinTip'] as String,
             row['createTime'] as String,
             row['updateTime'] as String,
-            row['symbol'] as String,
-            row['fullName'] as String,
             row['isChoose'] == null ? null : (row['isChoose'] as int) != 0,
             row['prvKey'] as String,
             row['pubKey'] as String,
@@ -512,8 +490,6 @@ class _$MHWalletDao extends MHWalletDao {
             row['pinTip'] as String,
             row['createTime'] as String,
             row['updateTime'] as String,
-            row['symbol'] as String,
-            row['fullName'] as String,
             row['isChoose'] == null ? null : (row['isChoose'] as int) != 0,
             row['prvKey'] as String,
             row['pubKey'] as String,

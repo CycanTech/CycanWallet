@@ -29,31 +29,6 @@ class _ChooseCoinTypePageState extends State<ChooseCoinTypePage> {
       "name": "BSC-Wallet",
       "type": MCoinType.MCoinType_BSC,
     },
-    // {
-    //   "image": "wallet_eos.png",
-    //   "name": "EOS-Wallet",
-    //   "type": MCoinType.MCoinType_EOS
-    // },
-    // {
-    //   "image": "wallet_vns.png",
-    //   "name": "VNS-Wallet",
-    //   "type": MCoinType.MCoinType_VNS
-    // },
-    // {
-    //   "image": "wallet_btm.png",
-    //   "name": "BTM-Wallet",
-    //   "type": MCoinType.MCoinType_BTM
-    // },
-    // {
-    //   "image": "wallet_ltc.png",
-    //   "name": "LTC-Wallet",
-    //   "type": MCoinType.MCoinType_LTC
-    // },
-    // {
-    //   "image": "wallet_usdt.png",
-    //   "name": "USDT-Wallet",
-    //   "type": MCoinType.MCoinType_USDT
-    // },
   ];
 
   void cellTap(MCoinType coinType) {

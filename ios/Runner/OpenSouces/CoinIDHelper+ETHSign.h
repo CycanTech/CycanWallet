@@ -15,6 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
 +(id)importETHWallet:(ImportObject * )object ;
 
 
++(id)importBSCWallet:(ImportObject * )object ;
+
+
 @end
 
 NS_ASSUME_NONNULL_END

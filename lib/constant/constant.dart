@@ -132,112 +132,6 @@ class Constant {
   static const int tabbar_select_color = 0xFF494949;
   static const int main_color = 0xFFFFFFFF; //主黑色调
 
-  static String getChainSymbol(int coinType) {
-    String symbol = "";
-    if (MCoinType.MCoinType_EOS.index == coinType) {
-      symbol = "EOS";
-    } else if (MCoinType.MCoinType_ETH.index == coinType) {
-      symbol = "ETH";
-    } else if (MCoinType.MCoinType_BTC.index == coinType) {
-      symbol = "BTC";
-    } else if (MCoinType.MCoinType_BTM.index == coinType) {
-      symbol = "BTM";
-    } else if (MCoinType.MCoinType_VNS.index == coinType) {
-      symbol = "VNS";
-    } else if (MCoinType.MCoinType_LTC.index == coinType) {
-      symbol = "LTC";
-    } else if (MCoinType.MCoinType_GPS.index == coinType) {
-      symbol = "GPS";
-    } else if (MCoinType.MCoinType_USDT.index == coinType) {
-      symbol = "USDT";
-    } else if (MCoinType.MCoinType_DOT.index == coinType) {
-      symbol = "DOT";
-    } else if (MCoinType.MCoinType_BSC.index == coinType) {
-      symbol = "BSC";
-    }
-    return symbol;
-  }
-
-  static MCoinType getCoinType(String symbol) {
-    MCoinType coinType;
-    if (symbol.toLowerCase() == "eos") {
-      coinType = MCoinType.MCoinType_EOS;
-    } else if (symbol.toLowerCase() == "eth") {
-      coinType = MCoinType.MCoinType_ETH;
-    } else if (symbol.toLowerCase() == "btc") {
-      coinType = MCoinType.MCoinType_BTC;
-    } else if (symbol.toLowerCase() == "btm") {
-      coinType = MCoinType.MCoinType_BTM;
-    } else if (symbol.toLowerCase() == "vns") {
-      coinType = MCoinType.MCoinType_VNS;
-    } else if (symbol.toLowerCase() == "ltc") {
-      coinType = MCoinType.MCoinType_LTC;
-    } else if (symbol.toLowerCase() == "gps") {
-      coinType = MCoinType.MCoinType_GPS;
-    } else if (symbol.toLowerCase() == "usdt") {
-      coinType = MCoinType.MCoinType_USDT;
-    } else if (symbol.toLowerCase() == "dot") {
-      coinType = MCoinType.MCoinType_DOT;
-    } else if (symbol.toLowerCase() == "bsc") {
-      coinType = MCoinType.MCoinType_BSC;
-    }
-    return coinType;
-  }
-
-  static String getChainFullName(int coinType) {
-    String fullName = "";
-    if (MCoinType.MCoinType_EOS.index == coinType) {
-      fullName = "Enterprise Operation System";
-    } else if (MCoinType.MCoinType_ETH.index == coinType) {
-      fullName = "Ethereum";
-    } else if (MCoinType.MCoinType_BTC.index == coinType) {
-      fullName = "Bitcoin";
-    } else if (MCoinType.MCoinType_BTM.index == coinType) {
-      fullName = "Bytom";
-    } else if (MCoinType.MCoinType_VNS.index == coinType) {
-      fullName = "Venus";
-    } else if (MCoinType.MCoinType_LTC.index == coinType) {
-      fullName = "Litecoin";
-    } else if (MCoinType.MCoinType_GPS.index == coinType) {
-      fullName = "GPS";
-    } else if (MCoinType.MCoinType_USDT.index == coinType) {
-      fullName = "USDT";
-    } else if (MCoinType.MCoinType_DOT.index == coinType) {
-      fullName = "Polkadot";
-    } else if (MCoinType.MCoinType_BSC.index == coinType) {
-      fullName = "Binance Chain";
-    }
-    return fullName;
-  }
-
-  static int getChainDecimals(int coinType) {
-    int decimals;
-    if (MCoinType.MCoinType_EOS.index == coinType) {
-      decimals = 4;
-    } else if (MCoinType.MCoinType_ETH.index == coinType) {
-      decimals = 18;
-    } else if (MCoinType.MCoinType_BTC.index == coinType) {
-      decimals = 8;
-    } else if (MCoinType.MCoinType_BTM.index == coinType) {
-      decimals = 8;
-    } else if (MCoinType.MCoinType_VNS.index == coinType) {
-      decimals = 18;
-    } else if (MCoinType.MCoinType_LTC.index == coinType) {
-      decimals = 8;
-    } else if (MCoinType.MCoinType_GPS.index == coinType) {
-      decimals = 4;
-    } else if (MCoinType.MCoinType_USDT.index == coinType) {
-      decimals = 8;
-    } else if (MCoinType.MCoinType_DOT.index == coinType) {
-      decimals = 10;
-    } else if (MCoinType.MCoinType_BSC.index == coinType) {
-      decimals = 18;
-    } else {
-      assert(false, "getChainDecimals");
-    }
-    return decimals;
-  }
-
   static Future<File> getAppFile() async {
     Directory documentsDir;
     if (Constant.isAndroid) {
@@ -269,6 +163,64 @@ class Constant {
       LogUtil.v(e);
       return null;
     }
+  }
+
+  static String getChainSymbol(int chainType) {
+    String symbol = "";
+    if (MCoinType.MCoinType_ETH.index == chainType) {
+      symbol = "ETH";
+    } else if (MCoinType.MCoinType_BTC.index == chainType) {
+      symbol = "BTC";
+    } else if (MCoinType.MCoinType_DOT.index == chainType) {
+      symbol = "DOT";
+    } else if (MCoinType.MCoinType_BSC.index == chainType) {
+      symbol = "BNB";
+    }
+    return symbol;
+  }
+
+  static MCoinType getCoinType(String symbol) {
+    MCoinType coinType;
+    if (symbol.toLowerCase() == "eth") {
+      coinType = MCoinType.MCoinType_ETH;
+    } else if (symbol.toLowerCase() == "btc") {
+      coinType = MCoinType.MCoinType_BTC;
+    } else if (symbol.toLowerCase() == "dot") {
+      coinType = MCoinType.MCoinType_DOT;
+    } else if (symbol.toLowerCase() == "bnb") {
+      coinType = MCoinType.MCoinType_BSC;
+    }
+    return coinType;
+  }
+
+  static String getChainFullName(int coinType) {
+    String fullName = "";
+    if (MCoinType.MCoinType_ETH.index == coinType) {
+      fullName = "Ethereum";
+    } else if (MCoinType.MCoinType_BTC.index == coinType) {
+      fullName = "Bitcoin";
+    } else if (MCoinType.MCoinType_DOT.index == coinType) {
+      fullName = "Polkadot";
+    } else if (MCoinType.MCoinType_BSC.index == coinType) {
+      fullName = "Binance Smart Chain";
+    }
+    return fullName;
+  }
+
+  static int getChainDecimals(int coinType) {
+    int decimals;
+    if (MCoinType.MCoinType_ETH.index == coinType) {
+      decimals = 18;
+    } else if (MCoinType.MCoinType_BTC.index == coinType) {
+      decimals = 8;
+    } else if (MCoinType.MCoinType_DOT.index == coinType) {
+      decimals = 10;
+    } else if (MCoinType.MCoinType_BSC.index == coinType) {
+      decimals = 18;
+    } else {
+      assert(false, "getChainDecimals");
+    }
+    return decimals;
   }
 
   static String getChainLogo(int chainType) {

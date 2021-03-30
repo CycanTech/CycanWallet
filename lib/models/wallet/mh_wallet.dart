@@ -30,8 +30,6 @@ class MHWallet extends BaseModel {
   String pinTip; // 密码提示
   String createTime; //钱包创建时间
   String updateTime; //钱包修改时间
-  String symbol; //主链符号
-  String fullName; //主链全称
   bool isChoose; //当前选中
   String prvKey; //私钥
   String pubKey; //热端公钥 冷端转账需要的公钥
@@ -57,8 +55,6 @@ class MHWallet extends BaseModel {
     this.pinTip,
     this.createTime,
     this.updateTime,
-    this.symbol,
-    this.fullName,
     this.isChoose,
     this.prvKey,
     this.pubKey,
@@ -82,8 +78,6 @@ class MHWallet extends BaseModel {
     pinTip = "";
     createTime = DateUtil.getNowDateStr();
     updateTime = createTime;
-    symbol = Constant.getChainSymbol(object.coinType);
-    fullName = Constant.getChainFullName(object.coinType);
     isChoose = false;
     prvKey = object.prvKey;
     pubKey = object.pubKey;
@@ -96,7 +90,7 @@ class MHWallet extends BaseModel {
     masterPubKey = object.masterPubKey;
     macUUID = "";
     descName = "";
-    walletID = symbol +
+    walletID = Constant.getChainSymbol(object.coinType) +
         "|" +
         InstructionDataFormat.SHA1(
             (walletAaddress == null || walletAaddress.length == 0)
@@ -111,8 +105,6 @@ class MHWallet extends BaseModel {
       pinTip,
       createTime,
       updateTime,
-      symbol,
-      fullName,
       isChoose,
       prvKey,
       pubKey,
@@ -509,8 +501,11 @@ class MHWallet extends BaseModel {
       if (prv.isValid() == false) {
         prv = this.subPrvKey;
       }
-      WalletObject object =
-          await ChannelWallet.exportPrvFrom(prv, pin, this.chainType);
+      int type = this.chainType;
+      if (type == MCoinType.MCoinType_BSC.index) {
+        type = MCoinType.MCoinType_ETH.index;
+      }
+      WalletObject object = await ChannelWallet.exportPrvFrom(prv, pin, type);
       return object.prvKey;
     } catch (e) {
       LogUtil.v("exportPrv出错" + e.toString());
@@ -526,8 +521,12 @@ class MHWallet extends BaseModel {
       if (prv.isValid() == false) {
         prv = this.subPrvKey;
       }
+      int type = this.chainType;
+      if (type == MCoinType.MCoinType_BSC.index) {
+        type = MCoinType.MCoinType_ETH.index;
+      }
       WalletObject object =
-          await ChannelWallet.exportKeyStoreFrom(prv, pin, this.chainType);
+          await ChannelWallet.exportKeyStoreFrom(prv, pin, type);
       return object.keyStore;
     } catch (e) {
       LogUtil.v("keyStore出错" + e.toString());
@@ -636,7 +635,7 @@ class MHWallet extends BaseModel {
   }) {
     double feeValue = 0.0;
     if (cointype == MCoinType.MCoinType_ETH.index ||
-        cointype == MCoinType.MCoinType_VNS.index) {
+        cointype == MCoinType.MCoinType_BSC.index) {
       BigInt gasValue = BigInt.tryParse(beanValue) * BigInt.from(10).pow(9);
       gasValue = gasValue * BigInt.tryParse(offsetValue);
       feeValue = gasValue / BigInt.from(10).pow(18);
@@ -768,6 +767,9 @@ class MHWallet extends BaseModel {
       return null;
     }
   }
+
+  String get symbol => Constant.getChainSymbol(this.chainType);
+  String get fullName => Constant.getChainFullName(this.chainType);
 }
 
 @dao

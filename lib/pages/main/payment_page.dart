@@ -457,7 +457,7 @@ class _PaymentPageState extends State<PaymentPage> {
       int eraPeriod = 64;
       String address = params.to;
       String value =
-          (double.tryParse(params.amount) * pow(10, 15)).toInt().toString();
+          (double.tryParse(params.amount) * pow(10, 12)).toInt().toString();
       String tip = "10";
       String genesisHash = chaininfo["genesisHash"];
       int nonce = chaininfo["nonce"] as int;

@@ -73,12 +73,12 @@ public class CreateWalletUtil {
     private static byte[] pk_byte;
     private static byte[] pk_public_result, pk_private_result;
 
-    public static List createWallet(int common, String words, int chainType, String pin){
+    public static List createWallet(int common, String words, int chainType, String pin) {
         List wallets = new ArrayList();
         boolean result;
         String[] words_arr = words.split(" ");
-        if(common == Constants.LEAD_TYPE.STANDARMEMO){
-            result =  XMHCoinUtitls.CoinID_SetMasterStandard(words.trim());
+        if (common == Constants.LEAD_TYPE.STANDARMEMO) {
+            result = XMHCoinUtitls.CoinID_SetMasterStandard(words.trim());
         } else {
             String hex_str = "";
             if (CommonUtil.isChinese(words_arr[0])) {
@@ -188,9 +188,9 @@ public class CreateWalletUtil {
 //                        wallets.add(map);
 //                    }
 
-                    if(chainType == Constants.COIN_TYPE.TYPE_ALL || chainType == Constants.COIN_TYPE.TYPE_BTC){
+                    if (chainType == Constants.COIN_TYPE.TYPE_ALL || chainType == Constants.COIN_TYPE.TYPE_BTC) {
                         //btc
-                        if(common == Constants.LEAD_TYPE.STANDARMEMO){
+                        if (common == Constants.LEAD_TYPE.STANDARMEMO) {
                             String btcStr = XMHCoinUtitls.CoinID_deriveKeyByPath("44'/0'/0'/0/0");
                             btc_byte = HexUtil.hexStringToBytes(btcStr);
                         } else {
@@ -219,9 +219,9 @@ public class CreateWalletUtil {
                         wallets.add(map);
                     }
 
-                    if(chainType == Constants.COIN_TYPE.TYPE_ALL || chainType == Constants.COIN_TYPE.TYPE_ETH || chainType == Constants.COIN_TYPE.TYPE_BSC ){
+                    if (chainType == Constants.COIN_TYPE.TYPE_ALL || chainType == Constants.COIN_TYPE.TYPE_ETH) {
                         //eth
-                        if(common == Constants.LEAD_TYPE.STANDARMEMO){
+                        if (common == Constants.LEAD_TYPE.STANDARMEMO) {
                             String ethStr = XMHCoinUtitls.CoinID_deriveKeyByPath("44'/60'/0'/0/0");
                             eth_byte = HexUtil.hexStringToBytes(ethStr);
                         } else {
@@ -241,43 +241,31 @@ public class CreateWalletUtil {
                         eth_public = "0x" + CommonUtil.byteArrayToStr(XMHCoinUtitls.CoinID_ExportETHPubKey(eth_public_result));
                         eth_private = DigitalTrans.byte2hex(DigitalTrans.encKeyByAES128CBC(CommonUtil.strToByteArrayNotAddEnd(DigitalTrans.byte2hex(eth_private_result)), pin));
 
-                        if (chainType == Constants.COIN_TYPE.TYPE_ALL || chainType == Constants.COIN_TYPE.TYPE_ETH){
+                        Map map = new HashMap();
+                        map.put("pubKey", DigitalTrans.byte2hex(eth_public_result));
+                        map.put("prvKey", eth_private);
+                        map.put("coinType", Constants.COIN_TYPE.TYPE_ETH);
+                        map.put("address", eth_public);
+                        map.put("masterPubKey", masterPubKey);
+                        wallets.add(map);
 
-                            Map map = new HashMap();
-                            map.put("pubKey", DigitalTrans.byte2hex(eth_public_result));
-                            map.put("prvKey", eth_private);
-                            map.put("coinType", Constants.COIN_TYPE.TYPE_ETH);
-                            map.put("address", eth_public);
-                            map.put("masterPubKey", masterPubKey);
-                            wallets.add(map);
-                        }
-                        if (chainType == Constants.COIN_TYPE.TYPE_ALL || chainType == Constants.COIN_TYPE.TYPE_BSC){
-
-                            Map map = new HashMap();
-                            map.put("pubKey", DigitalTrans.byte2hex(eth_public_result));
-                            map.put("prvKey", eth_private);
-                            map.put("coinType", Constants.COIN_TYPE.TYPE_BSC);
-                            map.put("address", eth_public);
-                            map.put("masterPubKey", masterPubKey);
-                            wallets.add(map);
-                        }
                     }
 
-                    if(chainType == Constants.COIN_TYPE.TYPE_ALL || chainType == Constants.COIN_TYPE.TYPE_POLKADOT){
+                    if (chainType == Constants.COIN_TYPE.TYPE_ALL || chainType == Constants.COIN_TYPE.TYPE_POLKADOT) {
 
                         short[] mnemonicIndexBuffer = new short[words_arr.length];
                         String[] momeArr = new String[0];
                         if (CommonUtil.isChinese(words_arr[0])) {
-                            String memos = CommonUtil.readAssetsTxt("chinese_simplified").replace("\r\n",",").replace("\n",",").replace("\r",",").replace("\t",",");
+                            String memos = CommonUtil.readAssetsTxt("chinese_simplified").replace("\r\n", ",").replace("\n", ",").replace("\r", ",").replace("\t", ",");
                             momeArr = memos.split(",");
                         } else {
-                            String memos = CommonUtil.readAssetsTxt("english").replace("\r\n",",").replace("\n",",").replace("\r",",").replace("\t",",");
+                            String memos = CommonUtil.readAssetsTxt("english").replace("\r\n", ",").replace("\n", ",").replace("\r", ",").replace("\t", ",");
                             momeArr = memos.split(",");
                         }
 
-                        if(momeArr.length > 0){
+                        if (momeArr.length > 0) {
                             ArrayList arrayList = new ArrayList<>(Arrays.asList(momeArr));
-                            for(int i = 0; i < words_arr.length; i ++){
+                            for (int i = 0; i < words_arr.length; i++) {
                                 mnemonicIndexBuffer[i] = (short) arrayList.indexOf(words_arr[i]);
                             }
                         }
@@ -306,36 +294,36 @@ public class CreateWalletUtil {
                         wallets.add(map);
                     }
 
-//                    if(chainType == Constants.COIN_TYPE.TYPE_ALL || chainType == Constants.COIN_TYPE.TYPE_VNS){
-//                        //vns
-//                        if(common == Constants.LEAD_TYPE.STANDARMEMO){
-//                            String vnsStr = XMHCoinUtitls.CoinID_deriveKeyByPath("44'/316'/0'/0/0");
-//                            vns_byte = HexUtil.hexStringToBytes(vnsStr);
-//                        } else {
-//                            XMHCoinUtitls.CoinID_DeriveKeyRoot(0x13c);
-//                            XMHCoinUtitls.CoinID_DeriveKeyAccount(0);
-//                            vns_byte = XMHCoinUtitls.CoinID_DeriveKey(0);
-//                        }
-//
-//                        //私钥
-//                        vns_private_result = new byte[32];
-//                        System.arraycopy(vns_byte, 0, vns_private_result, 0, vns_private_result.length);
-//
-//                        //公钥
-//                        vns_public_result = new byte[vns_byte.length - 33];
-//                        System.arraycopy(vns_byte, 33, vns_public_result, 0, vns_public_result.length);
-//
-//                        vns_public = "0x" + CommonUtil.byteArrayToStr(XMHCoinUtitls.CoinID_ExportETHPubKey(vns_public_result));
-//                        vns_private = DigitalTrans.byte2hex(DigitalTrans.encKeyByAES128CBC(CommonUtil.strToByteArrayNotAddEnd(DigitalTrans.byte2hex(vns_private_result)), pin));
-//
-//                        Map map = new HashMap();
-//                        map.put("pubKey", DigitalTrans.byte2hex(vns_public_result));
-//                        map.put("prvKey", vns_private);
-//                        map.put("coinType", Constants.COIN_TYPE.TYPE_VNS);
-//                        map.put("address", vns_public);
-//                        map.put("masterPubKey", masterPubKey);
-//                        wallets.add(map);
-//                    }
+                    if (chainType == Constants.COIN_TYPE.TYPE_ALL || chainType == Constants.COIN_TYPE.TYPE_BSC) {
+                        //vns
+                        if (common == Constants.LEAD_TYPE.STANDARMEMO) {
+                            String vnsStr = XMHCoinUtitls.CoinID_deriveKeyByPath("44'/714'/0'/0/0");
+                            vns_byte = HexUtil.hexStringToBytes(vnsStr);
+                        } else {
+                            XMHCoinUtitls.CoinID_DeriveKeyRoot(0x2ca);
+                            XMHCoinUtitls.CoinID_DeriveKeyAccount(0);
+                            vns_byte = XMHCoinUtitls.CoinID_DeriveKey(0);
+                        }
+
+                        //私钥
+                        vns_private_result = new byte[32];
+                        System.arraycopy(vns_byte, 0, vns_private_result, 0, vns_private_result.length);
+
+                        //公钥
+                        vns_public_result = new byte[vns_byte.length - 33];
+                        System.arraycopy(vns_byte, 33, vns_public_result, 0, vns_public_result.length);
+
+                        vns_public = "0x" + CommonUtil.byteArrayToStr(XMHCoinUtitls.CoinID_ExportETHPubKey(vns_public_result));
+                        vns_private = DigitalTrans.byte2hex(DigitalTrans.encKeyByAES128CBC(CommonUtil.strToByteArrayNotAddEnd(DigitalTrans.byte2hex(vns_private_result)), pin));
+
+                        Map map = new HashMap();
+                        map.put("pubKey", DigitalTrans.byte2hex(vns_public_result));
+                        map.put("prvKey", vns_private);
+                        map.put("coinType", Constants.COIN_TYPE.TYPE_BSC);
+                        map.put("address", vns_public);
+                        map.put("masterPubKey", masterPubKey);
+                        wallets.add(map);
+                    }
 
 //                    if(chainType == Constants.COIN_TYPE.TYPE_ALL || chainType == Constants.COIN_TYPE.TYPE_BTM){
 //                        //btm

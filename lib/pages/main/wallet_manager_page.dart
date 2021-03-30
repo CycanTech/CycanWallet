@@ -18,7 +18,8 @@ class _WalletManagerState extends State<WalletManager> {
     MCoinType.MCoinType_All,
     MCoinType.MCoinType_BTC,
     MCoinType.MCoinType_ETH,
-    MCoinType.MCoinType_DOT
+    MCoinType.MCoinType_DOT,
+    MCoinType.MCoinType_BSC,
   ];
   List<MHWallet> datas = [];
   MCoinType currentType = MCoinType.MCoinType_All;
@@ -66,6 +67,9 @@ class _WalletManagerState extends State<WalletManager> {
     String typeStr = Constant.getChainSymbol(mCoinType.index);
     if (mCoinType == MCoinType.MCoinType_All) {
       typeStr = "wallets_all".local();
+    }
+    if (mCoinType == MCoinType.MCoinType_BSC) {
+      typeStr = "BSC";
     }
     Color bgColor = Color(0xFFF6F9FC);
     Color textColor = Color(0xFF586883);
