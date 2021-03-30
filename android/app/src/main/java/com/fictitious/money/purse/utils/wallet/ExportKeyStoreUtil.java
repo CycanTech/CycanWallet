@@ -46,8 +46,11 @@ public class ExportKeyStoreUtil {
                 uuidStr += random.nextInt(10);
             }
             uuid = CommonUtil.strToByteArray(uuidStr);
-            if(coinType == Constants.COIN_TYPE.TYPE_ETH || coinType == Constants.COIN_TYPE.TYPE_VNS) {
-                keyStoreByte = prvKey;
+            if(coinType == Constants.COIN_TYPE.TYPE_ETH || coinType == Constants.COIN_TYPE.TYPE_VNS || coinType == Constants.COIN_TYPE.TYPE_BSC) {
+               
+                keyStoreByte = new byte[32];
+                byte[] keyByte = HexUtil.hexStringToBytes(CommonUtil.byteArrayToStr(prvKey));
+                System.arraycopy(keyByte, 0, keyStoreByte, 0 , keyStoreByte.length);//私钥
             } else if(coinType == Constants.COIN_TYPE.TYPE_BTC || coinType == Constants.COIN_TYPE.TYPE_USDT) {
                 keyStoreByte = new byte[32];
                 byte[] keyByte = XMHCoinUtitls.CoinID_ImportBTCPrvKeyByWIF(prvKey, (short)prvKey.length);
@@ -65,8 +68,13 @@ public class ExportKeyStoreUtil {
                 try {
 //                Log.d("keystore", "===pwd==" + HexUtil.formatHexString(CommonUtil.strToByteArray(pwd)));
 //                Log.d("keystore", "===pwd.length==" + (byte) CommonUtil.strToByteArray(pwd).length);
-//                Log.d("keystore", "===privateKey==" + HexUtil.formatHexString(keyStoreByte));
-//                Log.d("keystore", "===privateKey.length==" + (byte) keyStoreByte.length);
+                    // System.out.println("keyStoreByte ");
+                    // for(int a = 0 ; a< keyStoreByte.length ; a++ ){
+                    //       System.out.println(keyStoreByte[a]);
+                    // }
+                    // System.out.println( HexUtil.formatHexString(keyStoreByte));
+                    // System.out.println(" keyStoreByte len ");
+                    // System.out.println( (byte) keyStoreByte.length);
 //                Log.d("keystore", "===salt==" + HexUtil.formatHexString(salt));
 //                Log.d("keystore", "===iv==" + HexUtil.formatHexString(iv));
 //                Log.d("keystore", "===uuid==" + HexUtil.formatHexString(uuid));

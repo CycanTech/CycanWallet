@@ -25,7 +25,7 @@ class _ChooseCoinTypePageState extends State<ChooseCoinTypePage> {
       "type": MCoinType.MCoinType_DOT
     },
     {
-      "image": "wallet_bsc.png",
+      "image": "wallet_bnb.png",
       "name": "BSC-Wallet",
       "type": MCoinType.MCoinType_BSC,
     },

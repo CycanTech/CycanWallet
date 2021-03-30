@@ -41,7 +41,7 @@ class _WalletExportPrikeyKeystorePageState
   }
 
   void _clickCopy(String value) {
-    LogUtil.v("_clickCopy " + value);
+    print("_clickCopy " + value);
     if (value.isValid() == false) return;
     Clipboard.setData(ClipboardData(text: value));
     HWToast.showText(text: "copy_success".local());
@@ -139,7 +139,9 @@ class _WalletExportPrikeyKeystorePageState
         CustomRadiusButton(
           width: OffsetWidget.setSc(156),
           height: OffsetWidget.setSc(38),
-          textStr: exportType == 1 ? "export_copy".local() + " Keystore" : "export_copy".local() + " Private Key",
+          textStr: exportType == 1
+              ? "export_copy".local() + " Keystore"
+              : "export_copy".local() + " Private Key",
           fontSize: OffsetWidget.setSp(12),
           textColor: Color(0xFFFFFFFF),
           background: Color(0xFF1308FE),

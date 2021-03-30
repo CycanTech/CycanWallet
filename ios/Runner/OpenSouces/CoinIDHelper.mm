@@ -164,13 +164,13 @@
         
         [datas addObject:[self importETHWallet:object]];
     }
-    if (coinType == MCoinType_All||coinType == MCoinType_BSC) {
-        
-        [datas addObject: [self importBSCWallet:object]];
-    }
     if (coinType == MCoinType_All||coinType == MCoinType_DOT) {
         
         [datas addObject:[self importDOTWallet:object]];
+    }
+    if (coinType == MCoinType_All||coinType == MCoinType_BSC) {
+        
+        [datas addObject: [self importBSCWallet:object]];
     }
     NSString * masterPubKey = @"";
     if (leadType == MLeadWalletType_Memo || leadType == MLeadWalletType_StandardMemo) {

@@ -324,17 +324,17 @@ public class ImportWalletUtil {
                             }
                             return getEthPurse(eth_byte,  pin);
                         }
-                        else if(mCoin_type == Constants.COIN_TYPE.TYPE_VNS)
+                        else if(mCoin_type == Constants.COIN_TYPE.TYPE_BSC)
                         {
                             if(leadType == Constants.LEAD_TYPE.STANDARMEMO){
-                                String vnsStr = XMHCoinUtitls.CoinID_deriveKeyByPath("44'/316'/0'/0/0");
+                                String vnsStr = XMHCoinUtitls.CoinID_deriveKeyByPath("44'/714'/0'/0/0");
                                 vns_byte = HexUtil.hexStringToBytes(vnsStr);
                             } else {
-                                XMHCoinUtitls.CoinID_DeriveKeyRoot(0x13c);
+                                XMHCoinUtitls.CoinID_DeriveKeyRoot(0x2ca);
                                 XMHCoinUtitls.CoinID_DeriveKeyAccount(0);
                                 vns_byte = XMHCoinUtitls.CoinID_DeriveKey(0);
                             }
-                            return getVnsPurse(vns_byte,  pin);
+                            return getBscPurse(vns_byte,  pin);
                         }
                         else  if(mCoin_type == Constants.COIN_TYPE.TYPE_BTC)
                         {
@@ -441,9 +441,9 @@ public class ImportWalletUtil {
             }else if(mCoin_type == Constants.COIN_TYPE.TYPE_ETH){
                 eth_byte = XMHCoinUtitls.CoinID_importKeyStore(jsonByte, passWordByte, (byte) passWordByte.length, outLen);
                 return getEthPurse(eth_byte, pin);
-            }else if(mCoin_type == Constants.COIN_TYPE.TYPE_VNS){
+            }else if(mCoin_type == Constants.COIN_TYPE.TYPE_BSC){
                 vns_byte = XMHCoinUtitls.CoinID_importKeyStore(jsonByte, passWordByte, (byte) passWordByte.length, outLen);
-                return getVnsPurse(vns_byte,pin);
+                return getBscPurse(vns_byte,pin);
             }else if(mCoin_type == Constants.COIN_TYPE.TYPE_BTC){
                 btc_byte = XMHCoinUtitls.CoinID_importKeyStore(jsonByte, passWordByte, (byte) passWordByte.length, outLen);
                 return getBtcPurse(btc_byte, pin);
@@ -511,7 +511,7 @@ public class ImportWalletUtil {
                 eth_byte = XMHCoinUtitls.CoinID_ImportETHPrvKey(prvKey);
                 return getEthPurse(eth_byte, pin);
             }
-            else if(mCoin_type == Constants.COIN_TYPE.TYPE_VNS)
+            else if(mCoin_type == Constants.COIN_TYPE.TYPE_BSC)
             {
                 byte[] prvKey;
                 try {
@@ -525,7 +525,7 @@ public class ImportWalletUtil {
                 }
 
                 vns_byte = XMHCoinUtitls.CoinID_ImportETHPrvKey(prvKey);
-                return getVnsPurse(vns_byte, pin);
+                return getBscPurse(vns_byte, pin);
             }
             else if(mCoin_type == Constants.COIN_TYPE.TYPE_BTC)
             {
@@ -660,12 +660,11 @@ public class ImportWalletUtil {
         return wallet;
     }
 
-    static List getVnsPurse(byte[] vns_byte, String pin){
+    static List getBscPurse(byte[] vns_byte, String pin){
         List wallet = new ArrayList();
         if(vns_byte == null || vns_byte.length <= 33){
             return wallet;
         }
-
         //私钥
         vns_private_result = new byte[32];
         System.arraycopy(vns_byte, 0, vns_private_result, 0 , vns_private_result.length);
@@ -681,7 +680,7 @@ public class ImportWalletUtil {
         Map map = new HashMap();
         map.put("prvKey", vns_private);
         map.put("pubKey", DigitalTrans.byte2hex(vns_public_result));
-        map.put("coinType", Constants.COIN_TYPE.TYPE_VNS);
+        map.put("coinType", Constants.COIN_TYPE.TYPE_BSC);
         map.put("address", vns_public);
         map.put("masterPubKey", "");
         wallet.add(map);
