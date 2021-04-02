@@ -144,7 +144,6 @@ class _VerifyMemoPageState extends State<VerifyMemoPage> {
                 blurRadius: 3.0,
                 spreadRadius: 1.0)
           ]),
-      // color: Color(Constant.TextFileld_FillColor),
       child: Wrap(
         spacing: spacing, // 主轴(水平)方向间距
         runSpacing: 11.0, // 纵轴（垂直）方向间距

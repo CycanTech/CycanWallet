@@ -30,4 +30,7 @@ class MCollectionTokens {
   Map<String, dynamic> toJson() => _$MCollectionTokensToJson(this);
 
   String get assets => ((price ??= 0) * (balance ??= 0)).toStringAsFixed(2);
+
+  bool get isToken =>
+      coinType?.toLowerCase() == token?.toLowerCase() ? false : true;
 }

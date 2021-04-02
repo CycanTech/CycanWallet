@@ -55,26 +55,9 @@ enum MQRStatusCode {
   MQRStatusCode_Dispose_Err //解析失败
 }
 
-enum MWalletOptionType {
-  MWalletOptionType_Update_Name, //修改钱包名字
-  MWalletOptionType_Tips, //密码提示
-  MWalletOptionType_Export_Prvkey, //导出私钥
-  MWalletOptionType_Export_Keystore, //导出Keystore
-  MWalletOptionType_SigData, //切换地址
-  MWalletOptionType_Clean, //删除钱包
-  MWalletOptionType_Show_PubKey, //查看公钥
-}
-
 enum MSignType {
   MSignType_Main,
   MSignType_Token,
-  MSignType_BancorBuy,
-  MSignType_BancorSell,
-  MSignType_EosTypeReg,
-  MSignType_EosTypeBuyRam,
-  MSignType_EosTypeSellRam,
-  MSignType_EosTypeStakeCpu,
-  MSignType_EosTypeUnStakeCpu,
 }
 
 enum MTransType {
@@ -117,8 +100,6 @@ class Constant {
   static bool isAndroid = Platform.isAndroid;
   static bool isIOS = Platform.isIOS;
   static const String ASSETS_IMG = './assets/images/';
-  static const int BUTTON_BACKGROUND_COLOR = 0xff46556F;
-  static const int TextFileld_FillColor = 0xffffffff;
   static const int TextFileld_FocuseCOlor = 0xFFCFCFCF;
 
   static const String CHANNEL_PATH = 'plugins.coinidwallet';

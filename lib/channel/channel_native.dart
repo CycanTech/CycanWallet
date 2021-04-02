@@ -432,13 +432,13 @@ class ChannelNative {
     if (chainType == null || address == null || address.length == 0) {
       return false;
     }
-
-    String value = Constant.getChainSymbol(chainType);
-    if (value.toUpperCase() == "BSC") {
-      value = "ETH";
+    if (chainType == MCoinType.MCoinType_BSC.index) {
+      chainType = MCoinType.MCoinType_ETH.index;
     }
+    String value = Constant.getChainSymbol(chainType);
     var map = {'chainType': value, 'address': address};
     dynamic a = await _channel.invokeMethod('CoinID_checkAddressValid', map);
+    LogUtil.v("CoinID_checkAddressValid $a map $map");
     return a;
   }
 

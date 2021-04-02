@@ -172,7 +172,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
     int maxLines = widget.maxLines ??= 1;
     final EdgeInsetsGeometry contentPadding = widget.contentPadding;
     final hiddenBorderSide = widget.hiddenBorderSide;
-    final fillColor = widget.fillColor ??= Color(Constant.TextFileld_FillColor);
+    final fillColor = widget.fillColor ??= Color(0xffffffff);
     final obscureText = widget.obscureText;
     final onSubmitted = widget.onSubmitted;
     return Container(

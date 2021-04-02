@@ -58,9 +58,7 @@ extension METHSign on MHWallet {
           "nonce $nonce gasPrice $newGas   gasLimit $gasLimit to $to value $value data $data $chainID signType $signType");
       //只在主代币交易中校验有效性
       if (signType == MSignType.MSignType_Main ||
-          signType == MSignType.MSignType_Token ||
-          signType == MSignType.MSignType_BancorBuy ||
-          signType == MSignType.MSignType_BancorSell) {
+          signType == MSignType.MSignType_Token) {
         bool isValid = false;
         if (signType == MSignType.MSignType_Main) {
           isValid = await ChannelNative.checkETHpushValid(

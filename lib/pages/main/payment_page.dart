@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_coinid/channel/channel_native.dart';
 import 'package:flutter_coinid/channel/channel_scan.dart';
+import 'package:flutter_coinid/models/tokens/collection_tokens.dart';
 import 'package:flutter_coinid/models/wallet/mh_wallet.dart';
 import 'package:flutter_coinid/models/wallet/sign/ethsignparams.dart';
 import 'package:flutter_coinid/models/wallet/sign/mdotsign.dart';
@@ -16,15 +17,12 @@ import '../../public.dart';
 const btcDefaultSatLen = "500";
 
 class TransParams {
-  final dynamic rooDic;
+  final dynamic transParams;
   final String amount;
   final String to;
   final String from;
   final String fee;
-  final int coinType;
-
-  TransParams(
-      this.rooDic, this.amount, this.to, this.from, this.fee, this.coinType);
+  TransParams(this.transParams, this.amount, this.to, this.from, this.fee);
 }
 
 class PaymentPage extends StatefulWidget {
@@ -41,71 +39,66 @@ class _PaymentPageState extends State<PaymentPage> {
   TextEditingController _remarkEC = TextEditingController();
   TextEditingController _customFeeEC = TextEditingController();
   String remarkText = ""; //备注
-  EdgeInsets padding = EdgeInsets.only(left: 26, right: 26, top: 0);
+  EdgeInsets padding = EdgeInsets.only(
+      left: OffsetWidget.setSc(26), right: OffsetWidget.setSc(26), top: 0);
   EdgeInsets contentPadding = EdgeInsets.only(left: 0, right: 0);
-  MHWallet _wallet;
   double _balanceNum = 0;
   dynamic chaininfo;
   int _feeBean = 20; //gas or sat
   double _feeValue = 0.0;
   bool _isCustomFee = false; //是否自定义矿工费
-  String token = "";
-  String chainStr = "";
-  String decimals;
-  String contract;
-  String transToken;
   double tokenPrice = 0;
   double sliderMin = 0;
   double sliderMax = 100;
-  String amountConvert = "￥";
-
+  MHWallet _wallet;
   @override
   void initState() {
     super.initState();
     if (widget.params != null) {
-      token = widget.params["token"][0];
-      decimals = widget.params["decimals"][0];
-      contract = widget.params["contract"][0];
       if (widget.params.containsKey("to")) {
         _addressEC.text = widget.params["to"][0];
       }
     }
-    _findChooseWallet();
-  }
-
-  ///获取钱包数据
-  _findChooseWallet() async {
-    _wallet = await MHWallet.findChooseWallet();
     _initData(() {});
   }
 
   _initData(VoidCallback back) async {
+    _wallet = Provider.of<CurrentChooseWalletState>(context, listen: false)
+        .currentWallet;
+    MCollectionTokens tokens =
+        Provider.of<CurrentChooseWalletState>(context, listen: false)
+            .chooseTokens;
+    MCurrencyType amountType =
+        Provider.of<CurrentChooseWalletState>(context, listen: false)
+            .currencyType;
     assert(_wallet != null, "钱包数据为空");
     if (_wallet == null) return;
+
+    tokenPrice = tokens.price.toDouble();
+    _balanceNum = tokens.balance.toDouble();
     int chainType = _wallet.chainType;
-    if (chainType == MCoinType.MCoinType_ETH.index) {
+    String contract = tokens.contract;
+    String token = tokens.token;
+    int decimal = tokens.decimals;
+    if (chainType == MCoinType.MCoinType_ETH.index ||
+        chainType == MCoinType.MCoinType_BSC.index) {
       sliderMax = 150;
       sliderMin = 1;
     } else {
       sliderMax = 135;
       sliderMin = 6;
     }
-    chainStr = Constant.getChainSymbol(chainType);
     String from = _wallet?.walletAaddress;
-    int m, n = 1;
-    int amountType = await getAmountValue();
-    amountConvert = amountType == 0 ? "￥" : "\$";
-
     ChainServices.requestAssets(
         chainType: chainType,
         from: from,
         contract: contract,
-        token: null,
-        tokenDecimal: int.tryParse(decimals),
+        token: token,
+        tokenDecimal: decimal,
         block: (result, code) {
           if (code == 200 && result is Map && mounted) {
             String balance = result["c"] as String;
-            String price = amountType == 0
+            String price = amountType.index == 0
                 ? result["p"] as String
                 : result["up"] as String;
             LogUtil.v("requestAssets" + result.toString());
@@ -119,8 +112,8 @@ class _PaymentPageState extends State<PaymentPage> {
         chainType: chainType,
         from: from,
         amount: "",
-        m: m,
-        n: n,
+        m: 1,
+        n: 1,
         contract: contract,
         block: (result, code) {
           String offsetValue = btcDefaultSatLen;
@@ -128,7 +121,7 @@ class _PaymentPageState extends State<PaymentPage> {
           if (code == 200 && result != null) {
             chaininfo = result;
             if (chainType == MCoinType.MCoinType_ETH.index ||
-                chainType == MCoinType.MCoinType_VNS.index) {
+                chainType == MCoinType.MCoinType_BSC.index) {
               String gasPrice = chaininfo["p"] ??= "0";
               newBean = int.tryParse(gasPrice) ~/ pow(10, 9);
               int minv = max(sliderMin.toInt(), newBean);
@@ -170,6 +163,9 @@ class _PaymentPageState extends State<PaymentPage> {
   }
 
   _customfeeChange(String value) {
+    MHWallet _wallet =
+        Provider.of<CurrentChooseWalletState>(context, listen: false)
+            .currentWallet;
     if (_wallet.chainType == MCoinType.MCoinType_ETH.index ||
         _wallet.chainType == MCoinType.MCoinType_VNS.index) {
       if (chaininfo == null) {
@@ -191,6 +187,9 @@ class _PaymentPageState extends State<PaymentPage> {
   }
 
   _sliderChange(double value) {
+    MHWallet _wallet =
+        Provider.of<CurrentChooseWalletState>(context, listen: false)
+            .currentWallet;
     int chainType = _wallet.chainType;
     String offsetValue = btcDefaultSatLen;
     if (chaininfo == null) {
@@ -211,10 +210,6 @@ class _PaymentPageState extends State<PaymentPage> {
     });
   }
 
-  bool isToken() {
-    return token?.toLowerCase() == _wallet.symbol.toLowerCase() ? false : true;
-  }
-
   void _updateFeeWidget() {
     setState(() {
       _isCustomFee = !_isCustomFee;
@@ -222,6 +217,16 @@ class _PaymentPageState extends State<PaymentPage> {
   }
 
   void _popupInfo() async {
+    MHWallet _wallet =
+        Provider.of<CurrentChooseWalletState>(context, listen: false)
+            .currentWallet;
+    MCollectionTokens tokens =
+        Provider.of<CurrentChooseWalletState>(context, listen: false)
+            .chooseTokens;
+
+    bool isToken = tokens.isToken;
+    int decimals = tokens.decimals ??= 0;
+    String contract = tokens.contract;
     //合法性判断
     //余额判断
     //地址判断
@@ -234,8 +239,6 @@ class _PaymentPageState extends State<PaymentPage> {
     String value = _valueEC.text.trim();
     String gas = "";
     int coinType = _wallet.chainType;
-    String coinTypeString = Constant.getChainSymbol(coinType);
-    int originType = _wallet.originType;
     bool isValid = false;
     bool isWegwit = _wallet.isWegwit;
     if (to.length == 0) {
@@ -270,13 +273,9 @@ class _PaymentPageState extends State<PaymentPage> {
       return;
     }
     //判断代币decimal
-    if (isToken() == true &&
-        (coinType != MCoinType.MCoinType_EOS.index ||
-            coinType != MCoinType.MCoinType_GPS.index)) {
-      if (decimals.isValid() == false) {
-        HWToast.showText(text: "payment_decimalinvalid".local());
-        return;
-      }
+    if (isToken == true || decimals == 0) {
+      HWToast.showText(text: "payment_decimalinvalid".local());
+      return;
     }
 
     if (chaininfo == null) {
@@ -290,32 +289,31 @@ class _PaymentPageState extends State<PaymentPage> {
       });
       return;
     }
-
-    if (originType == MOriginType.MOriginType_Colds.index) {
-      //冷端判断是否连接
-    }
-    if (coinType == MCoinType.MCoinType_EOS.index ||
-        coinType == MCoinType.MCoinType_GPS.index) {
-      String permission = "active";
-      if (_wallet.prvKey.isValid() == false) {
-        permission = "owner";
-      }
-      // String a = "1";
-      // balance = balance.replaceAll(" ", "").replaceAll("VNS", "");
-      // int decimal = balance.length - balance.lastIndexOf(".") -1 ;
-      // print("decimal " + decimal.toString());
-      // String newA = double.tryParse(a).toStringAsFixed(decimal);
-
-      // List rootDic = MHWallet.convertEOSParamsJson(
-      //     coinType: coinType,
-      //     to: to,
-      //     from: from,
-      //     quantity: null,
-      //     permission: permission);
-
-      // _showSheetView(amount: value, fee: null, rootDic: rootDic);
-    } else if (coinType == MCoinType.MCoinType_DOT.index) {
-      _showSheetView(amount: value, fee: "", rootDic: null);
+    if (coinType == MCoinType.MCoinType_DOT.index) {
+      int blockNum = chaininfo["blockNumber"] as int;
+      String blockHash = chaininfo["blockHash"];
+      int eraPeriod = 64;
+      String transValue =
+          (double.tryParse(value) * pow(10, 12)).toInt().toString();
+      String tip = "10";
+      String genesisHash = chaininfo["genesisHash"];
+      int nonce = chaininfo["nonce"] as int;
+      int txVersion = chaininfo["txVersion"] as int;
+      int specVersion = chaininfo["specVersion"] as int;
+      DotSignParams dotsign = DotSignParams(
+          "phoenix",
+          "1",
+          blockNum,
+          blockHash,
+          eraPeriod,
+          to,
+          transValue,
+          tip,
+          genesisHash,
+          nonce,
+          txVersion,
+          specVersion);
+      _showSheetView(amount: value, fee: "", transParams: dotsign);
     } else {
       String feeValue = "0";
       if (coinType == MCoinType.MCoinType_ETH.index ||
@@ -333,8 +331,20 @@ class _PaymentPageState extends State<PaymentPage> {
           HWToast.showText(text: "payment_valueshouldlessbal".local());
           return;
         }
-
-        _showSheetView(amount: value, fee: feeValue, rootDic: null);
+        MSignType signType = MSignType.MSignType_Main;
+        if (isToken == true) {
+          signType = MSignType.MSignType_Token;
+        }
+        ETHSignParams ethsign = ETHSignParams(
+            chaininfo["n"],
+            _feeBean.toString(),
+            chaininfo["g"],
+            null,
+            chaininfo["v"],
+            decimals,
+            contract,
+            signType);
+        _showSheetView(amount: value, fee: feeValue, transParams: ethsign);
       } else {
         feeValue = MHWallet.configFeeValue(
           cointype: coinType,
@@ -374,13 +384,13 @@ class _PaymentPageState extends State<PaymentPage> {
           return;
         }
         _showSheetView(
-            amount: value, fee: _feeValue.toString(), rootDic: rootDic);
+            amount: value, fee: _feeValue.toString(), transParams: rootDic);
       }
     }
   }
 
   ///重新计算后的转账金额，手续费，筛选后的utxo
-  _showSheetView({String amount, String fee, dynamic rootDic}) async {
+  _showSheetView({String amount, String fee, dynamic transParams}) async {
     String from = _wallet.walletAaddress;
     String to = _addressEC.text.trim();
     String remark = _remarkEC.text.trim();
@@ -398,7 +408,8 @@ class _PaymentPageState extends State<PaymentPage> {
               datas: PaymentSheet.getTransStyleList(
                   from: from, amount: amount, to: to, remark: remark, fee: fee),
               nextAction: () {
-                _unLockWallet(amount: amount, rootDic: rootDic, fee: fee);
+                _unLockWallet(
+                    amount: amount, transParams: transParams, fee: fee);
               },
             ),
           );
@@ -406,22 +417,21 @@ class _PaymentPageState extends State<PaymentPage> {
   }
 
   ///解锁
-  _unLockWallet({String amount, dynamic rootDic, fee}) async {
+  _unLockWallet({String amount, dynamic transParams, fee}) async {
     String to = _addressEC.text.trim();
     String from = _wallet.walletAaddress;
-    int chainType = _wallet.chainType;
     //弹出解锁
     _wallet?.showLockPinDialog(
         context: context,
         ok: (value) {
           TransParams params = TransParams(
-            rootDic,
+            transParams,
             amount,
             to,
             from,
             fee,
-            chainType,
           );
+          //构造参数
           _startSign(params, value);
         },
         cancle: () {},
@@ -433,65 +443,34 @@ class _PaymentPageState extends State<PaymentPage> {
   ///开始签名
   _startSign(TransParams params, String pin) async {
     String signValue;
-
-    if (params.coinType == MCoinType.MCoinType_ETH.index ||
-        params.coinType == MCoinType.MCoinType_BSC.index) {
-      int decimal = 18;
-      MSignType signType = MSignType.MSignType_Main;
-      if (isToken() == true) {
-        signType = MSignType.MSignType_Token;
-        decimal = int.tryParse(decimals);
-      }
-      ETHSignParams ethsign = ETHSignParams(chaininfo["n"], _feeBean.toString(),
-          chaininfo["g"], null, chaininfo["v"], decimal, contract, signType);
+    if (_wallet.chainType == MCoinType.MCoinType_ETH.index ||
+        _wallet.chainType == MCoinType.MCoinType_BSC.index) {
       signValue = await _wallet.sign(
         to: params.to,
         pin: pin,
         value: params.amount,
-        ethSignParams: ethsign,
+        ethSignParams: params.transParams as ETHSignParams,
       );
-    } else if (params.coinType == MCoinType.MCoinType_DOT.index) {
-      // chaininfo
-      int blockNum = chaininfo["blockNumber"] as int;
-      String blockHash = chaininfo["blockHash"];
-      int eraPeriod = 64;
-      String address = params.to;
-      String value =
-          (double.tryParse(params.amount) * pow(10, 12)).toInt().toString();
-      String tip = "10";
-      String genesisHash = chaininfo["genesisHash"];
-      int nonce = chaininfo["nonce"] as int;
-      int txVersion = chaininfo["txVersion"] as int;
-      int specVersion = chaininfo["specVersion"] as int;
-      DotSignParams dotsign = DotSignParams(
-          "phoenix",
-          "1",
-          blockNum,
-          blockHash,
-          eraPeriod,
-          address,
-          value,
-          tip,
-          genesisHash,
-          nonce,
-          txVersion,
-          specVersion);
-
+    } else if (_wallet.chainType == MCoinType.MCoinType_DOT.index) {
       signValue = await _wallet.sign(
           to: params.to,
           pin: pin,
           value: params.amount,
-          dotSignParams: dotsign);
+          dotSignParams: params.transParams as DotSignParams);
     } else {
       signValue = await _wallet.sign(
           to: params.to,
           pin: pin,
           value: params.amount,
-          jsonTran: JsonUtil.encodeObj(params.rooDic));
+          jsonTran: JsonUtil.encodeObj(params.transParams as Map));
     }
     LogUtil.v("签名数据 $signValue");
+    HWToast.showLoading(
+      clickClose: false,
+    );
     if (signValue.isValid()) {
       ChainServices.pushData(_wallet.chainType, signValue, (result, code) {
+        HWToast.hiddenAllToast();
         if (code == 200) {
           HWToast.showText(text: "payment_transsuccess".local());
           Future.delayed(Duration(seconds: 3))
@@ -506,6 +485,12 @@ class _PaymentPageState extends State<PaymentPage> {
   }
 
   Widget _getFeeWidget() {
+    MCollectionTokens tokens = Provider.of<CurrentChooseWalletState>(
+      context,
+    ).chooseTokens;
+    String amountType =
+        Provider.of<CurrentChooseWalletState>(context, listen: false)
+            .currencySymbolStr;
     Widget _getAction() {
       int coinType = _wallet?.chainType;
       if (coinType == MCoinType.MCoinType_ETH.index ||
@@ -623,7 +608,7 @@ class _PaymentPageState extends State<PaymentPage> {
                     OffsetWidget.hGap(3),
                     Expanded(
                       child: Text(
-                        "≈$amountConvert" +
+                        "≈$amountType" +
                             (_feeValue * tokenPrice).toStringAsFixed(2),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -649,7 +634,7 @@ class _PaymentPageState extends State<PaymentPage> {
           _getFeeWidget(),
           OffsetWidget.vGap(16),
           Text(
-            "$_feeValue ${chainStr.toLowerCase() == "usdt" ? "BTC" : chainStr}",
+            "$_feeValue ${tokens.coinType}",
             style: TextStyle(
               color: Color(0xFF4A4A4A),
               fontWeight: FontWeight.w500,
@@ -663,6 +648,9 @@ class _PaymentPageState extends State<PaymentPage> {
 
   @override
   Widget build(BuildContext context) {
+    MCollectionTokens tokens = Provider.of<CurrentChooseWalletState>(
+      context,
+    ).chooseTokens;
     return CustomPageView(
         title: Text(
           "trans_payment".local(),
@@ -711,7 +699,7 @@ class _PaymentPageState extends State<PaymentPage> {
               fillColor: Colors.white,
               keyboardType: TextInputType.numberWithOptions(decimal: true),
               inputFormatters: [
-                CustomTextField.decimalInputFormatter(int.tryParse(decimals))
+                CustomTextField.decimalInputFormatter(tokens.decimals),
               ],
               style: TextStyle(
                 color: Color(0xFF000000),

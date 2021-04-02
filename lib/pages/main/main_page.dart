@@ -143,32 +143,39 @@ class _MainPageState extends State<MainPage> {
   }
 
   Widget getCustomAppBar() {
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: () => {
-        showModalBottomSheet(
-            context: context,
-            backgroundColor: Colors.white,
-            elevation: 0,
-            isDismissible: true,
-            isScrollControlled: true,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            builder: (context) {
-              return SafeArea(child: WalletsSheetPage());
-            }),
-      },
-      child: Container(
-        height: OffsetWidget.setSc(30),
-        alignment: Alignment.centerRight,
-        child: LoadAssetsImage(
-          Constant.ASSETS_IMG + "icon/icon_option.png",
-          scale: 2,
-          width: OffsetWidget.setSc(45),
-          height: OffsetWidget.setSc(30),
-          fit: null,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () => {
+            showModalBottomSheet(
+                context: context,
+                backgroundColor: Colors.white,
+                elevation: 0,
+                isDismissible: true,
+                isScrollControlled: true,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+                builder: (context) {
+                  return SafeArea(child: WalletsSheetPage());
+                }),
+          },
+          child: Container(
+            padding: EdgeInsets.only(right: 5),
+            height: OffsetWidget.setSc(30),
+            width: OffsetWidget.setSc(45),
+            alignment: Alignment.centerRight,
+            child: LoadAssetsImage(
+              Constant.ASSETS_IMG + "icon/icon_option.png",
+              scale: 2,
+              width: OffsetWidget.setSc(45),
+              height: OffsetWidget.setSc(30),
+              fit: null,
+            ),
+          ),
         ),
-      ),
+      ],
     );
   }
 

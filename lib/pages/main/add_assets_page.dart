@@ -178,7 +178,7 @@ class _AddAssetsPageState extends State<AddAssetsPage> {
                   borderRadius: BorderRadius.circular(8),
                   child: Container(
                     height: OffsetWidget.setSc(54),
-                    color: Color(Constant.TextFileld_FillColor),
+                    color: Color(0xffffffff),
                     child: Row(
                       children: [
                         OffsetWidget.hGap(10),
@@ -202,7 +202,7 @@ class _AddAssetsPageState extends State<AddAssetsPage> {
                             onSubmitted: (value) {
                               _getAssets();
                             },
-                            fillColor: Color(Constant.TextFileld_FillColor),
+                            fillColor: Color(0xffffffff),
                             hintText: "search_token_hit".local(),
                             hintStyle: TextStyle(
                                 fontSize: OffsetWidget.setSp(10),
