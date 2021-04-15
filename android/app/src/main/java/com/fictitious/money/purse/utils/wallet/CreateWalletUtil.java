@@ -325,6 +325,50 @@ public class CreateWalletUtil {
                         wallets.add(map);
                     }
 
+                    if (chainType == Constants.COIN_TYPE.TYPE_ALL || chainType == Constants.COIN_TYPE.TYPE_KSM) {
+
+                        short[] mnemonicIndexBuffer = new short[words_arr.length];
+                        String[] momeArr = new String[0];
+                        if (CommonUtil.isChinese(words_arr[0])) {
+                            String memos = CommonUtil.readAssetsTxt("chinese_simplified").replace("\r\n", ",").replace("\n", ",").replace("\r", ",").replace("\t", ",");
+                            momeArr = memos.split(",");
+                        } else {
+                            String memos = CommonUtil.readAssetsTxt("english").replace("\r\n", ",").replace("\n", ",").replace("\r", ",").replace("\t", ",");
+                            momeArr = memos.split(",");
+                        }
+
+                        if (momeArr.length > 0) {
+                            ArrayList arrayList = new ArrayList<>(Arrays.asList(momeArr));
+                            for (int i = 0; i < words_arr.length; i++) {
+                                mnemonicIndexBuffer[i] = (short) arrayList.indexOf(words_arr[i]);
+                            }
+                        }
+
+                        //KSM
+                        String pkStr = XMHCoinUtitls.CoinID_genPolkaDotKeyPairByPath(mnemonicIndexBuffer, words_arr.length, "");
+                        pk_byte = HexUtil.hexStringToBytes(pkStr);
+
+                        //私钥
+                        pk_private_result = new byte[64];
+                        System.arraycopy(pk_byte, 0, pk_private_result, 0, pk_private_result.length);
+
+                        //公钥
+                        pk_public_result = new byte[pk_byte.length - 64];
+                        System.arraycopy(pk_byte, 64, pk_public_result, 0, pk_public_result.length);
+
+                        pk_public = XMHCoinUtitls.CoinID_getPolkaDotAddress((byte) 2, HexUtil.encodeHexStr(pk_public_result));
+                        pk_private = DigitalTrans.byte2hex(DigitalTrans.encKeyByAES128CBC(CommonUtil.strToByteArrayNotAddEnd(DigitalTrans.byte2hex(pk_private_result)), pin));
+
+                        Map map = new HashMap();
+                        map.put("pubKey", DigitalTrans.byte2hex(pk_public_result));
+                        map.put("prvKey", pk_private);
+                        map.put("coinType", Constants.COIN_TYPE.TYPE_KSM);
+                        map.put("address", pk_public);
+                        map.put("masterPubKey", masterPubKey);
+                        wallets.add(map);
+                    }
+
+
 //                    if(chainType == Constants.COIN_TYPE.TYPE_ALL || chainType == Constants.COIN_TYPE.TYPE_BTM){
 //                        //btm
 //                        if(common == Constants.LEAD_TYPE.STANDARMEMO){

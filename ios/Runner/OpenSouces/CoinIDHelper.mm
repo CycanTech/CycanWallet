@@ -172,6 +172,10 @@
         
         [datas addObject: [self importBSCWallet:object]];
     }
+    if (coinType == MCoinType_All||coinType == MCoinType_KSM) {
+        
+        [datas addObject: [self importKSMWallet:object]];
+    }
     NSString * masterPubKey = @"";
     if (leadType == MLeadWalletType_Memo || leadType == MLeadWalletType_StandardMemo) {
         masterPubKey=  [CoinIDTool CoinID_getMasterPubKey];
@@ -212,7 +216,7 @@
 +(NSString*)fetch_ExportKeyStore:(NSString*)pwd priKey:(NSString*)priKey coinType:(int)coinType {
 
     NSString * ksJson = @"";
-    if(coinType == MCoinType_DOT){
+    if(coinType == MCoinType_DOT || coinType == MCoinType_KSM){
         
         string password = [pwd UTF8String];
         string prv = [priKey UTF8String];

@@ -13,6 +13,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 +(id)importDOTWallet:(ImportObject * )object ;
 
+
++(id)importKSMWallet:(ImportObject * )object ;
+
 @end
 
 NS_ASSUME_NONNULL_END

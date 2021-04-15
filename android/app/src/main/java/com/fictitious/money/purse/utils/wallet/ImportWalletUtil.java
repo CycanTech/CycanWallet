@@ -415,6 +415,23 @@ public class ImportWalletUtil {
                             pk_byte = HexUtil.hexStringToBytes(pkStr);
                             return getPolkadotPurse(pk_byte, pin);
                         }
+                        else if (mCoin_type == Constants.COIN_TYPE.TYPE_KSM)
+                        {
+                            short[] mnemonicIndexBuffer = new short[words_arr.length];
+                            if(isChinese){
+                                for(int i = 0; i < words_arr.length; i ++){
+                                    mnemonicIndexBuffer[i] = (short) arr_chinese.indexOf(words_arr[i]);
+                                }
+                            } else {
+                                for(int i = 0; i < words_arr.length; i ++){
+                                    mnemonicIndexBuffer[i] = (short) arr_english.indexOf(words_arr[i]);
+                                }
+                            }
+
+                            String pkStr = XMHCoinUtitls.CoinID_genPolkaDotKeyPairByPath(mnemonicIndexBuffer, words_arr.length, "");
+                            pk_byte = HexUtil.hexStringToBytes(pkStr);
+                            return getKSMPurse(pk_byte, pin);
+                        }
                     }
                     else
                     {
@@ -462,6 +479,10 @@ public class ImportWalletUtil {
             } else if (mCoin_type == Constants.COIN_TYPE.TYPE_POLKADOT) {
                 String pk_byte_str = XMHCoinUtitls.CoinID_polkadot_ipt_keystore(pin, content);
                 return getPolkadotPurse(HexUtil.hexStringToBytes(pk_byte_str), pin);
+            }
+            else if (mCoin_type == Constants.COIN_TYPE.TYPE_KSM) {
+                String pk_byte_str = XMHCoinUtitls.CoinID_polkadot_ipt_keystore(pin, content);
+                return getKSMPurse(HexUtil.hexStringToBytes(pk_byte_str), pin);
             }
         }
         else if(leadType == Constants.LEAD_TYPE.PRVKEY)
@@ -575,6 +596,9 @@ public class ImportWalletUtil {
             } else if (mCoin_type == Constants.COIN_TYPE.TYPE_POLKADOT) {
                 String pubKey = XMHCoinUtitls.CoinID_getPolkaPubByPriv(prvStr);
                 return getPolkadotPurse(pubKey, prvStr, pin);
+            }else if (mCoin_type == Constants.COIN_TYPE.TYPE_KSM) {
+                String pubKey = XMHCoinUtitls.CoinID_getPolkaPubByPriv(prvStr);
+                return getKSMPurse(pubKey, prvStr, pin);
             }
         }
         return wallets;
@@ -850,6 +874,8 @@ public class ImportWalletUtil {
         return wallet;
     }
 
+
+
     static List getPolkadotPurse(String pubKey, String priKey, String pin){
         List wallet = new ArrayList();
         if(TextUtils.isEmpty(pubKey) || TextUtils.isEmpty(priKey)){
@@ -863,6 +889,56 @@ public class ImportWalletUtil {
         map.put("prvKey", pk_private);
         map.put("pubKey", DigitalTrans.byte2hex(pk_public_result));
         map.put("coinType", Constants.COIN_TYPE.TYPE_POLKADOT);
+        map.put("address", pk_public);
+        map.put("masterPubKey", "");
+        wallet.add(map);
+        return wallet;
+    }
+
+
+
+    static List getKSMPurse(byte[] pk_byte, String pin){
+        List wallet = new ArrayList();
+        if(pk_byte == null || pk_byte.length < 96){
+            return wallet;
+        }
+
+        //私钥
+        pk_private_result = new byte[64];
+        System.arraycopy(pk_byte, 0, pk_private_result, 0, pk_private_result.length);
+
+        //公钥
+        pk_public_result = new byte[pk_byte.length - 64];
+        System.arraycopy(pk_byte, 64, pk_public_result, 0, pk_public_result.length);
+
+        pk_public = XMHCoinUtitls.CoinID_getPolkaDotAddress((byte) 2, HexUtil.encodeHexStr(pk_public_result));
+        pk_private = DigitalTrans.byte2hex(DigitalTrans.encKeyByAES128CBC(CommonUtil.strToByteArrayNotAddEnd(DigitalTrans.byte2hex(pk_private_result)), pin));
+
+        Map map = new HashMap();
+        map.put("prvKey", pk_private);
+        map.put("pubKey", DigitalTrans.byte2hex(pk_public_result));
+        map.put("coinType", Constants.COIN_TYPE.TYPE_KSM);
+        map.put("address", pk_public);
+        map.put("masterPubKey", "");
+        wallet.add(map);
+        return wallet;
+    }
+
+
+
+    static List getKSMPurse(String pubKey, String priKey, String pin){
+        List wallet = new ArrayList();
+        if(TextUtils.isEmpty(pubKey) || TextUtils.isEmpty(priKey)){
+            return wallet;
+        }
+
+        pk_public = XMHCoinUtitls.CoinID_getPolkaDotAddress((byte) 2, pubKey);
+        pk_private = DigitalTrans.byte2hex(DigitalTrans.encKeyByAES128CBC(CommonUtil.strToByteArrayNotAddEnd(priKey), pin));
+
+        Map map = new HashMap();
+        map.put("prvKey", pk_private);
+        map.put("pubKey", DigitalTrans.byte2hex(pk_public_result));
+        map.put("coinType", Constants.COIN_TYPE.TYPE_KSM);
         map.put("address", pk_public);
         map.put("masterPubKey", "");
         wallet.add(map);

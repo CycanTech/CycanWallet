@@ -21,7 +21,7 @@ public class ExportKeyStoreUtil {
 
     static String getWalletKeystore(String content, String pwd, int coinType){
         byte[] prvKey = DigitalTrans.decKeyByAES128CBC(HexUtil.hexStringToBytes(content), pwd, coinType);
-        if (coinType == Constants.COIN_TYPE.TYPE_POLKADOT) {
+        if (coinType == Constants.COIN_TYPE.TYPE_POLKADOT || coinType == Constants.COIN_TYPE.TYPE_KSM) {
             String pubKey = XMHCoinUtitls.CoinID_getPolkaPubByPriv(CommonUtil.byteArrayToStr(prvKey));
             String keystore =  XMHCoinUtitls.CoinID_polkadot_ept_keystore(pwd, CommonUtil.byteArrayToStr(prvKey), (byte) 0, pubKey);
             return keystore;

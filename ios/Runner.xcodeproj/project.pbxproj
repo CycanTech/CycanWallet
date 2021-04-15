@@ -18,9 +18,6 @@
 		820D8ACA254FAD2500AEC5EA /* CoinIDTool.mm in Sources */ = {isa = PBXBuildFile; fileRef = 820D8AC9254FAD2500AEC5EA /* CoinIDTool.mm */; };
 		820D8AD2254FB80F00AEC5EA /* flutter_coinidTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 820D8AD1254FB80F00AEC5EA /* flutter_coinidTests.m */; };
 		820D8ADE254FD2FA00AEC5EA /* WalletObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 820D8ADD254FD2FA00AEC5EA /* WalletObject.m */; };
-		82282F9B2612C75C009E8969 /* libboost_thread.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 82282F962612C75C009E8969 /* libboost_thread.a */; };
-		82282F9C2612C75C009E8969 /* libboost_system.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 82282F972612C75C009E8969 /* libboost_system.a */; };
-		82282F9E2612C75C009E8969 /* libCoinIDLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 82282F9A2612C75C009E8969 /* libCoinIDLib.a */; };
 		8237D2DC2599707400B6576B /* ETHTransferParticularsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8237D2DA2599707400B6576B /* ETHTransferParticularsModel.m */; };
 		8237D2E02599710600B6576B /* RequestMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 8237D2DF2599710600B6576B /* RequestMethod.m */; };
 		8237D3132599741A00B6576B /* FCUUID.m in Sources */ = {isa = PBXBuildFile; fileRef = 8237D30D2599741A00B6576B /* FCUUID.m */; };
@@ -50,6 +47,9 @@
 		8292826724CEB1B800190C0C /* CoinIDHelper+ETHSign.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8292825624CEB1B600190C0C /* CoinIDHelper+ETHSign.mm */; };
 		8292826C24CEB1B800190C0C /* CoinIDHelper+BTCSign.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8292826324CEB1B700190C0C /* CoinIDHelper+BTCSign.mm */; };
 		82A12DB02589B37F001D14DB /* SwiftFlutterAppUpgradePlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82A12DAF2589B37F001D14DB /* SwiftFlutterAppUpgradePlugin.swift */; };
+		82A9A8FC262835D1008FE802 /* libboost_thread.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 82A9A8F9262835D1008FE802 /* libboost_thread.a */; };
+		82A9A8FD262835D2008FE802 /* libCoinIDLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 82A9A8FA262835D1008FE802 /* libCoinIDLib.a */; };
+		82A9A8FE262835D2008FE802 /* libboost_system.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 82A9A8FB262835D1008FE802 /* libboost_system.a */; };
 		82B03A512493884E00A77308 /* BigNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 82B03A302493884D00A77308 /* BigNumber.m */; };
 		82B03A522493884E00A77308 /* mpi.c in Sources */ = {isa = PBXBuildFile; fileRef = 82B03A372493884D00A77308 /* mpi.c */; };
 		82B03A532493884E00A77308 /* RegEx.m in Sources */ = {isa = PBXBuildFile; fileRef = 82B03A382493884D00A77308 /* RegEx.m */; };
@@ -124,11 +124,6 @@
 		820D8AD3254FB80F00AEC5EA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		820D8ADC254FD2FA00AEC5EA /* WalletObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WalletObject.h; sourceTree = "<group>"; };
 		820D8ADD254FD2FA00AEC5EA /* WalletObject.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WalletObject.m; sourceTree = "<group>"; };
-		82282F952612C75C009E8969 /* CoinIDLIBInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoinIDLIBInterface.h; sourceTree = "<group>"; };
-		82282F962612C75C009E8969 /* libboost_thread.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libboost_thread.a; sourceTree = "<group>"; };
-		82282F972612C75C009E8969 /* libboost_system.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libboost_system.a; sourceTree = "<group>"; };
-		82282F982612C75C009E8969 /* DataTypeDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataTypeDefine.h; sourceTree = "<group>"; };
-		82282F9A2612C75C009E8969 /* libCoinIDLib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libCoinIDLib.a; sourceTree = "<group>"; };
 		8237D2DA2599707400B6576B /* ETHTransferParticularsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ETHTransferParticularsModel.m; sourceTree = "<group>"; };
 		8237D2DB2599707400B6576B /* ETHTransferParticularsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETHTransferParticularsModel.h; sourceTree = "<group>"; };
 		8237D2DE2599710600B6576B /* RequestMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestMethod.h; sourceTree = "<group>"; };
@@ -189,6 +184,11 @@
 		8292826124CEB1B700190C0C /* CoinIDHelper+ETHSign.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CoinIDHelper+ETHSign.h"; sourceTree = "<group>"; };
 		8292826324CEB1B700190C0C /* CoinIDHelper+BTCSign.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "CoinIDHelper+BTCSign.mm"; sourceTree = "<group>"; };
 		82A12DAF2589B37F001D14DB /* SwiftFlutterAppUpgradePlugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftFlutterAppUpgradePlugin.swift; sourceTree = "<group>"; };
+		82A9A8F7262835D1008FE802 /* CoinIDLIBInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoinIDLIBInterface.h; sourceTree = "<group>"; };
+		82A9A8F8262835D1008FE802 /* DataTypeDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataTypeDefine.h; sourceTree = "<group>"; };
+		82A9A8F9262835D1008FE802 /* libboost_thread.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libboost_thread.a; sourceTree = "<group>"; };
+		82A9A8FA262835D1008FE802 /* libCoinIDLib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libCoinIDLib.a; sourceTree = "<group>"; };
+		82A9A8FB262835D1008FE802 /* libboost_system.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libboost_system.a; sourceTree = "<group>"; };
 		82B03A302493884D00A77308 /* BigNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BigNumber.m; sourceTree = "<group>"; };
 		82B03A322493884D00A77308 /* tommath_private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tommath_private.h; sourceTree = "<group>"; };
 		82B03A332493884D00A77308 /* RegEx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegEx.h; sourceTree = "<group>"; };
@@ -249,10 +249,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				82282F9C2612C75C009E8969 /* libboost_system.a in Frameworks */,
-				82282F9E2612C75C009E8969 /* libCoinIDLib.a in Frameworks */,
+				82A9A8FD262835D2008FE802 /* libCoinIDLib.a in Frameworks */,
 				A43CE8240B73C7A4D543874B /* Pods_Runner.framework in Frameworks */,
-				82282F9B2612C75C009E8969 /* libboost_thread.a in Frameworks */,
+				82A9A8FE262835D2008FE802 /* libboost_system.a in Frameworks */,
+				82A9A8FC262835D1008FE802 /* libboost_thread.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -295,16 +295,16 @@
 			path = flutter_coinidTests;
 			sourceTree = "<group>";
 		};
-		82282F942612C75C009E8969 /* IOS_lib_V3.0.6 */ = {
+		82282F942612C75C009E8969 /* IOS_lib_V3.0.7 */ = {
 			isa = PBXGroup;
 			children = (
-				82282F952612C75C009E8969 /* CoinIDLIBInterface.h */,
-				82282F962612C75C009E8969 /* libboost_thread.a */,
-				82282F972612C75C009E8969 /* libboost_system.a */,
-				82282F982612C75C009E8969 /* DataTypeDefine.h */,
-				82282F9A2612C75C009E8969 /* libCoinIDLib.a */,
+				82A9A8F7262835D1008FE802 /* CoinIDLIBInterface.h */,
+				82A9A8F8262835D1008FE802 /* DataTypeDefine.h */,
+				82A9A8FB262835D1008FE802 /* libboost_system.a */,
+				82A9A8F9262835D1008FE802 /* libboost_thread.a */,
+				82A9A8FA262835D1008FE802 /* libCoinIDLib.a */,
 			);
-			path = IOS_lib_V3.0.6;
+			path = IOS_lib_V3.0.7;
 			sourceTree = "<group>";
 		};
 		8237D30C2599741A00B6576B /* FCUUID */ = {
@@ -402,7 +402,7 @@
 				8292825624CEB1B600190C0C /* CoinIDHelper+ETHSign.mm */,
 				82EFF7EA25C011AB00282E14 /* CoinIDHelper+DotSign.h */,
 				82EFF7EB25C011AB00282E14 /* CoinIDHelper+DotSign.mm */,
-				82282F942612C75C009E8969 /* IOS_lib_V3.0.6 */,
+				82282F942612C75C009E8969 /* IOS_lib_V3.0.7 */,
 				82B03A412493884D00A77308 /* bip-0039 */,
 				82B03A2F2493884D00A77308 /* BigNumber */,
 			);
@@ -945,6 +945,7 @@
 					"$(PROJECT_DIR)/Runner/OpenSouces/IOS_lib_V3.0.3",
 					"$(PROJECT_DIR)/Runner/OpenSouces/IOS_lib_V3.0.4",
 					"$(PROJECT_DIR)/Runner/OpenSouces/IOS_lib_V3.0.6",
+					"$(PROJECT_DIR)/Runner/OpenSouces/IOS_lib_V3.0.7",
 				);
 				MARKETING_VERSION = 1.0.0;
 				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
@@ -1194,6 +1195,7 @@
 					"$(PROJECT_DIR)/Runner/OpenSouces/IOS_lib_V3.0.3",
 					"$(PROJECT_DIR)/Runner/OpenSouces/IOS_lib_V3.0.4",
 					"$(PROJECT_DIR)/Runner/OpenSouces/IOS_lib_V3.0.6",
+					"$(PROJECT_DIR)/Runner/OpenSouces/IOS_lib_V3.0.7",
 				);
 				MARKETING_VERSION = 1.0.0;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1248,6 +1250,7 @@
 					"$(PROJECT_DIR)/Runner/OpenSouces/IOS_lib_V3.0.3",
 					"$(PROJECT_DIR)/Runner/OpenSouces/IOS_lib_V3.0.4",
 					"$(PROJECT_DIR)/Runner/OpenSouces/IOS_lib_V3.0.6",
+					"$(PROJECT_DIR)/Runner/OpenSouces/IOS_lib_V3.0.7",
 				);
 				MARKETING_VERSION = 1.0.0;
 				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
