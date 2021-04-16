@@ -29,6 +29,7 @@ MHWallet _$MHWalletFromJson(Map<String, dynamic> json) {
     json['didChoose'] as bool,
     json['hiddenAssets'] as bool,
     json['index'] as int,
+    json['symbol'] as String,
   );
 }
 
@@ -54,4 +55,5 @@ Map<String, dynamic> _$MHWalletToJson(MHWallet instance) => <String, dynamic>{
       'didChoose': instance.didChoose,
       'hiddenAssets': instance.hiddenAssets,
       'index': instance.index,
+      'symbol': instance.symbol,
     };

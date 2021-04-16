@@ -15,7 +15,7 @@
     "input_pwd": "请您先输入密码",
     "input_pwd_wrong": "密码不一致，请您重新输入",
     "input_memo_wrong": "输入的助记词不正确",
-    "input_pwd_regexp": "密码长度8位数以上，建议使用英文字母、数字和标点符号组成，不采用特殊字符",
+    "input_pwd_regexp": "密码长度6-20位，建议使用英文字母、数字和标点符号组成，不采用特殊字符",
     "input_wallet_exist": "钱包已导入，请勿重复导入",
     "input_keystore": "请您输入keystore",
     "input_prvkey": "请您先输入秘钥",

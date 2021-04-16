@@ -71,7 +71,7 @@
     "input_pwd": "Please enter your password first",
     "input_pwd_wrong": "Passwords are inconsistent, please re-enter",
     "input_memo_wrong": "The mnemonic word entered is incorrect",
-    "input_pwd_regexp": "The password length is more than 8 digits, it is recommended to use English letters, numbers and punctuation marks, no special characters",
+    "input_pwd_regexp": "The password length 6-20 digits, it is recommended to use English letters, numbers and punctuation marks, no special characters",
     "input_wallet_exist": "The wallet has been imported, please do not import again",
     "input_keystore": "Please enter keystore",
     "input_prvkey": "Please enter the key first",
@@ -237,5 +237,14 @@
     "system_currencychoose": "Currency selection",
     "system_languagechoose": "Language selection",
     "mine_sharewith": "Share to",
-    "confirm_password":"Confirm wallet password"
+    "confirm_password":"Confirm wallet password",
+    "memo_been_copied":"The mnemonic has been copied",
+    "memo_create_tip":"We cannot provide the function of retrieving the wallet password. Please confirm and keep the wallet password properly",
+    "wallet_inputpwd":"Please enter the password",
+    "choose_wallettip":"Convenient and safe asset management",
+    "choose_wallettip2":"Start your digital asset journey from here",
+    "choose_existwallet":"Already have a wallet",
+    "copy_receiveaddress":"Copy the payment address",
+    "wallet_transdesc":"Enter transfer instructions",
+    "wallettrans_copys":"Paste"
 }

@@ -86,7 +86,7 @@ class _$FlutterDatabase extends FlutterDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `wallet_table` (`walletID` TEXT, `walletAaddress` TEXT, `pin` TEXT, `pinTip` TEXT, `createTime` TEXT, `updateTime` TEXT, `isChoose` INTEGER, `prvKey` TEXT, `pubKey` TEXT, `chainType` INTEGER, `isWegwit` INTEGER, `leadType` INTEGER, `originType` INTEGER, `subPrvKey` TEXT, `subPubKey` TEXT, `masterPubKey` TEXT, `macUUID` TEXT, `descName` TEXT, `didChoose` INTEGER, `hiddenAssets` INTEGER, `index` INTEGER, PRIMARY KEY (`walletID`))');
+            'CREATE TABLE IF NOT EXISTS `wallet_table` (`walletID` TEXT, `walletAaddress` TEXT, `pin` TEXT, `pinTip` TEXT, `createTime` TEXT, `updateTime` TEXT, `isChoose` INTEGER, `prvKey` TEXT, `pubKey` TEXT, `chainType` INTEGER, `isWegwit` INTEGER, `leadType` INTEGER, `originType` INTEGER, `subPrvKey` TEXT, `subPubKey` TEXT, `masterPubKey` TEXT, `macUUID` TEXT, `descName` TEXT, `didChoose` INTEGER, `hiddenAssets` INTEGER, `index` INTEGER, `symbol` TEXT, PRIMARY KEY (`walletID`))');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `userid_table` (`walletName` TEXT, `pwd` TEXT, `tip` TEXT, `masterPubKey` TEXT, `memos` TEXT, `leadType` INTEGER, `mOriginType` INTEGER, PRIMARY KEY (`masterPubKey`))');
         await database.execute(
@@ -153,7 +153,8 @@ class _$MHWalletDao extends MHWalletDao {
                   'hiddenAssets': item.hiddenAssets == null
                       ? null
                       : (item.hiddenAssets ? 1 : 0),
-                  'index': item.index
+                  'index': item.index,
+                  'symbol': item.symbol
                 },
             changeListener),
         _mHWalletUpdateAdapter = UpdateAdapter(
@@ -186,7 +187,8 @@ class _$MHWalletDao extends MHWalletDao {
                   'hiddenAssets': item.hiddenAssets == null
                       ? null
                       : (item.hiddenAssets ? 1 : 0),
-                  'index': item.index
+                  'index': item.index,
+                  'symbol': item.symbol
                 },
             changeListener),
         _mHWalletDeletionAdapter = DeletionAdapter(
@@ -219,7 +221,8 @@ class _$MHWalletDao extends MHWalletDao {
                   'hiddenAssets': item.hiddenAssets == null
                       ? null
                       : (item.hiddenAssets ? 1 : 0),
-                  'index': item.index
+                  'index': item.index,
+                  'symbol': item.symbol
                 },
             changeListener);
 
@@ -262,7 +265,8 @@ class _$MHWalletDao extends MHWalletDao {
             row['hiddenAssets'] == null
                 ? null
                 : (row['hiddenAssets'] as int) != 0,
-            row['index'] as int));
+            row['index'] as int,
+            row['symbol'] as String));
   }
 
   @override
@@ -291,7 +295,8 @@ class _$MHWalletDao extends MHWalletDao {
             row['hiddenAssets'] == null
                 ? null
                 : (row['hiddenAssets'] as int) != 0,
-            row['index'] as int));
+            row['index'] as int,
+            row['symbol'] as String));
   }
 
   @override
@@ -320,7 +325,8 @@ class _$MHWalletDao extends MHWalletDao {
             row['hiddenAssets'] == null
                 ? null
                 : (row['hiddenAssets'] as int) != 0,
-            row['index'] as int));
+            row['index'] as int,
+            row['symbol'] as String));
   }
 
   @override
@@ -351,7 +357,8 @@ class _$MHWalletDao extends MHWalletDao {
             row['hiddenAssets'] == null
                 ? null
                 : (row['hiddenAssets'] as int) != 0,
-            row['index'] as int));
+            row['index'] as int,
+            row['symbol'] as String));
   }
 
   @override
@@ -382,7 +389,8 @@ class _$MHWalletDao extends MHWalletDao {
             row['hiddenAssets'] == null
                 ? null
                 : (row['hiddenAssets'] as int) != 0,
-            row['index'] as int));
+            row['index'] as int,
+            row['symbol'] as String));
   }
 
   @override
@@ -414,7 +422,8 @@ class _$MHWalletDao extends MHWalletDao {
             row['hiddenAssets'] == null
                 ? null
                 : (row['hiddenAssets'] as int) != 0,
-            row['index'] as int));
+            row['index'] as int,
+            row['symbol'] as String));
   }
 
   @override
@@ -445,7 +454,8 @@ class _$MHWalletDao extends MHWalletDao {
             row['hiddenAssets'] == null
                 ? null
                 : (row['hiddenAssets'] as int) != 0,
-            row['index'] as int));
+            row['index'] as int,
+            row['symbol'] as String));
   }
 
   @override
@@ -475,7 +485,8 @@ class _$MHWalletDao extends MHWalletDao {
             row['hiddenAssets'] == null
                 ? null
                 : (row['hiddenAssets'] as int) != 0,
-            row['index'] as int));
+            row['index'] as int,
+            row['symbol'] as String));
   }
 
   @override
@@ -506,7 +517,8 @@ class _$MHWalletDao extends MHWalletDao {
             row['hiddenAssets'] == null
                 ? null
                 : (row['hiddenAssets'] as int) != 0,
-            row['index'] as int));
+            row['index'] as int,
+            row['symbol'] as String));
   }
 
   @override

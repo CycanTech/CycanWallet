@@ -45,6 +45,7 @@ class MHWallet extends BaseModel {
   bool didChoose; //did选中
   bool hiddenAssets; //隐藏资产
   int index;
+  String symbol; //模糊搜索用
   // int pre_no; //上一个序号
   // int next_no;//下一个序号
 
@@ -70,6 +71,7 @@ class MHWallet extends BaseModel {
     this.didChoose,
     this.hiddenAssets,
     this.index,
+    this.symbol,
   );
 
   MHWallet.instance(WalletObject object) {
@@ -97,6 +99,7 @@ class MHWallet extends BaseModel {
                 ? pubKey
                 : walletAaddress);
     hiddenAssets = false;
+    symbol = Constant.getChainSymbol(object.coinType);
 
     MHWallet(
       walletID,
@@ -120,8 +123,11 @@ class MHWallet extends BaseModel {
       didChoose,
       hiddenAssets,
       index,
+      symbol,
     );
   }
+
+  String get fullName => Constant.getChainFullName(this.chainType);
 
   Map<String, dynamic> toJson() => _$MHWalletToJson(this);
 
@@ -713,9 +719,6 @@ class MHWallet extends BaseModel {
       return null;
     }
   }
-
-  String get symbol => Constant.getChainSymbol(this.chainType);
-  String get fullName => Constant.getChainFullName(this.chainType);
 }
 
 @dao

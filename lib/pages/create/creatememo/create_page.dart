@@ -106,6 +106,7 @@ class _CreatePageState extends State<CreatePage> {
     String titleText,
     bool obscureText = false,
     EdgeInsetsGeometry padding = const EdgeInsets.only(top: 22),
+    int maxLength,
   }) {
     return Padding(
         padding: padding,
@@ -125,6 +126,7 @@ class _CreatePageState extends State<CreatePage> {
               CustomTextField(
                 controller: controller,
                 obscureText: obscureText,
+                maxLength: maxLength,
                 style: TextStyle(
                   color: Color(0xFF000000),
                   fontSize: OffsetWidget.setSp(18),
@@ -168,6 +170,7 @@ class _CreatePageState extends State<CreatePage> {
                 controller: _nameEC,
                 hintText: "import_walletname".local(),
                 titleText: "wallet_name".local(),
+                maxLength: 25,
                 padding: EdgeInsets.only(top: 14)),
             _getInputTextField(
               controller: _passwordEC,
