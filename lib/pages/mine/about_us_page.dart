@@ -120,7 +120,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
               Text(map[_kContent],
                   style: TextStyle(
                       fontSize: OffsetWidget.setSp(15),
-                      fontWeight: FontWightHelper.medium,
+                      fontWeight: FontWightHelper.semiBold,
                       color: Color(0xFF161D2D)))
             ],
           ),
@@ -196,7 +196,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
                       Text("about_upgrade".local(),
                           style: TextStyle(
                               fontSize: OffsetWidget.setSp(15),
-                              fontWeight: FontWightHelper.medium,
+                              fontWeight: FontWightHelper.semiBold,
                               color: Color(0xFF161D2D)))
                     ],
                   ),
@@ -235,7 +235,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
                       Text("about_ver_log".local(),
                           style: TextStyle(
                               fontSize: OffsetWidget.setSp(15),
-                              fontWeight: FontWightHelper.medium,
+                              fontWeight: FontWightHelper.semiBold,
                               color: Color(0xFF161D2D)))
                     ],
                   ),

@@ -20,6 +20,7 @@ class _WalletManagerState extends State<WalletManager> {
     MCoinType.MCoinType_ETH,
     MCoinType.MCoinType_DOT,
     MCoinType.MCoinType_BSC,
+    MCoinType.MCoinType_KSM,
   ];
   List<MHWallet> datas = [];
   MCoinType currentType = MCoinType.MCoinType_All;
@@ -108,9 +109,9 @@ class _WalletManagerState extends State<WalletManager> {
     String name = Constant.getChainSymbol(wallet.chainType);
     String address = wallet?.walletAaddress;
     String bgPath = Constant.ASSETS_IMG +
-        "background/bg_" +
+        "wallet/wallet_" +
         wallet.symbol.toLowerCase() +
-        ".png";
+        "_card.png";
 
     return Container(
       key: Key(wallet.walletID),
@@ -251,12 +252,21 @@ class _WalletManagerState extends State<WalletManager> {
                           datas = wallets;
                         });
                       },
-                      hintText: "wallets_inputName".local(),
-                      hintStyle: TextStyle(
-                          fontSize: OffsetWidget.setSp(12),
-                          fontWeight: FontWightHelper.medium,
-                          color: Color(0xFF929695)),
-                      contentPadding: EdgeInsets.all(OffsetWidget.setSp(4)),
+                      decoration: CustomTextField.getBorderLineDecoration(
+                        hintText: "wallets_inputName".local(),
+                        borderColor: Colors.transparent,
+                        hintStyle: TextStyle(
+                            fontSize: OffsetWidget.setSp(12),
+                            fontWeight: FontWightHelper.medium,
+                            color: Color(0xFF929695)),
+                      ),
+
+                      // hintText: "wallets_inputName".local(),
+                      // hintStyle: TextStyle(
+                      //     fontSize: OffsetWidget.setSp(12),
+                      //     fontWeight: FontWightHelper.medium,
+                      //     color: Color(0xFF929695)),
+                      // contentPadding: EdgeInsets.all(OffsetWidget.setSp(4)),
                     ),
                   ),
                   GestureDetector(

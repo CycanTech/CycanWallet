@@ -37,6 +37,7 @@ enum MCoinType {
   MCoinType_GPS,
   MCoinType_DOT,
   MCoinType_BSC,
+  MCoinType_KSM,
 }
 
 enum MStatusCode {
@@ -156,6 +157,8 @@ class Constant {
       symbol = "DOT";
     } else if (MCoinType.MCoinType_BSC.index == chainType) {
       symbol = "BNB";
+    } else if (MCoinType.MCoinType_KSM.index == chainType) {
+      symbol = "KSM";
     }
     return symbol;
   }
@@ -170,6 +173,8 @@ class Constant {
       coinType = MCoinType.MCoinType_DOT;
     } else if (symbol.toLowerCase() == "bnb") {
       coinType = MCoinType.MCoinType_BSC;
+    } else if (symbol.toLowerCase() == "ksm") {
+      coinType = MCoinType.MCoinType_KSM;
     }
     return coinType;
   }
@@ -181,9 +186,11 @@ class Constant {
     } else if (MCoinType.MCoinType_BTC.index == coinType) {
       fullName = "Bitcoin";
     } else if (MCoinType.MCoinType_DOT.index == coinType) {
-      fullName = "Polkadot";
+      fullName = "Polkadot Relay Chain";
     } else if (MCoinType.MCoinType_BSC.index == coinType) {
       fullName = "Binance Smart Chain";
+    } else if (MCoinType.MCoinType_KSM.index == coinType) {
+      fullName = "Kusama Relay Chain";
     }
     return fullName;
   }
@@ -198,6 +205,8 @@ class Constant {
       decimals = 10;
     } else if (MCoinType.MCoinType_BSC.index == coinType) {
       decimals = 18;
+    } else if (MCoinType.MCoinType_KSM.index == coinType) {
+      decimals = 12;
     } else {
       assert(false, "getChainDecimals");
     }
@@ -206,7 +215,7 @@ class Constant {
 
   static String getChainLogo(int chainType) {
     String logofile = Constant.ASSETS_IMG + "wallet/logo_";
-    logofile = logofile + getChainSymbol(chainType) + ".png";
+    logofile = logofile + getChainSymbol(chainType).toLowerCase() + ".png";
     return logofile;
   }
 }

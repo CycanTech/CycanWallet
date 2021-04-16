@@ -132,7 +132,7 @@ class _WalletsSheetPageState extends State<WalletsSheetPage> {
     MCoinType.MCoinType_BTC,
     MCoinType.MCoinType_ETH,
     MCoinType.MCoinType_DOT,
-    MCoinType.MCoinType_BSC,
+    MCoinType.MCoinType_BSC,MCoinType.MCoinType_KSM,
   ];
   List<MHWallet> datas = [];
   MCoinType currentType = MCoinType.MCoinType_All;
@@ -233,9 +233,9 @@ class _WalletsSheetPageState extends State<WalletsSheetPage> {
     String name = Constant.getChainSymbol(wallet.chainType);
     String address = wallet?.walletAaddress;
     String bgPath = Constant.ASSETS_IMG +
-        "background/bg_" +
+        "wallet/wallet_" +
         wallet.symbol.toLowerCase() +
-        ".png";
+        "_card.png";
     bool visible = wallet.walletID == (chooseWallet?.walletID);
     int index = datas.indexOf(wallet);
     return GestureDetector(

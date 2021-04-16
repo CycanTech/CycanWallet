@@ -44,7 +44,7 @@ class _ApplicationPageState extends State<ApplicationPage> {
       "title": "BTC浏览器",
       "type": MURLType.Links.index,
       "des": "BTC链上交易详情数据",
-      "img": Constant.ASSETS_IMG + "wallet/logo_BTC.png",
+      "img": Constant.ASSETS_IMG + "wallet/logo_btc.png",
       "url": "https://btc-explorer.coinid.pro/#/BTC/mainnet/home",
     };
     _items.add(map);
@@ -52,7 +52,7 @@ class _ApplicationPageState extends State<ApplicationPage> {
       "title": "ETH浏览器",
       "type": MURLType.Links.index,
       "des": "ETH链上交易详情数据",
-      "img": Constant.ASSETS_IMG + "wallet/logo_ETH.png",
+      "img": Constant.ASSETS_IMG + "wallet/logo_eth.png",
       "url": "https://cn.etherscan.com",
     };
     _items.add(map);

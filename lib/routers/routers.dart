@@ -54,10 +54,10 @@ class Routers {
     router.notFoundHandler = emptyHandler;
     router.define(guidePage, handler: guidePageHandler);
     router.define(chooseTypePage, handler: chooseTypeHandler);
-    router.define(chooseCreateTypePage, handler: chooseCreateTypeHandler);
+    // router.define(chooseCreateTypePage, handler: chooseCreateTypeHandler);
     router.define(createPage, handler: createTypeHandler);
     router.define(restorePage, handler: restoreHandler);
-    router.define(chooseCountPage, handler: chooseCountHandler);
+    // router.define(chooseCountPage, handler: chooseCountHandler);
     router.define(backupMemosPage, handler: backMemoValuesHandler);
     router.define(verifyMemoPage, handler: verifyMemoHandler);
     router.define(importPage, handler: importHandler);

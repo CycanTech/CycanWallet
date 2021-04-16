@@ -79,6 +79,9 @@ class ChainServices {
     } else if (chainType == MCoinType.MCoinType_DOT.index) {
       return _requestDOTTransRecord(transType, from, page, block);
     } else if (chainType == MCoinType.MCoinType_BSC.index) {
+      // return _requestBSCTransRecord(transType, from, page, block);
+    } else if (chainType == MCoinType.MCoinType_KSM.index) {
+      // return _requestBSCTransRecord(transType, from, page, block);
     } else {
       assert(false, "补充请求");
     }
@@ -128,6 +131,7 @@ class ChainServices {
       return _requestBTCAssets(from, neePrice, block);
     } else if (chainType == MCoinType.MCoinType_DOT.index) {
       return _requestDotAssets(from, neePrice, block);
+    } else if (chainType == MCoinType.MCoinType_KSM.index) {
     } else {
       assert(false, "补充请求requestAssets");
     }

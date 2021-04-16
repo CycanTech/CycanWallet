@@ -23,6 +23,10 @@ class CustomPageView extends StatelessWidget {
     this.hiddenResizeToAvoidBottomInset = true,
     this.elevation = 0,
     this.backgroundColor = const Color(Constant.main_color),
+    this.safeAreaTop = true,
+    this.safeAreaLeft = true,
+    this.safeAreaBottom = true,
+    this.safeAreaRight = true,
   }) : super(key: key);
 
   Widget child;
@@ -38,14 +42,22 @@ class CustomPageView extends StatelessWidget {
   final Widget leading;
   final double elevation;
   final Color backgroundColor;
+  final bool safeAreaTop;
+  final bool safeAreaLeft;
+  final bool safeAreaBottom;
+  final bool safeAreaRight;
 
-  static Widget getDefaultTitle({String titleStr = ""}) {
+  static Widget getDefaultTitle(
+      {String titleStr = "",
+      double fontSize = 18,
+      int color = 0xFF171F24,
+      FontWeight fontWeight = FontWightHelper.semiBold}) {
     return Text(
       titleStr,
       style: TextStyle(
-          color: Color(0xFF171F24),
-          fontWeight: FontWightHelper.medium,
-          fontSize: OffsetWidget.setSp(18)),
+          color: Color(color),
+          fontWeight: fontWeight,
+          fontSize: OffsetWidget.setSp(fontSize)),
     );
   }
 
@@ -144,6 +156,10 @@ class CustomPageView extends StatelessWidget {
           backgroundColor: backgroundColor,
           bottomNavigationBar: this.bottomNavigationBar,
           body: SafeArea(
+            top: safeAreaTop,
+            left: safeAreaLeft,
+            bottom: safeAreaBottom,
+            right: safeAreaRight,
             child: hiddenScrollView == true
                 ? child
                 : SingleChildScrollView(

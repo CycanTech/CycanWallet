@@ -64,9 +64,9 @@ class _NodeAddPageState extends State<NodeAddPage> {
               child: Text(nodeModel.content,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                      fontWeight: FontWightHelper.regular,
-                      fontSize: OffsetWidget.setSp(15),
-                      color: Color(0xFFACBBCF))),
+                      fontWeight: FontWightHelper.semiBold,
+                      fontSize: OffsetWidget.setSp(16),
+                      color: Color(0xFF161D2D))),
             ),
             Row(
               children: [
@@ -78,8 +78,8 @@ class _NodeAddPageState extends State<NodeAddPage> {
                     return Text(ping + "ms",
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                            fontSize: OffsetWidget.setSp(15),
-                            fontWeight: FontWightHelper.regular,
+                            fontSize: OffsetWidget.setSp(16),
+                            fontWeight: FontWightHelper.semiBold,
                             color: Color(0xFF161D2D)));
                   },
                 ),
@@ -89,8 +89,9 @@ class _NodeAddPageState extends State<NodeAddPage> {
                   child: Visibility(
                     visible: nodeModel.isChoose,
                     child: LoadAssetsImage(
-                      Constant.ASSETS_IMG + "icon/icon_node_choose.png",
-                    ),
+                        Constant.ASSETS_IMG + "icon/icon_node_choose.png",
+                        width: OffsetWidget.setSc(22),
+                        height: OffsetWidget.setSc(17)),
                   ),
                 ),
               ],
@@ -102,73 +103,37 @@ class _NodeAddPageState extends State<NodeAddPage> {
   }
 
   _addNode() {
-    TextEditingController nodeEC = TextEditingController(text: "https://");
-    showCupertinoDialog(
-        context: context,
-        builder: (context) {
-          return CupertinoAlertDialog(
-            title: Text("node_add_custom".local()),
-            content: CupertinoTextField(
-              maxLines: 1,
-              controller: nodeEC,
-              autofocus: true,
-            ),
-            actions: <Widget>[
-              CupertinoDialogAction(
-                child: Text(
-                  "dialog_cancel".local(),
-                  style: TextStyle(
-                    color: Color(0xFFACBBCF),
-                    fontSize: OffsetWidget.setSp(14),
-                    fontWeight: FontWightHelper.regular,
-                  ),
-                ),
-                onPressed: () {
-                  nodeEC.text = "";
-                  Navigator.pop(context);
-                },
-              ),
-              CupertinoDialogAction(
-                  child: Text(
-                    "dialog_confirm".local(),
-                    style: TextStyle(
-                      color: Color(0xFF586883),
-                      fontSize: OffsetWidget.setSp(14),
-                      fontWeight: FontWightHelper.medium,
-                    ),
-                  ),
-                  onPressed: () async {
-                    String str = nodeEC.text;
-                    Navigator.pop(context);
-                    if (!StringUtil.isValidIp(str.replaceAll("https://", "")) &&
-                        !StringUtil.isValidIpAndPort(
-                            str.replaceAll("https://", "")) &&
-                        !StringUtil.isValidUrl(str)) {
-                      HWToast.showText(text: "node_error".local());
-                      return;
-                    }
-                    if (StringUtil.isNotEmpty(str) && str != "https://") {
-                      List<NodeModel> nodes =
-                          await NodeModel.queryNodeByContentAndChainType(
-                              str, chainType);
-                      if (nodes != null && nodes.length > 0) {
-                        HWToast.showText(text: "node_exists".local());
-                      } else {
-                        NodeModel node = NodeModel(str, chainType, false, false,
-                            MNodeNetType.MNodeNetType_Main.index);
-                        bool flag = await NodeModel.insertNodeData(node);
-                        if (flag) {
-                          Navigator.pop(context);
-                          setState(() {});
-                        }
-                      }
-                    } else {
-                      HWToast.showText(text: "node_add_input".local());
-                    }
-                  }),
-            ],
-          );
-        });
+    showMHInputAlertView(
+      context: context,
+      title: "node_add_custom".local(),
+      placeValue: "https://",
+      obscureText: false,
+      confirmPressed: (str) async {
+        if (!StringUtil.isValidIp(str.replaceAll("https://", "")) &&
+            !StringUtil.isValidIpAndPort(str.replaceAll("https://", "")) &&
+            !StringUtil.isValidUrl(str)) {
+          HWToast.showText(text: "node_error".local());
+          return;
+        }
+        if (StringUtil.isNotEmpty(str) && str != "https://") {
+          List<NodeModel> nodes =
+              await NodeModel.queryNodeByContentAndChainType(str, chainType);
+          if (nodes != null && nodes.length > 0) {
+            HWToast.showText(text: "node_exists".local());
+          } else {
+            NodeModel node = NodeModel(str, chainType, false, false,
+                MNodeNetType.MNodeNetType_Main.index);
+            bool flag = await NodeModel.insertNodeData(node);
+            if (flag) {
+              Navigator.pop(context);
+              setState(() {});
+            }
+          }
+        } else {
+          HWToast.showText(text: "node_add_input".local());
+        }
+      },
+    );
   }
 
   _clickAt(NodeModel nodeModel) async {
@@ -217,7 +182,7 @@ class _NodeAddPageState extends State<NodeAddPage> {
               "node_default".local(),
               style: TextStyle(
                   fontSize: OffsetWidget.setSp(15),
-                  fontWeight: FontWightHelper.medium,
+                  fontWeight: FontWightHelper.semiBold,
                   color: Color(0xFF161D2D)),
             ),
           ),
@@ -243,21 +208,21 @@ class _NodeAddPageState extends State<NodeAddPage> {
             },
             child: Container(
               margin: EdgeInsets.only(
-                  left: OffsetWidget.setSc(54),
-                  bottom: OffsetWidget.setSc(90),
-                  right: OffsetWidget.setSc(54)),
+                  left: OffsetWidget.setSc(42),
+                  bottom: OffsetWidget.setSc(63),
+                  right: OffsetWidget.setSc(42)),
               height: OffsetWidget.setSc(40),
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(OffsetWidget.setSc(10)),
-                  border: Border.all(color: Color(0xFF586883)),
-                  color: Colors.white),
+                borderRadius: BorderRadius.circular(OffsetWidget.setSc(8)),
+                color: Color(0xFF586883),
+              ),
               child: Text(
                 "+ " + "node_add_custom".local(),
                 style: TextStyle(
                     fontWeight: FontWightHelper.medium,
-                    fontSize: OffsetWidget.setSp(15),
-                    color: Color(0xFF586883)),
+                    fontSize: OffsetWidget.setSp(14),
+                    color: Colors.white),
               ),
             ),
           ),

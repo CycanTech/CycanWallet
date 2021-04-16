@@ -104,10 +104,7 @@ class _WalletUpdateNamePageState extends State<WalletUpdateNamePage> {
                   child: CustomTextField(
                     controller: nameEC,
                     maxLines: 1,
-                    hiddenBorderSide: false,
-                    hintText: walletName,
-                    fillColor: Colors.white,
-                    contentPadding: EdgeInsets.all(OffsetWidget.setSc(3)),
+                   
                   ),
                 ),
               ],

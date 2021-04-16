@@ -25,3 +25,4 @@ export 'package:flutter_coinid/widgets/custom_slider.dart';
 export './widgets/custom_emptydata.dart';
 export 'package:flutter_coinid/widgets/custom_image.dart';
 export 'package:flutter_coinid/widgets/custom_pageview.dart';
+export 'package:flutter_coinid/widgets/custom_dialog.dart';

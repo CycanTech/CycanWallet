@@ -40,97 +40,91 @@ class ChooseTypePageState extends State<ChooseTypePage> {
 
   @override
   Widget build(BuildContext context) {
-    OffsetWidget.screenInit(context, 360);
     return WillPopScope(
       child: CustomPageView(
-        title: Text("my_wallet".local(),
-            style: TextStyle(
-                fontSize: OffsetWidget.setSp(18),
-                fontWeight: FontWeight.w400,
-                color: Color(0xFFFFFFFF))),
-        hiddenScrollView: false,
-        hiddenLeading: false,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
+            LoadAssetsImage(
+              Constant.ASSETS_IMG + "background/bg_createwallet.png",
+              // width: OffsetWidget.setSc(70),
+              height: OffsetWidget.setSc(310),
+              fit: BoxFit.contain,
+            ),
+            Container(
+              padding: EdgeInsets.only(
+                  top: OffsetWidget.setSc(42), left: 10, right: 10),
+              child: Text(
+                "choose_wallettip".local(),
+                style: TextStyle(
+                  color: Color(0xFF4F7BF2),
+                  fontSize: OffsetWidget.setSp(24),
+                  fontWeight: FontWightHelper.semiBold,
+                ),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.only(
+                  top: OffsetWidget.setSc(13), left: 10, right: 10),
+              child: Text(
+                "choose_wallettip2".local(),
+                style: TextStyle(
+                  color: Color(0xFF101010),
+                  fontSize: OffsetWidget.setSp(18),
+                  fontWeight: FontWightHelper.regular,
+                ),
+              ),
+            ),
             Visibility(
               visible: visibleAppWallet,
               child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
                 child: Container(
-                  height: 54,
-                  margin: EdgeInsets.fromLTRB(
-                      OffsetWidget.setSc(40),
-                      OffsetWidget.setSc(40),
-                      OffsetWidget.setSc(40),
-                      OffsetWidget.setSc(10)),
-                  padding: EdgeInsets.only(left: OffsetWidget.setSc(73)),
-                  decoration: new BoxDecoration(
-                    image: new DecorationImage(
-                      image: new AssetImage(
-                        Constant.ASSETS_IMG + "background/create_app.png",
-                      ),
-                      fit: BoxFit.fill,
-                    ),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Color(0xFF586883),
                   ),
-                  child: Row(
-                    children: <Widget>[
-                      Image.asset(
-                        Constant.ASSETS_IMG + "icon/wallet_app.png",
-                        fit: BoxFit.cover,
-                        scale: 2,
-                        width: OffsetWidget.setSc(30),
-                        height: OffsetWidget.setSc(30),
-                      ),
-                      OffsetWidget.hGap(12),
-                      Text(
-                        "create_hote".local(),
-                        style: TextStyle(
-                          fontSize: OffsetWidget.setSp(12),
-                          color: Color(0xff586883),
-                        ),
-                      ),
-                    ],
+                  height: OffsetWidget.setSc(40),
+                  margin: EdgeInsets.fromLTRB(OffsetWidget.setSc(42),
+                      OffsetWidget.setSc(42), OffsetWidget.setSc(42), 0),
+                  child: Text(
+                    "create_hote".local(),
+                    style: TextStyle(
+                        fontSize: OffsetWidget.setSp(18),
+                        color: Color(0xFFFFFFFF),
+                        fontWeight: FontWightHelper.regular),
                   ),
                 ),
                 onTap: () {
-                  Routers.push(context, Routers.chooseCreateTypePage);
+                  Routers.push(context, Routers.createPage);
                 },
               ),
             ),
             GestureDetector(
+              behavior: HitTestBehavior.opaque,
               child: Container(
-                height: 54,
                 margin: EdgeInsets.fromLTRB(
                     OffsetWidget.setSc(40),
-                    OffsetWidget.setSc(0),
+                    OffsetWidget.setSc(20),
                     OffsetWidget.setSc(40),
-                    OffsetWidget.setSc(10)),
-                padding: EdgeInsets.only(left: OffsetWidget.setSc(73)),
-                decoration: new BoxDecoration(
-                  image: new DecorationImage(
-                    image: new AssetImage(
-                      Constant.ASSETS_IMG + "background/create_import.png",
-                    ),
-                    fit: BoxFit.fill,
-                  ),
-                ),
+                    OffsetWidget.setSc(0)),
                 child: Row(
-                  // mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Image.asset(
-                      Constant.ASSETS_IMG + "icon/wallet_import.png",
-                      fit: BoxFit.cover,
-                      scale: 2,
-                      width: OffsetWidget.setSc(30),
-                      height: OffsetWidget.setSc(30),
+                    Text(
+                      "choose_existwallet".local() + "，",
+                      style: TextStyle(
+                          fontSize: OffsetWidget.setSp(16),
+                          color: Color(0xFF101010),
+                          fontWeight: FontWightHelper.regular),
                     ),
-                    OffsetWidget.hGap(12),
                     Text(
                       "import_hote".local(),
                       style: TextStyle(
-                        fontSize: OffsetWidget.setSp(12),
-                        color: Color(0xff586883),
-                      ),
+                          fontSize: OffsetWidget.setSp(16),
+                          color: Color(0xFF4F7BF2),
+                          fontWeight: FontWightHelper.regular),
                     ),
                   ],
                 ),

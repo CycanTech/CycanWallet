@@ -1,3 +1,6 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
+
 import '../../../public.dart';
 
 class CreatePage extends StatefulWidget {
@@ -12,13 +15,29 @@ class _CreatePageState extends State<CreatePage> {
   final TextEditingController _passwordEC = new TextEditingController();
   final TextEditingController _againPasswordEC = new TextEditingController();
   final TextEditingController _passwordTipEC = new TextEditingController();
-  EdgeInsets padding = EdgeInsets.only(
-      left: OffsetWidget.setSc(20),
-      right: OffsetWidget.setSc(20),
-      top: OffsetWidget.setSc(20));
-  EdgeInsets contentPadding = EdgeInsets.only(left: 10, right: 10);
+  // EdgeInsets padding = EdgeInsets.only(
+  //     left: OffsetWidget.setSc(20),
+  //     right: OffsetWidget.setSc(20),
+  //     top: OffsetWidget.setSc(20));
   bool eyeisOpen = false;
   bool isAgreement = false;
+
+  TapGestureRecognizer _tapGestureRecognizer;
+
+  @override
+  void initState() {
+    super.initState();
+    _tapGestureRecognizer = TapGestureRecognizer()..onTap = jumpToAgreement;
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _tapGestureRecognizer.dispose();
+  }
+
+  void sssssss() {}
 
   void updateEyesState() {
     setState(() {
@@ -43,7 +62,7 @@ class _CreatePageState extends State<CreatePage> {
     final String password = _passwordEC.text;
     final String againPwd = _againPasswordEC.text;
     final String pwdTip = _passwordTipEC.text;
-
+    FocusScope.of(context).requestFocus(FocusNode());
     if (walletName.length == 0) {
       HWToast.showText(text: "input_name".local());
       return;
@@ -66,160 +85,113 @@ class _CreatePageState extends State<CreatePage> {
       return;
     }
 
-    Map<String, dynamic> object = Map();
-    object["walletName"] = walletName;
-    object["password"] = password;
-    object["pwdTip"] = pwdTip;
-    Routers.push(context, Routers.chooseCountPage, params: object);
+    showMHAlertView(
+      context: context,
+      title: "confirm_password".local(),
+      content: "memo_create_tip".local(),
+      confirmPressed: () {
+        Map<String, dynamic> object = Map();
+        object["walletName"] = walletName;
+        object["password"] = password;
+        object["pwdTip"] = pwdTip;
+        object["memoCount"] = MemoCount.MemoCount_12;
+        Routers.push(context, Routers.backupMemosPage, params: object);
+      },
+    );
+  }
+
+  Widget _getInputTextField({
+    TextEditingController controller,
+    String hintText,
+    String titleText,
+    bool obscureText = false,
+    EdgeInsetsGeometry padding = const EdgeInsets.only(top: 22),
+  }) {
+    return Padding(
+        padding: padding,
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                child: Text(
+                  titleText,
+                  style: TextStyle(
+                      color: Color(0xFF161D2D),
+                      fontSize: OffsetWidget.setSp(18),
+                      fontWeight: FontWightHelper.regular),
+                ),
+              ),
+              CustomTextField(
+                controller: controller,
+                obscureText: obscureText,
+                style: TextStyle(
+                  color: Color(0xFF000000),
+                  fontSize: OffsetWidget.setSp(18),
+                  fontWeight: FontWightHelper.regular,
+                ),
+                decoration: CustomTextField.getUnderLineDecoration(
+                  hintText: hintText,
+                  hintStyle: TextStyle(
+                    color: Color(0xFFACBBCF),
+                    fontSize: OffsetWidget.setSp(16),
+                    fontWeight: FontWightHelper.regular,
+                  ),
+                ),
+              ),
+            ]));
   }
 
   @override
   Widget build(BuildContext context) {
     return CustomPageView(
-      title: Text(
-        "create_wallet".local(),
-        style: TextStyle(
-            color: Color(0xFF000000),
-            fontSize: OffsetWidget.setSp(18),
-            fontWeight: FontWeight.w400),
+      title: CustomPageView.getDefaultTitle(
+        titleStr: "create_wallet".local(),
+        fontSize: 20,
       ),
-      child: Column(
-        children: <Widget>[
-          Container(
-            padding: padding,
-            child: Container(
-              color: Color.fromARGB(255, 255, 252, 188),
-              padding: EdgeInsets.all(8),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  // Column(
-                  //   children: <Widget>[
-                  //     Padding(
-                  //       padding: EdgeInsets.only(top: 5),
-                  //       child: Image.asset(
-                  //         Constant.ASSETS_IMG + "icon/tips@2x.png",
-                  //         fit: BoxFit.cover,
-                  //         width: 12,
-                  //         height: 12,
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
-                  // OffsetWidget.hGap(10),
-                  Expanded(
-                      child: Text(
-                    "create_wallettip".local(),
-                    style: TextStyle(
-                      color: Color(0xff586883),
-                      fontSize: OffsetWidget.setSp(10),
-                      fontWeight: FontWeight.w400,
-                    ),
-                  )),
-                ],
-              ),
-            ),
-          ),
-          CustomTextField(
-            padding: padding,
-            controller: _nameEC,
-            contentPadding: contentPadding,
-            style: TextStyle(
-              color: Color(0xFF000000),
-              fontSize: OffsetWidget.setSp(14),
-              fontWeight: FontWeight.w500,
-            ),
-            decoration: CustomTextField.getUnderLineDecoration(
-              hintText: "import_walletname".local(),
-              hintStyle: TextStyle(
-                color: Color(0xFFCFCFCF),
+      child: Container(
+        padding: EdgeInsets.only(
+            left: OffsetWidget.setSc(20),
+            right: OffsetWidget.setSc(20),
+            top: OffsetWidget.setSc(27)),
+        child: Column(
+          children: <Widget>[
+            Text(
+              "create_wallettip".local(),
+              style: TextStyle(
+                color: Color(0xFFF15F4A),
                 fontSize: OffsetWidget.setSp(14),
-                fontWeight: FontWeight.w400,
+                fontWeight: FontWightHelper.regular,
               ),
             ),
-          ),
-          CustomTextField(
-            padding: padding,
-            controller: _passwordEC,
-            contentPadding: contentPadding,
-            obscureText: !eyeisOpen,
-            style: TextStyle(
-              color: Color(0xFF000000),
-              fontSize: OffsetWidget.setSp(14),
-              fontWeight: FontWeight.w500,
+            _getInputTextField(
+                controller: _nameEC,
+                hintText: "import_walletname".local(),
+                titleText: "wallet_name".local(),
+                padding: EdgeInsets.only(top: 14)),
+            _getInputTextField(
+              controller: _passwordEC,
+              obscureText: !eyeisOpen,
+              hintText: "import_pwddetail".local(),
+              titleText: "import_pwd".local(),
             ),
-            decoration: CustomTextField.getUnderLineDecoration(
-              hintText: "import_pwd".local(),
-              helperText: "import_pwddetail".local(),
-              helperStyle: TextStyle(
-                color: Color(0xFF4A4A4A),
-                fontSize: OffsetWidget.setSp(10),
-                fontWeight: FontWeight.w400,
-              ),
-              hintStyle: TextStyle(
-                color: Color(0xFFCFCFCF),
-                fontSize: OffsetWidget.setSp(14),
-                fontWeight: FontWeight.w400,
-              ),
+            _getInputTextField(
+              controller: _againPasswordEC,
+              obscureText: !eyeisOpen,
+              hintText: "confirm_password".local(),
+              titleText: "import_pwdagain".local(),
             ),
-          ),
-          CustomTextField(
-            padding: padding,
-            controller: _againPasswordEC,
-            contentPadding: contentPadding,
-            obscureText: !eyeisOpen,
-            style: TextStyle(
-              color: Color(0xFF000000),
-              fontSize: OffsetWidget.setSp(14),
-              fontWeight: FontWeight.w500,
-            ),
-            decoration: CustomTextField.getUnderLineDecoration(
-              hintText: "import_pwdagain".local(),
-              hintStyle: TextStyle(
-                color: Color(0xFFCFCFCF),
-                fontSize: OffsetWidget.setSp(14),
-                fontWeight: FontWeight.w400,
-              ),
-              suffixIcon: GestureDetector(
-                onTap: () => updateEyesState(),
-                child: LoadAssetsImage(
-                  eyeisOpen == false
-                      ? Constant.ASSETS_IMG + "icon/eyes_close.png"
-                      : Constant.ASSETS_IMG + "icon/eyes_open.png",
-                  width: OffsetWidget.setSc(24),
-                  height: OffsetWidget.setSc(24),
-                  // fit: BoxFit.cover,
-                ),
-              ),
-            ),
-          ),
-          CustomTextField(
-            padding: padding,
-            controller: _passwordTipEC,
-            contentPadding: contentPadding,
-            style: TextStyle(
-              color: Color(0xFF000000),
-              fontSize: OffsetWidget.setSp(14),
-              fontWeight: FontWeight.w500,
-            ),
-            decoration: CustomTextField.getUnderLineDecoration(
+            _getInputTextField(
+              controller: _passwordTipEC,
               hintText: "import_pwddesc".local(),
-              hintStyle: TextStyle(
-                color: Color(0xFFCFCFCF),
-                fontSize: OffsetWidget.setSp(14),
-                fontWeight: FontWeight.w400,
-              ),
+              titleText: "wallet_update_tip_title".local(),
             ),
-          ),
-          GestureDetector(
-            onTap: jumpToAgreement,
-            child: Container(
+            Container(
               padding: EdgeInsets.only(
-                  top: OffsetWidget.setSc(36),
-                  left: OffsetWidget.setSc(20),
-                  right: OffsetWidget.setSc(20)),
+                top: OffsetWidget.setSc(34),
+              ),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   GestureDetector(
@@ -234,58 +206,79 @@ class _CreatePageState extends State<CreatePage> {
                     ),
                   ),
                   OffsetWidget.hGap(5),
-                  Container(
-                    constraints:
-                        BoxConstraints(maxWidth: OffsetWidget.setSc(300)),
-                    child: RichText(
-                      maxLines: 10,
-                      textAlign: TextAlign.left,
-                      text: TextSpan(
-                        text: 'readagrementinfo'.local(),
-                        style: TextStyle(
-                          color: Color(0xFF979797),
-                          fontSize: OffsetWidget.setSp(12),
-                          fontWeight: FontWeight.w400,
+                  GestureDetector(
+                    onTap: updateAgreement,
+                    child: Container(
+                      constraints:
+                          BoxConstraints(maxWidth: OffsetWidget.setSc(300)),
+                      child: RichText(
+                        maxLines: 10,
+                        textAlign: TextAlign.left,
+                        text: TextSpan(
+                          text: 'readagrementinfo'.local(),
+                          style: TextStyle(
+                            color: Color(0xFF999EA5),
+                            fontSize: OffsetWidget.setSp(14),
+                            fontWeight: FontWightHelper.regular,
+                          ),
+                          children: <TextSpan>[
+                            TextSpan(
+                                text: 'agrementinfo'.local(),
+                                recognizer: _tapGestureRecognizer,
+                                style: TextStyle(
+                                  color: Color(0xFF586883),
+                                  fontSize: OffsetWidget.setSp(14),
+                                  fontWeight: FontWightHelper.regular,
+                                )),
+                          ],
                         ),
-                        children: <TextSpan>[
-                          TextSpan(
-                              text: 'agrementinfo'.local(),
-                              style: TextStyle(
-                                color: Color(0xFF4A4A4A),
-                                fontSize: OffsetWidget.setSp(13),
-                                fontWeight: FontWeight.w400,
-                              )),
-                        ],
                       ),
                     ),
                   ),
                 ],
               ),
             ),
-          ),
-          OffsetWidget.vGap(24),
-          GestureDetector(
-            onTap: _createAction,
-            child: Container(
-              margin: EdgeInsets.only(
-                  left: OffsetWidget.setSc(30),
-                  top: OffsetWidget.setSc(30),
-                  right: OffsetWidget.setSc(30)),
-              height: OffsetWidget.setSc(50),
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(OffsetWidget.setSc(50)),
-                  color: Color(0xFF1308FE)),
-              child: Text(
-                "create_data".local(),
-                style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: OffsetWidget.setSp(16),
-                    color: Colors.white),
+            GestureDetector(
+              onTap: _createAction,
+              child: Container(
+                margin: EdgeInsets.only(
+                    left: OffsetWidget.setSc(22),
+                    top: OffsetWidget.setSc(36),
+                    right: OffsetWidget.setSc(22)),
+                height: OffsetWidget.setSc(40),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Color(0xFF586883)),
+                child: Text(
+                  "create_wallet".local(),
+                  style: TextStyle(
+                      fontWeight: FontWightHelper.semiBold,
+                      fontSize: OffsetWidget.setSp(18),
+                      color: Colors.white),
+                ),
               ),
             ),
-          ),
-        ],
+            GestureDetector(
+              onTap: () {
+                Routers.push(context, Routers.restorePage);
+              },
+              child: Container(
+                margin: EdgeInsets.only(
+                  top: OffsetWidget.setSc(23),
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  "restore_wallet".local(),
+                  style: TextStyle(
+                      fontWeight: FontWightHelper.semiBold,
+                      fontSize: OffsetWidget.setSp(18),
+                      color: Color(0xFF4F7BF2)),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -20,7 +20,7 @@ class BackupMemoPage extends StatefulWidget {
 //row 中文助记词 英文助记词
 //row 通用助记词 Coinid专用助记词
 class _BackupMemoPageState extends State<BackupMemoPage> {
-  int memoLanguageType = 0; //当前中文 还是英文
+  int memoLanguageType = 1; //当前中文 还是英文
   int memoType = 0; //当前通用 还是专用
   bool isBackUp = false; //是否是备份
   ChannelMemosObjects memoObjects;
@@ -39,7 +39,6 @@ class _BackupMemoPageState extends State<BackupMemoPage> {
             MemoCount.values.firstWhere((e) => e.toString() == memoCount);
         ChannelMemosObjects objects =
             await ChannelMemos.createWalletMemo(count);
-
         setState(() {
           isBackUp = false;
           memoObjects = objects;
@@ -51,10 +50,10 @@ class _BackupMemoPageState extends State<BackupMemoPage> {
         leadType = int.tryParse((widget.params["leadType"][0]));
         ChannelMemosObjects object = ChannelMemosObjects();
         if (leadType == MLeadType.MLeadType_Memo.index) {
-          object.cnMemos = memo.split(" ");
+          object.enMemos = memo.split(" ");
           memoType = 1;
         } else {
-          object.cnStandMemos = memo.split(" ");
+          object.enStandMemos = memo.split(" ");
           memoType = 0;
         }
         setState(() {
@@ -65,13 +64,6 @@ class _BackupMemoPageState extends State<BackupMemoPage> {
     } catch (e) {
       print("_getMemosValue " + e.toString());
     }
-  }
-
-  void _updateMemoWidgetValue(int language, int type) {
-    setState(() {
-      memoLanguageType = language;
-      memoType = type;
-    });
   }
 
   List<dynamic> _getMemoContents(int language, int type) {
@@ -109,169 +101,93 @@ class _BackupMemoPageState extends State<BackupMemoPage> {
     }
     List values = [];
     values = _getMemoContents(memoLanguageType, memoType);
-    int row = values.length == 12 ? 3 : 6;
-    double spacing = 10;
-    double leftoffset = 20;
-    double width =
-        (ScreenUtil.screenWidth - leftoffset * 4 - ((row - 1) * spacing)) / row;
-
     List<Widget> singleTexts = [];
     for (String item in values) {
       singleTexts.add(
         Container(
-          constraints: BoxConstraints(
-            minWidth: width,
+          height: OffsetWidget.setSc(32),
+          padding: EdgeInsets.only(
+              left: OffsetWidget.setSc(20), right: OffsetWidget.setSc(20)),
+          decoration: BoxDecoration(
+            color: Color(0xFFF6F8F9),
+            borderRadius: BorderRadius.circular(OffsetWidget.setSc(21)),
           ),
-          child: Text(
-            item,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Color(0xFF000000),
-            ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                item,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Color(0xFF000000),
+                  fontSize: OffsetWidget.setSp(16),
+                  fontWeight: FontWightHelper.regular,
+                ),
+              ),
+            ],
           ),
         ),
       );
     }
     return Container(
-      margin: EdgeInsets.only(top: 15, left: leftoffset, right: leftoffset),
       padding: EdgeInsets.only(
-          top: 15, left: leftoffset, bottom: 15, right: leftoffset),
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8.0),
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-                color: Color(0xffD3D3D3),
-                offset: Offset(3, 3),
-                blurRadius: 3.0,
-                spreadRadius: 1.0)
-          ]),
+          top: OffsetWidget.setSc(28), bottom: OffsetWidget.setSc(118)),
+      alignment: Alignment.topLeft,
       child: Wrap(
-        spacing: spacing,
-        runSpacing: 11.0,
-        alignment: WrapAlignment.start,
+        spacing: 8,
+        runSpacing: 12,
         children: singleTexts,
       ),
-    );
-  }
-
-  Widget _getMemoTypeWidget() {
-    if (memoObjects == null) {
-      return Text("data");
-    }
-    List<Widget> widgets = [];
-    if (isBackUp == false) {
-      widgets.add(Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          Expanded(
-            child: GestureDetector(
-              onTap: () => {
-                LogUtil.v("点击中文"),
-                _updateMemoWidgetValue(0, memoType),
-              },
-              child: Container(
-                alignment: Alignment.center,
-                height: OffsetWidget.setSc(30),
-                child: Text(
-                  "create_cnmemo".local(),
-                  style: TextStyle(
-                    color: memoLanguageType == 0
-                        ? Color(0xFF1308FE)
-                        : Color(0xFFACBBCF),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Expanded(
-            child: GestureDetector(
-              onTap: () => {
-                LogUtil.v("点击英文"),
-                _updateMemoWidgetValue(1, memoType),
-              },
-              child: Container(
-                alignment: Alignment.center,
-                height: OffsetWidget.setSc(30),
-                child: Text(
-                  "create_enmemo".local(),
-                  style: TextStyle(
-                    color: memoLanguageType == 1
-                        ? Color(0xFF1308FE)
-                        : Color(0xFFACBBCF),
-                  ),
-                ),
-              ),
-            ),
-          )
-        ],
-      ));
-    }
-    return Column(
-      children: widgets,
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return CustomPageView(
-      child: Column(
-        children: <Widget>[
-          Center(
-            child: Padding(
-              padding: EdgeInsets.only(top: OffsetWidget.setSc(65)),
-              child: Image.asset(
-                Constant.ASSETS_IMG + "icon/create_memo.png",
-                width: OffsetWidget.setSc(50),
-                height: OffsetWidget.setSc(50),
-                fit: BoxFit.contain,
-              ),
-            ),
-          ),
-          OffsetWidget.vGap(15),
-          Text(
-            "create_backupmemo".local(),
-            style: TextStyle(
-                color: Color(0xFF000000),
-                fontSize: OffsetWidget.setSp(18),
-                fontWeight: FontWeight.w400),
-          ),
-          OffsetWidget.vGap(40),
-          Container(
-            padding: EdgeInsets.only(left: 20, right: 20),
-            child: Text(
-              isBackUp == false ? "create_backupmemodesc".local() : "",
-              textAlign: TextAlign.center,
+      title: CustomPageView.getDefaultTitle(
+        titleStr: "create_backupmemo".local(),
+        fontSize: 20,
+        fontWeight: FontWightHelper.semiBold,
+      ),
+      child: Container(
+        padding: EdgeInsets.only(
+            left: OffsetWidget.setSc(20),
+            right: OffsetWidget.setSc(20),
+            top: OffsetWidget.setSc(27)),
+        alignment: Alignment.center,
+        child: Column(
+          children: <Widget>[
+            Text(
+              "create_wallettip".local(),
               style: TextStyle(
-                  color: Color(0xff9B9B9B),
-                  fontSize: OffsetWidget.setSp(12),
-                  fontWeight: FontWeight.w400),
-            ),
-          ),
-          _getMemoContentWidget(),
-          OffsetWidget.vGap(20),
-          _getMemoTypeWidget(),
-          OffsetWidget.vGap(60),
-          GestureDetector(
-            onTap: _nextPage,
-            child: Container(
-              height: OffsetWidget.setSc(40),
-              width: OffsetWidget.setSc(162),
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(OffsetWidget.setSc(50)),
-                  color: Color(0xFF1308FE)),
-              child: Text(
-                "comfirm_trans".local(),
-                style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: OffsetWidget.setSp(16),
-                    color: Colors.white),
+                color: Color(0xFFF15F4A),
+                fontSize: OffsetWidget.setSp(14),
+                fontWeight: FontWightHelper.regular,
               ),
             ),
-          ),
-        ],
+            _getMemoContentWidget(),
+            GestureDetector(
+              onTap: _nextPage,
+              child: Container(
+                height: OffsetWidget.setSc(40),
+                margin: EdgeInsets.only(
+                    left: OffsetWidget.setSc(22),
+                    right: OffsetWidget.setSc(22)),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Color(0xFFC5D4E9)),
+                child: Text(
+                  "memo_been_copied".local(),
+                  style: TextStyle(
+                      fontWeight: FontWightHelper.semiBold,
+                      fontSize: OffsetWidget.setSp(20),
+                      color: Colors.white),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

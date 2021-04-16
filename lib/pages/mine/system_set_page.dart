@@ -81,8 +81,8 @@ class _SystemSetPageState extends State<SystemSetPage> {
                         "system_currency".local(context: context),
                         style: TextStyle(
                             color: Color(0xFF161D2D),
-                            fontSize: OffsetWidget.setSp(15),
-                            fontWeight: FontWightHelper.medium),
+                            fontSize: OffsetWidget.setSp(18),
+                            fontWeight: FontWightHelper.semiBold),
                       ),
                     ]),
                     Row(
@@ -91,7 +91,7 @@ class _SystemSetPageState extends State<SystemSetPage> {
                           amount == 0 ? "CNY" : "USD",
                           style: TextStyle(
                               color: Color(0xFFACBBCF),
-                              fontSize: OffsetWidget.setSp(15),
+                              fontSize: OffsetWidget.setSp(18),
                               fontWeight: FontWightHelper.regular),
                         ),
                         OffsetWidget.hGap(8),
@@ -125,21 +125,24 @@ class _SystemSetPageState extends State<SystemSetPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Row(children: <Widget>[
-                      LoadAssetsImage(
-                        Constant.ASSETS_IMG + "icon/icon_language.png",
-                        width: OffsetWidget.setSc(22),
-                        height: OffsetWidget.setSc(22),
-                      ),
-                      OffsetWidget.hGap(12),
-                      Text(
-                        "language".local(context: context),
-                        style: TextStyle(
+                    Row(
+                      children: <Widget>[
+                        LoadAssetsImage(
+                          Constant.ASSETS_IMG + "icon/icon_language.png",
+                          width: OffsetWidget.setSc(22),
+                          height: OffsetWidget.setSc(22),
+                        ),
+                        OffsetWidget.hGap(12),
+                        Text(
+                          "language".local(context: context),
+                          style: TextStyle(
                             color: Color(0xFF161D2D),
-                            fontSize: OffsetWidget.setSp(15),
-                            fontWeight: FontWightHelper.medium),
-                      ),
-                    ]),
+                            fontSize: OffsetWidget.setSp(18),
+                            fontWeight: FontWightHelper.semiBold,
+                          ),
+                        ),
+                      ],
+                    ),
                     Row(
                       children: <Widget>[
                         Text(
@@ -148,7 +151,7 @@ class _SystemSetPageState extends State<SystemSetPage> {
                               : "system_en".local(context: context),
                           style: TextStyle(
                               color: Color(0xFFACBBCF),
-                              fontSize: OffsetWidget.setSp(15),
+                              fontSize: OffsetWidget.setSp(18),
                               fontWeight: FontWightHelper.regular),
                         ),
                         OffsetWidget.hGap(8),
@@ -189,8 +192,8 @@ class _SystemSetPageState extends State<SystemSetPage> {
                         "nodelist_title".local(context: context),
                         style: TextStyle(
                             color: Color(0xFF161D2D),
-                            fontSize: OffsetWidget.setSp(15),
-                            fontWeight: FontWightHelper.medium),
+                            fontSize: OffsetWidget.setSp(18),
+                            fontWeight: FontWightHelper.semiBold),
                       ),
                     ]),
                     LoadAssetsImage(

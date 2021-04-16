@@ -2,10 +2,10 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_coinid/pages/choose/choose_cointype.dart';
-import 'package:flutter_coinid/pages/choose/choose_create_type_page.dart';
+// import 'package:flutter_coinid/pages/choose/choose_create_type_page.dart';
 import 'package:flutter_coinid/pages/choose/choose_type_page.dart';
 import 'package:flutter_coinid/pages/create/creatememo/backup_memovalues_page.dart';
-import 'package:flutter_coinid/pages/create/creatememo/choose_memocount_page.dart';
+// import 'package:flutter_coinid/pages/create/creatememo/choose_memocount_page.dart';
 import 'package:flutter_coinid/pages/create/creatememo/create_page.dart';
 import 'package:flutter_coinid/pages/create/creatememo/verify_memovalues_page.dart';
 import 'package:flutter_coinid/pages/guide/guide_page.dart';
@@ -60,10 +60,10 @@ var chooseTypeHandler = new Handler(
 });
 
 //选择创建钱包类型
-var chooseCreateTypeHandler = new Handler(
-    handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-  return ChooseCreateTypePage();
-});
+// var chooseCreateTypeHandler = new Handler(
+//     handlerFunc: (BuildContext context, Map<String, dynamic> params) {
+//   return ChooseCreateTypePage();
+// });
 
 //创建
 var createTypeHandler = new Handler(
@@ -77,13 +77,13 @@ var restoreHandler = new Handler(
   return RestorePage();
 });
 
-var chooseCountHandler =
-    Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-  LogUtil.v("ChooseCountPage接收的参数+$params");
-  return ChooseCountPage(
-    params: params,
-  );
-});
+// var chooseCountHandler =
+//     Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
+//   LogUtil.v("ChooseCountPage接收的参数+$params");
+//   return ChooseCountPage(
+//     params: params,
+//   );
+// });
 
 var backMemoValuesHandler =
     Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {

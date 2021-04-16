@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_coinid/channel/channel_native.dart';
 import 'package:flutter_coinid/channel/channel_scan.dart';
 import 'package:flutter_coinid/models/tokens/collection_tokens.dart';
@@ -44,7 +45,7 @@ class _PaymentPageState extends State<PaymentPage> {
   EdgeInsets contentPadding = EdgeInsets.only(left: 0, right: 0);
   double _balanceNum = 0;
   dynamic chaininfo;
-  int _feeBean = 20; //gas or sat
+  int _feeOffset = 20; //gas or sat
   double _feeValue = 0.0;
   bool _isCustomFee = false; //是否自定义矿工费
   double tokenPrice = 0;
@@ -116,27 +117,28 @@ class _PaymentPageState extends State<PaymentPage> {
         n: 1,
         contract: contract,
         block: (result, code) {
-          String offsetValue = btcDefaultSatLen;
-          int newBean = _feeBean;
+          String newBean = btcDefaultSatLen;
+          int offset = _feeOffset;
           if (code == 200 && result != null) {
             chaininfo = result;
             if (chainType == MCoinType.MCoinType_ETH.index ||
                 chainType == MCoinType.MCoinType_BSC.index) {
               String gasPrice = chaininfo["p"] ??= "0";
-              newBean = int.tryParse(gasPrice) ~/ pow(10, 9);
-              int minv = max(sliderMin.toInt(), newBean);
-              newBean = min(sliderMax.toInt(), minv);
-              offsetValue = chaininfo["g"] ??= "0";
+              int gasFee = int.tryParse(gasPrice) ~/ pow(10, 9);
+              int minv = max(sliderMin.toInt(), gasFee);
+              gasFee = min(sliderMax.toInt(), minv);
+              offset = gasFee;
+              newBean = chaininfo["g"] ??= "0";
             }
           }
           String value = MHWallet.configFeeValue(
               cointype: chainType,
-              beanValue: newBean.toString(),
-              offsetValue: offsetValue);
+              beanValue: newBean,
+              offsetValue: offset.toString());
           if (mounted) {
             setState(() {
               _feeValue = double.tryParse(value);
-              _feeBean = newBean;
+              _feeOffset = offset;
             });
           }
 
@@ -167,7 +169,7 @@ class _PaymentPageState extends State<PaymentPage> {
         Provider.of<CurrentChooseWalletState>(context, listen: false)
             .currentWallet;
     if (_wallet.chainType == MCoinType.MCoinType_ETH.index ||
-        _wallet.chainType == MCoinType.MCoinType_VNS.index) {
+        _wallet.chainType == MCoinType.MCoinType_BSC.index) {
       if (chaininfo == null) {
         return;
       }
@@ -180,9 +182,9 @@ class _PaymentPageState extends State<PaymentPage> {
       int a = min(sliderMax.toInt(), minv);
       setState(() {
         _feeValue = double.tryParse(value);
-        _feeBean = a;
+        _feeOffset = a;
       });
-      LogUtil.v("_customfeeChange $value   a $_feeBean");
+      LogUtil.v("_customfeeChange $value   a $_feeOffset");
     }
   }
 
@@ -190,21 +192,21 @@ class _PaymentPageState extends State<PaymentPage> {
     MHWallet _wallet =
         Provider.of<CurrentChooseWalletState>(context, listen: false)
             .currentWallet;
-    int chainType = _wallet.chainType;
-    String offsetValue = btcDefaultSatLen;
-    if (chaininfo == null) {
-      return;
-    }
+    int chainType = _wallet?.chainType;
+    String bean = btcDefaultSatLen;
+    setState(() {
+      _feeOffset = value.toInt();
+    });
+    LogUtil.v("chaininfo $chaininfo change $value");
     if (chainType == MCoinType.MCoinType_ETH.index ||
-        chainType == MCoinType.MCoinType_VNS.index) {
-      offsetValue = chaininfo["g"] ??= "0";
+        chainType == MCoinType.MCoinType_BSC.index) {
+      bean = chaininfo["g"] ??= "0";
     }
     LogUtil.v("slider change $value");
-    _feeBean = value.toInt();
     String newfee = MHWallet.configFeeValue(
         cointype: chainType,
-        beanValue: _feeBean.toString(),
-        offsetValue: offsetValue.toString());
+        beanValue: bean.toString(),
+        offsetValue: _feeOffset.toString());
     setState(() {
       _feeValue = double.tryParse(newfee);
     });
@@ -289,7 +291,8 @@ class _PaymentPageState extends State<PaymentPage> {
       });
       return;
     }
-    if (coinType == MCoinType.MCoinType_DOT.index) {
+    if (coinType == MCoinType.MCoinType_DOT.index ||
+        coinType == MCoinType.MCoinType_KSM.index) {
       int blockNum = chaininfo["blockNumber"] as int;
       String blockHash = chaininfo["blockHash"];
       int eraPeriod = 64;
@@ -301,7 +304,7 @@ class _PaymentPageState extends State<PaymentPage> {
       int txVersion = chaininfo["txVersion"] as int;
       int specVersion = chaininfo["specVersion"] as int;
       DotSignParams dotsign = DotSignParams(
-          "phoenix",
+          coinType == MCoinType.MCoinType_DOT.index ? 0 : 1,
           "1",
           blockNum,
           blockHash,
@@ -319,9 +322,10 @@ class _PaymentPageState extends State<PaymentPage> {
       if (coinType == MCoinType.MCoinType_ETH.index ||
           coinType == MCoinType.MCoinType_BSC.index) {
         feeValue = MHWallet.configFeeValue(
-            cointype: coinType,
-            beanValue: _feeBean.toString(),
-            offsetValue: chaininfo["g"] as String);
+          cointype: coinType,
+          beanValue: chaininfo["g"] as String,
+          offsetValue: _feeOffset.toString(),
+        );
         if (double.parse(feeValue) == 0) {
           HWToast.showText(text: "payment_highfee".local());
           return;
@@ -337,7 +341,7 @@ class _PaymentPageState extends State<PaymentPage> {
         }
         ETHSignParams ethsign = ETHSignParams(
             chaininfo["n"],
-            _feeBean.toString(),
+            _feeOffset.toString(),
             chaininfo["g"],
             null,
             chaininfo["v"],
@@ -348,8 +352,8 @@ class _PaymentPageState extends State<PaymentPage> {
       } else {
         feeValue = MHWallet.configFeeValue(
           cointype: coinType,
-          beanValue: _feeBean.toString(),
-          offsetValue: btcDefaultSatLen,
+          beanValue: btcDefaultSatLen,
+          offsetValue: _feeOffset.toString(),
         );
         List utxos = chaininfo as List;
         if (utxos == null || utxos.length == 0) {
@@ -491,118 +495,122 @@ class _PaymentPageState extends State<PaymentPage> {
     String amountType =
         Provider.of<CurrentChooseWalletState>(context, listen: false)
             .currencySymbolStr;
-    Widget _getAction() {
-      int coinType = _wallet?.chainType;
-      if (coinType == MCoinType.MCoinType_ETH.index ||
-          coinType == MCoinType.MCoinType_VNS.index) {
-        return GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTap: () => _updateFeeWidget(),
-          child: Container(
-            child: Text(
-              _isCustomFee == false
-                  ? "payment_customfee".local()
-                  : "payment_defaultfee".local(),
-              textAlign: TextAlign.right,
-              style: TextStyle(
-                color: Color(0xff4A4A4A),
-                fontWeight: FontWeight.w500,
-                fontSize: OffsetWidget.setSp(14),
-              ),
-            ),
-          ),
-        );
-      } else {
-        return OffsetWidget.hGap(0);
-      }
-    }
+    String coinType = tokens?.coinType;
+    coinType ??= "";
+    // Widget _getAction() {
+    //   int coinType = _wallet?.chainType;
+    //   if (coinType == MCoinType.MCoinType_ETH.index ||
+    //       coinType == MCoinType.MCoinType_VNS.index) {
+    //     return GestureDetector(
+    //       behavior: HitTestBehavior.opaque,
+    //       onTap: () => _updateFeeWidget(),
+    //       child: Container(
+    //         child: Text(
+    //           _isCustomFee == false
+    //               ? "payment_customfee".local()
+    //               : "payment_defaultfee".local(),
+    //           textAlign: TextAlign.right,
+    //           style: TextStyle(
+    //             color: Color(0xff4A4A4A),
+    //             fontWeight: FontWeight.w500,
+    //             fontSize: OffsetWidget.setSp(14),
+    //           ),
+    //         ),
+    //       ),
+    //     );
+    //   } else {
+    //     return OffsetWidget.hGap(0);
+    //   }
+    // }
 
     Widget _getFeeWidget() {
-      return _isCustomFee == true
-          ? CustomTextField(
-              controller: _customFeeEC,
-              contentPadding: contentPadding,
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
-              fillColor: Colors.white,
-              onChange: (v) => {_customfeeChange(v)},
-              style: TextStyle(
-                color: Color(0xFF000000),
-                fontSize: OffsetWidget.setSp(14),
-                fontWeight: FontWeight.w500,
-              ),
-              decoration: CustomTextField.getUnderLineDecoration(),
-            )
-          : Container(
-              child: Row(
-                children: [
-                  Text(
-                    "payment_slow".local(),
-                    style: TextStyle(
-                        color: Color(0xFF4A4A4A),
-                        fontWeight: FontWeight.w500,
-                        fontSize: OffsetWidget.setSp(14)),
+      return
+          //  _isCustomFee == true
+          //     ? CustomTextField(
+          //         controller: _customFeeEC,
+          //         keyboardType: TextInputType.numberWithOptions(decimal: true),
+          //         onChange: (v) => {_customfeeChange(v)},
+          //         style: TextStyle(
+          //           color: Color(0xFF000000),
+          //           fontSize: OffsetWidget.setSp(14),
+          //           fontWeight: FontWeight.w500,
+          //         ),
+          //         decoration: CustomTextField.getUnderLineDecoration(
+          //           contentPadding: contentPadding,
+          //         ),
+          //       )
+          //     :
+
+          Row(
+        children: [
+          Text(
+            "payment_slow".local(),
+            style: TextStyle(
+                color: Color(0xFF161D2D),
+                fontWeight: FontWightHelper.regular,
+                fontSize: OffsetWidget.setSp(16)),
+          ),
+          OffsetWidget.hGap(6),
+          Expanded(
+            child: SliderTheme(
+              //自定义风格
+              data: SliderTheme.of(context).copyWith(
+                  activeTrackColor: Color(0xFF586883),
+                  inactiveTrackColor: Color(0xFFF6F8F9),
+                  thumbColor: Color(0xFFFFFFFF),
+                  overlayColor: Color(0xFFFFFFFF),
+                  overlayShape: RoundSliderOverlayShape(
+                    overlayRadius: 12,
                   ),
-                  OffsetWidget.hGap(6),
-                  Expanded(
-                    child: SliderTheme(
-                      //自定义风格
-                      data: SliderTheme.of(context).copyWith(
-                          activeTrackColor: Color(0xff1308FE),
-                          inactiveTrackColor: Color(0xffCFCFCF),
-                          thumbColor: Color(0xFFFFFFFF),
-                          overlayColor: Color(0xFF979797),
-                          overlayShape: RoundSliderOverlayShape(
-                            overlayRadius: 8,
-                          ),
-                          thumbShape: RoundSliderThumbShape(
-                            disabledThumbRadius: 8,
-                            enabledThumbRadius: 8,
-                          ),
-                          trackHeight: 3),
-                      child: Slider(
-                          value: _feeBean.toDouble(),
-                          onChanged: (v) {
-                            _sliderChange(v);
-                          },
-                          max: sliderMax,
-                          min: sliderMin),
-                    ),
+                  thumbShape: RoundSliderThumbShape(
+                    disabledThumbRadius: 12,
+                    enabledThumbRadius: 12,
                   ),
-                  OffsetWidget.hGap(6),
-                  Text(
-                    "payment_high".local(),
-                    style: TextStyle(
-                        color: Color(0xFF4A4A4A),
-                        fontWeight: FontWeight.w500,
-                        fontSize: OffsetWidget.setSp(14)),
-                  ),
-                ],
-              ),
-            );
+                  trackHeight: 6),
+              child: Slider(
+                  value: _feeOffset.toDouble(),
+                  onChanged: (v) {
+                    _sliderChange(v);
+                  },
+                  max: sliderMax,
+                  min: sliderMin),
+            ),
+          ),
+          OffsetWidget.hGap(6),
+          Text(
+            "payment_high".local(),
+            style: TextStyle(
+                color: Color(0xFF161D2D),
+                fontWeight: FontWightHelper.regular,
+                fontSize: OffsetWidget.setSp(16)),
+          ),
+        ],
+      );
     }
 
     return Container(
-      padding: EdgeInsets.only(
-          left: padding.left,
-          right: padding.right,
-          top: OffsetWidget.setSc(30)),
+      padding: EdgeInsets.only(top: OffsetWidget.setSc(33)),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 constraints: BoxConstraints(
-                  maxWidth: OffsetWidget.setSc(200),
+                  maxWidth: OffsetWidget.setSc(300),
                 ),
+                // alignment: Alignment.center,
+                // color: Colors.red,
                 child: Row(
                   children: [
                     Text(
                       "payment_fee".local() + ": $_feeValue",
                       style: TextStyle(
-                        color: Color(0xFF4A4A4A),
-                        fontWeight: FontWeight.w500,
-                        fontSize: OffsetWidget.setSp(14),
+                        color: Color(0xFF161D2D),
+                        fontWeight: FontWightHelper.regular,
+                        fontSize: OffsetWidget.setSp(15),
                       ),
                     ),
                     OffsetWidget.hGap(3),
@@ -613,34 +621,42 @@ class _PaymentPageState extends State<PaymentPage> {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          color: Color(0xFF9B9B9B),
-                          fontWeight: FontWeight.w400,
-                          fontSize: OffsetWidget.setSp(12),
+                          color: Color(0xFFACBBCF),
+                          fontWeight: FontWightHelper.regular,
+                          fontSize: OffsetWidget.setSp(15),
                         ),
                       ),
                     ),
                   ],
                 ),
               ),
-              _getAction(),
+              // _getAction(),
             ],
           ),
-          Container(
-            margin: EdgeInsets.only(top: 10),
-            color: Color(Constant.TextFileld_FocuseCOlor),
-            height: 1,
-          ),
-          OffsetWidget.vGap(20),
+          OffsetWidget.vGap(15),
           _getFeeWidget(),
-          OffsetWidget.vGap(16),
-          Text(
-            "$_feeValue ${tokens.coinType}",
-            style: TextStyle(
-              color: Color(0xFF4A4A4A),
-              fontWeight: FontWeight.w500,
-              fontSize: OffsetWidget.setSp(12),
-            ),
-          )
+          OffsetWidget.vGap(8),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "payment_slow".local(),
+                style: TextStyle(
+                    color: Colors.transparent,
+                    fontWeight: FontWightHelper.regular,
+                    fontSize: OffsetWidget.setSp(16)),
+              ),
+              OffsetWidget.hGap(20),
+              Text(
+                "$_feeValue $coinType",
+                style: TextStyle(
+                  color: Color(0xFF161D2D),
+                  fontWeight: FontWightHelper.regular,
+                  fontSize: OffsetWidget.setSp(15),
+                ),
+              )
+            ],
+          ),
         ],
       ),
     );
@@ -651,147 +667,240 @@ class _PaymentPageState extends State<PaymentPage> {
     MCollectionTokens tokens = Provider.of<CurrentChooseWalletState>(
       context,
     ).chooseTokens;
+    int decimals = tokens?.decimals;
+    String token = tokens?.token;
+    token ??= "";
     return CustomPageView(
-        title: Text(
-          "trans_payment".local(),
-          style: TextStyle(
-            color: Color(0xFF000000),
-            fontSize: OffsetWidget.setSp(18),
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-        child: Column(
-          children: [
-            OffsetWidget.vGap(10),
-            CustomTextField(
-                controller: _addressEC,
-                contentPadding: contentPadding,
-                padding: padding,
-                fillColor: Colors.white,
-                style: TextStyle(
-                  color: Color(0xFF000000),
-                  fontSize: OffsetWidget.setSp(14),
-                  fontWeight: FontWeight.w500,
-                ),
-                decoration: CustomTextField.getUnderLineDecoration(
-                  hintText: "payment_address".local(),
-                  hintStyle: TextStyle(
-                      color: Color(0xFF4A4A4A),
-                      fontWeight: FontWeight.w400,
-                      fontSize: OffsetWidget.setSp(14)),
-                  suffixIcon: GestureDetector(
+      title: CustomPageView.getDefaultTitle(
+        titleStr: token + "trans_payment".local(),
+      ),
+      child: Container(
+          padding: EdgeInsets.only(
+              left: OffsetWidget.setSc(20),
+              top: OffsetWidget.setSc(20),
+              right: OffsetWidget.setSc(20)),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxHeight: OffsetWidget.setSc(54),
+                        minHeight: OffsetWidget.setSc(54),
+                      ),
+                      child: CustomTextField(
+                        controller: _addressEC,
+                        maxLines: 2,
+                        style: TextStyle(
+                          color: Color(0xFF161D2D),
+                          fontSize: OffsetWidget.setSp(12),
+                          fontWeight: FontWightHelper.regular,
+                        ),
+                        decoration: CustomTextField.getBorderLineDecoration(
+                          borderColor: Color(0xFFEFF3F5),
+                          borderRadius: 8,
+                          hintText: "payment_address".local(),
+                          fillColor: Color(0xFFF6F8F9),
+                          contentPadding: EdgeInsets.only(
+                            left: OffsetWidget.setSc(16),
+                            top: OffsetWidget.setSc(10),
+                            bottom: OffsetWidget.setSc(10),
+                          ),
+                          hintStyle: TextStyle(
+                              color: Color(0xFFACBBCF),
+                              fontWeight: FontWightHelper.regular,
+                              fontSize: OffsetWidget.setSp(16)),
+                          suffixIconConstraints: BoxConstraints(
+                            maxWidth: OffsetWidget.setSc(97),
+                            minWidth: OffsetWidget.setSc(97),
+                          ),
+                          suffixIcon: GestureDetector(
+                            behavior: HitTestBehavior.opaque,
+                            onTap: () async {
+                              ClipboardData data =
+                                  await Clipboard.getData(Clipboard.kTextPlain);
+                              if (data != null && data.text != null) {
+                                _addressEC.text = data.text;
+                              }
+                            },
+                            child: Center(
+                              child: Container(
+                                alignment: Alignment.center,
+                                width: OffsetWidget.setSc(69),
+                                height: OffsetWidget.setSc(32),
+                                child: Text(
+                                  "wallettrans_copys".local(),
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: OffsetWidget.setSp(16),
+                                      fontWeight: FontWightHelper.regular),
+                                ),
+                                decoration: BoxDecoration(
+                                    color: Color(0xFF586883),
+                                    borderRadius: BorderRadius.circular(
+                                        OffsetWidget.setSc(21.5))),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  OffsetWidget.hGap(14),
+                  GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () => {
                       _startScanAddress(),
                     },
                     child: LoadAssetsImage(
                       Constant.ASSETS_IMG + "icon/home_scan.png",
-                      width: OffsetWidget.setSc(34),
-                      height: OffsetWidget.setSc(34),
-                      fit: BoxFit.contain,
+                      width: OffsetWidget.setSc(20),
+                      height: OffsetWidget.setSc(20),
+                      fit: BoxFit.cover,
                     ),
                   ),
-                )),
-            CustomTextField(
-              controller: _valueEC,
-              contentPadding: contentPadding,
-              padding: padding,
-              fillColor: Colors.white,
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
-              inputFormatters: [
-                CustomTextField.decimalInputFormatter(tokens.decimals),
-              ],
-              style: TextStyle(
-                color: Color(0xFF000000),
-                fontSize: OffsetWidget.setSp(14),
-                fontWeight: FontWeight.w500,
+                ],
               ),
-              decoration: CustomTextField.getUnderLineDecoration(
+              CustomTextField(
+                padding: EdgeInsets.only(top: OffsetWidget.setSc(33)),
+                controller: _valueEC,
+                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                inputFormatters: [
+                  CustomTextField.decimalInputFormatter(decimals),
+                ],
+                style: TextStyle(
+                  color: Color(0xFF282828),
+                  fontSize: OffsetWidget.setSp(28),
+                  fontWeight: FontWightHelper.semiBold,
+                ),
+                decoration: CustomTextField.getBorderLineDecoration(
+                  borderColor: Color(0xFFACBBCF),
+                  borderRadius: 8,
                   hintText: "payment_value".local(),
+                  contentPadding: EdgeInsets.only(
+                      left: OffsetWidget.setSc(22),
+                      // right: OffsetWidget.setSc(16),
+                      bottom: OffsetWidget.setSc(16),
+                      top: OffsetWidget.setSc(16)),
                   hintStyle: TextStyle(
-                      color: Color(0xFF4A4A4A),
-                      fontWeight: FontWeight.w400,
-                      fontSize: OffsetWidget.setSp(14)),
-                  suffixIconConstraints:
-                      BoxConstraints(maxWidth: OffsetWidget.setSc(110)),
-                  suffixIcon: Text(
-                    "payment_balance".local() + ":\n$_balanceNum",
-                    textAlign: TextAlign.end,
-                    overflow: TextOverflow.ellipsis,
-                    strutStyle: StrutStyle(),
-                    style: TextStyle(
-                        color: Color(0xFF1308FE),
-                        fontWeight: FontWeight.w500,
-                        fontSize: OffsetWidget.setSp(14)),
-                  )),
-            ),
-            CustomTextField(
-              controller: _remarkEC,
-              contentPadding: contentPadding,
-              padding: padding,
-              fillColor: Colors.white,
-              onChange: (value) => {
-                _remarkStringChange(value),
-              },
-              maxLines: 1,
-              maxLength: 256,
-              style: TextStyle(
-                color: Color(0xFF000000),
-                fontSize: OffsetWidget.setSp(14),
-                fontWeight: FontWeight.w500,
-              ),
-              decoration: CustomTextField.getUnderLineDecoration(
-                hintText: "payment_remark".local(),
-                hintStyle: TextStyle(
-                    color: Color(0xFF4A4A4A),
-                    fontWeight: FontWeight.w400,
-                    fontSize: OffsetWidget.setSp(14)),
-                suffixIcon: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(
-                      remarkText.length.toString() + "/256",
-                      textAlign: TextAlign.right,
-                      style: TextStyle(
-                          color: Color(0xFF4A4A4A),
-                          fontWeight: FontWeight.w400,
-                          fontSize: OffsetWidget.setSp(14)),
-                    ),
-                    // GestureDetector(
-                    //   onTap: () => {},
-                    //   child: LoadAssetsImage(
-                    //     Constant.ASSETS_IMG + "icon/home_scan.png",
-                    //     width: OffsetWidget.setSc(34),
-                    //     height: OffsetWidget.setSc(34),
-                    //     fit: BoxFit.contain,
-                    //   ),
-                    // ),
-                  ],
+                      color: Color(0xFFACBBCF),
+                      fontWeight: FontWightHelper.regular,
+                      fontSize: OffsetWidget.setSp(18)),
+                  suffixIconConstraints: BoxConstraints(
+                      minWidth: OffsetWidget.setSc(72),
+                      maxWidth: OffsetWidget.setSc(72)),
+                  suffixIcon: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Container(
+                          width: 1,
+                          padding: EdgeInsets.only(
+                              top: OffsetWidget.setSc(22),
+                              bottom: OffsetWidget.setSc(19)),
+                          color: Color(0xFF586883)),
+                      Text(
+                        token,
+                        textAlign: TextAlign.end,
+                        style: TextStyle(
+                            color: Color(0xFF586883),
+                            fontWeight: FontWightHelper.semiBold,
+                            fontSize: OffsetWidget.setSp(18)),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            _getFeeWidget(),
-            OffsetWidget.vGap(170),
-            GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: _popupInfo,
-                child: Container(
-                  margin: EdgeInsets.only(left: 30, right: 30),
-                  height: OffsetWidget.setSc(50),
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      borderRadius:
-                          BorderRadius.circular(OffsetWidget.setSc(50)),
-                      color: Color(0xFF1308FE)),
-                  child: Text(
-                    "comfirm_trans_payment".local(),
-                    style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: OffsetWidget.setSp(16),
-                        color: Colors.white),
+              Container(
+                padding: EdgeInsets.only(
+                    top: OffsetWidget.setSc(16),
+                    bottom: OffsetWidget.setSc(29)),
+                alignment: Alignment.centerRight,
+                child: Text(
+                  "payment_balance".local() + "：$_balanceNum",
+                  textAlign: TextAlign.end,
+                  style: TextStyle(
+                      color: Color(0xFF161D2D),
+                      fontWeight: FontWightHelper.regular,
+                      fontSize: OffsetWidget.setSp(15)),
+                ),
+              ),
+              Text(
+                "payment_remark".local(),
+                style: TextStyle(
+                    color: Color(0xFF161D2D),
+                    fontSize: OffsetWidget.setSp(15),
+                    fontWeight: FontWightHelper.regular),
+              ),
+              Container(
+                height: OffsetWidget.setSc(106),
+                margin: EdgeInsets.only(top: OffsetWidget.setSc(13)),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: Color(0xFFF6F8F9),
+                  border: Border.all(
+                    color: Color(0XFFEFF3F5),
                   ),
-                )),
-          ],
-        ));
+                ),
+                child: CustomTextField(
+                  controller: _remarkEC,
+                  onChange: (value) => {
+                    _remarkStringChange(value),
+                  },
+                  maxLines: 3,
+                  maxLength: 256,
+                  style: TextStyle(
+                    color: Color(0xFF161D2D),
+                    fontSize: OffsetWidget.setSp(16),
+                    fontWeight: FontWightHelper.regular,
+                  ),
+                  decoration: CustomTextField.getBorderLineDecoration(
+                    hintText: "wallet_transdesc".local(),
+                    fillColor: Color(0xFFF6F8F9),
+                    borderColor: Colors.transparent,
+                    contentPadding: EdgeInsets.only(
+                        left: OffsetWidget.setSc(25),
+                        right: OffsetWidget.setSc(10),
+                        top: OffsetWidget.setSc(18)),
+                    helperStyle: TextStyle(
+                      color: Color(0xFF171F24),
+                      fontWeight: FontWightHelper.regular,
+                      fontSize: OffsetWidget.setSp(12),
+                    ),
+                    hintStyle: TextStyle(
+                        color: Color(0xFFACBBCF),
+                        fontWeight: FontWightHelper.regular,
+                        fontSize: OffsetWidget.setSp(18)),
+                  ),
+                ),
+              ),
+              _getFeeWidget(),
+              OffsetWidget.vGap(84),
+              GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: _popupInfo,
+                  child: Container(
+                    margin: EdgeInsets.only(
+                        left: OffsetWidget.setSc(22),
+                        right: OffsetWidget.setSc(22)),
+                    height: OffsetWidget.setSc(40),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        borderRadius:
+                            BorderRadius.circular(OffsetWidget.setSc(8)),
+                        color: Color(0xFF586883)),
+                    child: Text(
+                      "comfirm_trans_payment".local(),
+                      style: TextStyle(
+                          fontWeight: FontWightHelper.semiBold,
+                          fontSize: OffsetWidget.setSp(14),
+                          color: Colors.white),
+                    ),
+                  )),
+            ],
+          )),
+    );
   }
 }

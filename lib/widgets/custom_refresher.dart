@@ -56,7 +56,7 @@ class CustomRefresher extends StatelessWidget {
               : Container(
                   height: 55.0,
                   child: Center(child: body),
-                );
+                  color: Colors.white);
         },
       ),
       footer: CustomFooter(
@@ -80,6 +80,7 @@ class CustomRefresher extends StatelessWidget {
           }
           return Container(
             height: 55.0,
+            color: Colors.white,
             child: Center(child: body),
           );
         },

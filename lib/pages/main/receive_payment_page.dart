@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_coinid/channel/channel_native.dart';
 import 'package:flutter_coinid/models/wallet/mh_wallet.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -101,43 +102,105 @@ class _RecervePaymentPageState extends State<RecervePaymentPage> {
   Widget build(BuildContext context) {
     return CustomPageView(
       hiddenScrollView: true,
-      title: Text(
-        "receive_payment".local(),
-        style: TextStyle(
-            fontSize: OffsetWidget.setSp(17), color: Color(0xFF4A4A4A)),
+      title: CustomPageView.getDefaultTitle(
+        titleStr: "receive_payment".local(),
       ),
-      child: Center(
-        child: Container(
-          alignment: Alignment.center,
-          padding: EdgeInsets.only(left: 25, right: 25),
-          height: OffsetWidget.setSc(290),
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(
-                Constant.ASSETS_IMG + "background/bg_group.png",
-              ),
-              fit: BoxFit.fill,
+      child: Container(
+        alignment: Alignment.center,
+        height: OffsetWidget.setSc(450),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(
+              Constant.ASSETS_IMG + "background/bg_receive.png",
             ),
+            fit: BoxFit.contain,
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              QrImage(
-                data: qrCodeStr,
-                size: OffsetWidget.setSc(140),
+        ),
+        child: Stack(
+          fit: StackFit.expand,
+          alignment: Alignment.center,
+          children: [
+            Positioned(
+              top: OffsetWidget.setSc(55),
+              child: Column(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(OffsetWidget.setSc(19)),
+                    child: LoadAssetsImage(
+                      Constant.ASSETS_IMG + "icon/icon_app.png",
+                      width: OffsetWidget.setSc(38),
+                      height: OffsetWidget.setSc(38),
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                  Text("AllToken",
+                      style: TextStyle(
+                          fontSize: OffsetWidget.setSp(15),
+                          fontWeight: FontWightHelper.regular,
+                          color: Color(0xFF161D2D))),
+                ],
               ),
-              // OffsetWidget.vGap(5),
-              // Text(
-              //   walletAddress,
-              //   overflow: TextOverflow.ellipsis,
-              //   textAlign: TextAlign.center,
-              //   maxLines: 2,
-              //   style: TextStyle(
-              //       fontSize: OffsetWidget.setSp(13), color: Color(0xFF444444)),
-              // ),
-            ],
-          ),
+            ),
+            Positioned(
+              top: OffsetWidget.setSc(144),
+              width: OffsetWidget.setSc(197),
+              height: OffsetWidget.setSc(197),
+              child: QrImage(
+                data: qrCodeStr,
+                size: OffsetWidget.setSc(197),
+              ),
+            ),
+            Positioned(
+              bottom: OffsetWidget.setSc(44),
+              width: OffsetWidget.setSc(250),
+              child: Column(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      if (walletAddress.isValid() == false) return;
+                      Clipboard.setData(ClipboardData(text: walletAddress));
+                      HWToast.showText(text: "copy_success".local());
+                    },
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        LoadAssetsImage(
+                          Constant.ASSETS_IMG + "icon/icon_whitecopy.png",
+                          width: 13,
+                          height: 13,
+                        ),
+                        OffsetWidget.hGap(4),
+                        Text(
+                          "copy_receiveaddress".local(),
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
+                          maxLines: 2,
+                          style: TextStyle(
+                            fontSize: OffsetWidget.setSp(14),
+                            fontWeight: FontWightHelper.regular,
+                            color: Color(0xFFFFFFFF),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  OffsetWidget.vGap(7),
+                  Text(
+                    walletAddress,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    style: TextStyle(
+                      fontSize: OffsetWidget.setSp(10),
+                      fontWeight: FontWightHelper.regular,
+                      color: Color(0xFFFFFFFF),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

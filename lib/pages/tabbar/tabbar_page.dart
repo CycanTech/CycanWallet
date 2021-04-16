@@ -76,6 +76,7 @@ class _TabbarPageState extends State<TabbarPage> {
       child: CustomPageView(
           hiddenScrollView: true,
           hiddenAppBar: true,
+          safeAreaTop: false,
           hiddenLeading: true,
           bottomNavigationBar: Theme(
               data: ThemeData(

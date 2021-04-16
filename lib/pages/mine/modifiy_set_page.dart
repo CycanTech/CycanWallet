@@ -128,8 +128,8 @@ class _ModifiySetPageState extends State<ModifiySetPage> {
                       map[kName],
                       style: TextStyle(
                           color: Color(0xFF161D2D),
-                          fontSize: OffsetWidget.setSp(15),
-                          fontWeight: FontWightHelper.medium),
+                          fontSize: OffsetWidget.setSp(18),
+                          fontWeight: FontWightHelper.semiBold),
                     ),
                     LoadAssetsImage(
                       map[kState] == true.toString()

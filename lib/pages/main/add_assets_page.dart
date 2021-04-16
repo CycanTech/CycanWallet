@@ -75,9 +75,9 @@ class _AddAssetsPageState extends State<AddAssetsPage> {
             fit: BoxFit.contain,
             scale: 1,
             placeholder: Constant.ASSETS_IMG +
-                "wallet/icon_" +
+                "wallet/logo_" +
                 symbol.toLowerCase() +
-                "_token_default.png",
+                "_default.png",
           ),
           OffsetWidget.hGap(9),
           Column(
@@ -198,17 +198,9 @@ class _AddAssetsPageState extends State<AddAssetsPage> {
                           child: CustomTextField(
                             controller: searchEC,
                             maxLines: 1,
-                            hiddenBorderSide: false,
                             onSubmitted: (value) {
                               _getAssets();
                             },
-                            fillColor: Color(0xffffffff),
-                            hintText: "search_token_hit".local(),
-                            hintStyle: TextStyle(
-                                fontSize: OffsetWidget.setSp(10),
-                                color: Color(0xFFACBBCF)),
-                            contentPadding:
-                                EdgeInsets.all(OffsetWidget.setSc(4)),
                           ),
                         ),
                       ],

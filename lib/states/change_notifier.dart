@@ -219,3 +219,21 @@ class TransListState with ChangeNotifier {
     return _transDats;
   }
 }
+
+class MCreateWalletState with ChangeNotifier {
+  String _content;
+  String _password;
+  String _pwdTip;
+  String _walletName;
+  MCoinType _coinType;
+  MLeadType _mLeadType;
+  MOriginType _mOriginType;
+  
+  String get content => _content;
+  String get password => _password;
+  String get pwdTip => _pwdTip;
+  String get walletName => _walletName;
+  MCoinType get coinType => _coinType;
+  MLeadType get mLeadType => _mLeadType;
+  MOriginType get mOriginType => _mOriginType;
+}

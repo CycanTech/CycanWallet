@@ -5,11 +5,11 @@ import 'package:json_annotation/json_annotation.dart';
 import '../../../public.dart';
 import '../mh_wallet.dart';
 
-part 'mdotsign.g.dart';
 
-@JsonSerializable()
+
 class DotSignParams {
-  final String chain;
+  ///0 polkadot 1 kusama 2 phoenix
+  final int chainNum; //
   final String version; //json结构版本
   final int blockNumber; //最新块高度
   final String blockHash; //最新块的hash
@@ -23,7 +23,7 @@ class DotSignParams {
   final int specVersion;
 
   DotSignParams(
-      this.chain,
+      this.chainNum,
       this.version,
       this.blockNumber,
       this.blockHash,
@@ -36,9 +36,25 @@ class DotSignParams {
       this.txVersion,
       this.specVersion);
 
-  factory DotSignParams.fromJson(Map<String, dynamic> json) =>
-      _$DotSignParamsFromJson(json);
-  Map<String, dynamic> toJson() => _$DotSignParamsToJson(this);
+  String get chain => chainNum == 0
+      ? "polkadot"
+      : chainNum == 1
+          ? "kusama"
+          : "phoenix";
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'chain': this.chainNum,
+        'version': this.version,
+        'blockNumber': this.blockNumber,
+        'blockHash': this.blockHash,
+        'eraPeriod': this.eraPeriod,
+        'address': this.address,
+        'value': this.value,
+        'tip': this.tip,
+        'genesisHash': this.genesisHash,
+        'nonce': this.nonce,
+        'txVersion': this.txVersion,
+        'specVersion': this.specVersion,
+      };
 }
 
 extension MDOTSign on MHWallet {

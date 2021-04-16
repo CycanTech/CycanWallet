@@ -30,7 +30,7 @@ class _NodeListPageState extends State<NodeListPage> {
         String symbol =
             Constant.getChainSymbol(element.chainType).toLowerCase();
         Map map = {
-          _kImageName: "wallet_$symbol.png",
+          _kImageName: "wallet/" + "wallet_$symbol.png",
           _kIp: element.content,
           _kChainType: symbol,
           _kPingValue: "-1",
@@ -81,7 +81,7 @@ class _NodeListPageState extends State<NodeListPage> {
             Row(
               children: <Widget>[
                 LoadAssetsImage(
-                  Constant.ASSETS_IMG + "wallet/" + map[_kImageName],
+                  Constant.ASSETS_IMG + map[_kImageName],
                   width: OffsetWidget.setSc(36),
                   height: OffsetWidget.setSc(36),
                 ),
@@ -110,8 +110,8 @@ class _NodeListPageState extends State<NodeListPage> {
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                           color: Color(0xFF161D2D),
-                          fontSize: OffsetWidget.setSp(15),
-                          fontWeight: FontWightHelper.regular),
+                          fontSize: OffsetWidget.setSp(16),
+                          fontWeight: FontWightHelper.semiBold),
                     ),
                   ),
                   OffsetWidget.hGap(7),

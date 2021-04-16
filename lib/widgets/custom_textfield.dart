@@ -47,21 +47,11 @@ class RegExInputFormatter implements TextInputFormatter {
 class CustomTextField extends StatefulWidget {
   CustomTextField({
     Key key,
-    this.helperText,
-    this.hintText,
-    this.helperStyle,
-    this.hintStyle,
     this.padding,
     this.maxLines = 1,
-    this.contentPadding,
-    this.hiddenBorderSide = false,
     this.obscureText = false,
-    this.fillColor,
     this.onSubmitted,
     @required this.controller,
-    this.prefixStyle,
-    this.prefixText,
-    this.hiddenPrefix,
     this.decoration,
     this.style,
     this.maxLength,
@@ -71,21 +61,11 @@ class CustomTextField extends StatefulWidget {
     this.inputFormatters,
   }) : super(key: key);
 
-  final String helperText;
-  String hintText;
-  final TextStyle helperStyle;
-  final TextStyle hintStyle;
   final EdgeInsetsGeometry padding;
   final TextEditingController controller;
   int maxLines;
-  bool hiddenBorderSide;
-  Color fillColor;
-  final EdgeInsetsGeometry contentPadding;
   final bool obscureText;
   final ValueChanged<String> onSubmitted;
-  final TextStyle prefixStyle;
-  final String prefixText;
-  final bool hiddenPrefix;
   InputDecoration decoration;
   final TextStyle style;
   final int maxLength;
@@ -99,17 +79,22 @@ class CustomTextField extends StatefulWidget {
     return RegExInputFormatter.withRegex(amount);
   }
 
-  static InputDecoration getUnderLineDecoration(
-      {Widget prefixIcon,
-      Widget suffixIcon,
-      String hintText,
-      TextStyle hintStyle,
-      String helperText,
-      TextStyle helperStyle,
-      BoxConstraints suffixIconConstraints =
-          const BoxConstraints(maxWidth: 100, maxHeight: double.infinity),
-      BoxConstraints prefixIconConstraints =
-          const BoxConstraints(minWidth: 80, maxHeight: double.infinity)}) {
+  static InputDecoration getUnderLineDecoration({
+    String hintText,
+    TextStyle hintStyle,
+    String helperText,
+    TextStyle helperStyle,
+    Widget prefixIcon,
+    Widget suffixIcon,
+    BoxConstraints suffixIconConstraints =
+        const BoxConstraints(maxWidth: 100, maxHeight: double.infinity),
+    BoxConstraints prefixIconConstraints =
+        const BoxConstraints(minWidth: 80, maxHeight: double.infinity),
+    int underLineColor = 0xFFEAEFF2,
+    double underLineWidth = 1,
+    Color fillColor = const Color(0xffffffff),
+    EdgeInsetsGeometry contentPadding = EdgeInsets.zero,
+  }) {
     return InputDecoration(
       prefixIcon: prefixIcon,
       suffixIcon: suffixIcon,
@@ -117,11 +102,11 @@ class CustomTextField extends StatefulWidget {
       prefixIconConstraints: prefixIconConstraints,
       enabledBorder: UnderlineInputBorder(
         borderSide:
-            BorderSide(width: 1, color: Color(Constant.TextFileld_FocuseCOlor)),
+            BorderSide(width: underLineWidth, color: Color(underLineColor)),
       ),
       focusedBorder: UnderlineInputBorder(
         borderSide:
-            BorderSide(width: 1, color: Color(Constant.TextFileld_FocuseCOlor)),
+            BorderSide(width: underLineWidth, color: Color(underLineColor)),
       ),
       counterText: "",
       hintText: hintText,
@@ -129,6 +114,9 @@ class CustomTextField extends StatefulWidget {
       helperText: helperText,
       helperStyle: helperStyle,
       helperMaxLines: 2,
+      fillColor: fillColor,
+      filled: true,
+      contentPadding: contentPadding,
     );
   }
 
@@ -138,14 +126,27 @@ class CustomTextField extends StatefulWidget {
     TextStyle hintStyle,
     String helperText,
     TextStyle helperStyle,
+    Color fillColor = const Color(0xffffffff),
+    EdgeInsetsGeometry contentPadding = EdgeInsets.zero,
+    double borderRadius = 5,
+    Widget prefixIcon,
+    Widget suffixIcon,
+    BoxConstraints suffixIconConstraints =
+        const BoxConstraints(maxWidth: 100, maxHeight: double.infinity),
+    BoxConstraints prefixIconConstraints =
+        const BoxConstraints(minWidth: 80, maxHeight: double.infinity),
   }) {
     return InputDecoration(
+      prefixIcon: prefixIcon,
+      suffixIcon: suffixIcon,
+      suffixIconConstraints: suffixIconConstraints,
+      prefixIconConstraints: prefixIconConstraints,
       enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(borderRadius),
         borderSide: BorderSide(color: borderColor),
       ),
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(borderRadius),
         borderSide: BorderSide(color: borderColor),
       ),
       hintText: hintText,
@@ -153,6 +154,9 @@ class CustomTextField extends StatefulWidget {
       helperText: helperText,
       helperStyle: helperStyle,
       helperMaxLines: 2,
+      fillColor: fillColor,
+      filled: true,
+      contentPadding: contentPadding,
     );
   }
 
@@ -163,20 +167,14 @@ class CustomTextField extends StatefulWidget {
 class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
-    final String helperText = widget.helperText;
-    final String hintText = widget.hintText;
-    final TextStyle helperStyle = widget.helperStyle;
-    final TextStyle hintStyle = widget.hintStyle;
     final EdgeInsetsGeometry padding = widget.padding;
     final TextEditingController controller = widget.controller;
     int maxLines = widget.maxLines ??= 1;
-    final EdgeInsetsGeometry contentPadding = widget.contentPadding;
-    final hiddenBorderSide = widget.hiddenBorderSide;
-    final fillColor = widget.fillColor ??= Color(0xffffffff);
     final obscureText = widget.obscureText;
     final onSubmitted = widget.onSubmitted;
     return Container(
       padding: padding,
+      // height: 100,
       child: TextField(
         controller: controller,
         maxLines: maxLines,
@@ -188,27 +186,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         enabled: widget.enabled,
         keyboardType: widget.keyboardType,
         inputFormatters: widget.inputFormatters,
-        decoration: widget.decoration != null
-            ? widget.decoration
-            : InputDecoration(
-                contentPadding: contentPadding,
-                hintText: hintText,
-                hintStyle: hintStyle,
-                helperText: helperText,
-                helperStyle: helperStyle,
-                fillColor: fillColor,
-                filled: true,
-                border: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                ),
-                focusedBorder: hiddenBorderSide == false
-                    ? null
-                    : OutlineInputBorder(
-                        borderSide: BorderSide(
-                        color: Color(Constant.TextFileld_FocuseCOlor),
-                        width: 1,
-                      )),
-              ),
+        decoration: widget.decoration != null ? widget.decoration : null,
       ),
     );
   }

@@ -98,7 +98,7 @@ class _MinePageState extends State<MinePage> {
                   map[_kContent],
                   style: TextStyle(
                     color: Color(0xFF161D2D),
-                    fontWeight: FontWightHelper.medium,
+                    fontWeight: FontWightHelper.semiBold,
                     fontSize: OffsetWidget.setSp(15),
                   ),
                 ),
@@ -162,19 +162,33 @@ class _MinePageState extends State<MinePage> {
       hiddenAppBar: true,
       hiddenLeading: true,
       hiddenResizeToAvoidBottomInset: false,
+      safeAreaTop: false,
       child: Column(
         children: [
           Container(
             height: OffsetWidget.setSc(207),
             alignment: Alignment.center,
-            color: Colors.red,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(
+                  Constant.ASSETS_IMG + "background/bg_mine.png",
+                ),
+                fit: BoxFit.cover,
+              ),
+            ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                LoadAssetsImage(Constant.ASSETS_IMG + "icon/icon_app.png",
-                    width: OffsetWidget.setSc(65),
-                    height: OffsetWidget.setSc(65)),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(OffsetWidget.setSc(35)),
+                  child: LoadAssetsImage(
+                    Constant.ASSETS_IMG + "icon/icon_app.png",
+                    width: OffsetWidget.setSc(70),
+                    height: OffsetWidget.setSc(70),
+                    fit: BoxFit.contain,
+                  ),
+                ),
                 OffsetWidget.vGap(8),
                 Text("AllToken",
                     style: TextStyle(

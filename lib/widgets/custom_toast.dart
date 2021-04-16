@@ -9,9 +9,9 @@ class HWToast {
     BorderRadiusGeometry borderRadius =
         const BorderRadius.all(Radius.circular(8)),
     TextStyle textStyle = const TextStyle(fontSize: 14, color: Colors.white),
-    AlignmentGeometry align = const Alignment(0, 0.8),
+    AlignmentGeometry align = const Alignment(0, 0.45),
     EdgeInsetsGeometry contentPadding =
-        const EdgeInsets.only(left: 14, right: 14, top: 5, bottom: 7),
+        const EdgeInsets.only(left: 30, right: 30, top: 10, bottom: 10),
     Duration duration = const Duration(seconds: 3),
     Duration animationDuration,
     Duration animationReverseDuration,

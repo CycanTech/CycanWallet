@@ -7,6 +7,13 @@ import 'package:flutter_coinid/public.dart';
 import 'package:flutter_coinid/utils/date_util.dart';
 import 'package:flutter_coinid/utils/screenutil.dart';
 
+class MemoObject {
+  String value;
+  bool state;
+
+  MemoObject(this.value, this.state);
+}
+
 class VerifyMemoPage extends StatefulWidget {
   VerifyMemoPage({
     Key key,
@@ -18,14 +25,13 @@ class VerifyMemoPage extends StatefulWidget {
 }
 
 class _VerifyMemoPageState extends State<VerifyMemoPage> {
-  List verifiedList = []; //已经验证的
-  List verifingList = []; //正在验证的
-  String verifyStatus = "";
+  List<MemoObject> verifiedList = []; //已经验证的
+  List<MemoObject> verifingList = []; //正在验证的
   List walletName = [];
   List password = [];
   List pwdTip = [];
   List memoType = [];
-  List originList = [];
+  List<String> originList = [];
   bool isBackUp = false;
   @override
   void initState() {
@@ -38,28 +44,39 @@ class _VerifyMemoPageState extends State<VerifyMemoPage> {
     originList = widget.params["paramsLists"];
     isBackUp = (widget.params["isBackUp"][0]) == "true" ? true : false;
     verifingList = [];
-    verifingList.addAll(list);
+    verifingList.addAll(list.map((e) => MemoObject(e, false)).toList());
     verifingList.shuffle(Random());
   }
 
   _createWallets() async {
-    if (verifingList.length > 0) {
+    bool memoState = false;
+    if (originList.length == verifiedList.length) {
+      for (var i = 0; i < originList.length; i++) {
+        MemoObject object = verifiedList[i];
+        if (object.value != originList[i]) {
+          memoState = false;
+          break;
+        } else {
+          memoState = true;
+        }
+      }
+    }
+    if (memoState == false) {
+      HWToast.showText(text: "create_verifyerrtip".local());
       return;
     }
     if (isBackUp == true) {
-      Routers.push(context, Routers.tabbarPage, clearStack: true);
+      HWToast.showText(text: "create_verifyok".local());
+      Future.delayed(Duration(seconds: 1)).then((value) => {
+            Routers.push(context, Routers.tabbarPage, clearStack: true),
+          });
       return;
     }
-
-    String content = verifiedList.join(" ");
+    String content = "";
     String pwd = password[0];
     String name = walletName[0];
     String tip = pwdTip[0];
     MLeadType leadType = MLeadType.MLeadType_StandardMemo;
-    if (content.length == 0) {
-      HWToast.showText(text: "input_memos".local());
-      return;
-    }
     if (name.length == 0) {
       HWToast.showText(text: "input_name".local());
       return;
@@ -98,15 +115,8 @@ class _VerifyMemoPageState extends State<VerifyMemoPage> {
     if (params == null) {
       return Text("data");
     }
-    List values = [];
-    values = verifiedList;
-    int row = originList.length == 12 ? 3 : 6;
-    double spacing = 10;
-    double leftoffset = 20;
-    double width =
-        (ScreenUtil.screenWidth - leftoffset * 4 - ((row - 1) * spacing)) / row;
     List<Widget> singleTexts = [];
-    for (String item in values) {
+    for (MemoObject item in verifiedList) {
       singleTexts.add(
         GestureDetector(
           behavior: HitTestBehavior.opaque,
@@ -114,49 +124,56 @@ class _VerifyMemoPageState extends State<VerifyMemoPage> {
             _verifyWidgetItemAction(item);
           },
           child: Container(
-            constraints: BoxConstraints(
-              minWidth: width,
+            height: OffsetWidget.setSc(32),
+            margin: EdgeInsets.only(
+              left: OffsetWidget.setSc(15),
             ),
-            child: Text(
-              item,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Color(0xFF000000),
-              ),
+            padding: EdgeInsets.only(
+                left: OffsetWidget.setSc(20), right: OffsetWidget.setSc(20)),
+            decoration: BoxDecoration(
+              color: Color(0xFFFFFFFF),
+              borderRadius: BorderRadius.circular(OffsetWidget.setSc(21)),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  item.value,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Color(0xFF000000),
+                    fontSize: OffsetWidget.setSp(15),
+                    fontWeight: FontWightHelper.semiBold,
+                  ),
+                ),
+              ],
             ),
           ),
         ),
       );
     }
     return Container(
-      margin: EdgeInsets.only(top: 15, left: leftoffset, right: leftoffset),
+      margin: EdgeInsets.only(top: OffsetWidget.setSc(28)),
+      constraints: BoxConstraints(minHeight: OffsetWidget.setSc(187)),
       padding: EdgeInsets.only(
-          top: 15, left: leftoffset, bottom: 15, right: leftoffset),
-      constraints: BoxConstraints(minHeight: OffsetWidget.setSc(170)),
+          bottom: OffsetWidget.setSc(21), top: OffsetWidget.setSc(21)),
       alignment: Alignment.topLeft,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8.0),
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-                color: Color(0xffD3D3D3),
-                offset: Offset(3, 3),
-                blurRadius: 3.0,
-                spreadRadius: 1.0)
-          ]),
+        borderRadius: BorderRadius.circular(10.0),
+        color: Color(0xFFF6F8F9),
+      ),
       child: Wrap(
-        spacing: spacing, // 主轴(水平)方向间距
-        runSpacing: 11.0, // 纵轴（垂直）方向间距
-        alignment: WrapAlignment.start, //沿主轴方向居中
+        spacing: 8,
+        runSpacing: 12.0,
         children: singleTexts,
       ),
     );
   }
 
-  void _verifyWidgetItemAction(String item) {
+  void _verifyWidgetItemAction(MemoObject item) {
     setState(() {
       verifiedList.remove(item);
-      verifingList.add(item);
+      item.state = false;
     });
   }
 
@@ -165,152 +182,114 @@ class _VerifyMemoPageState extends State<VerifyMemoPage> {
     if (params == null) {
       return Text("data");
     }
-    List values = verifingList;
-    int row = originList.length == 12 ? 3 : 6;
-    double spacing = 10;
-    double leftoffset = 20;
-    double width =
-        (ScreenUtil.screenWidth - leftoffset * 4 - ((row - 1) * spacing)) / row;
     List<Widget> singleTexts = [];
-    for (String item in values) {
+    for (MemoObject memo in verifingList) {
+      String value = memo.value;
+      bool state = memo.state;
       singleTexts.add(
         GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: () {
-            _contentWidgetItemAction(item);
+            if (state == false) {
+              _contentWidgetItemAction(memo);
+            }
           },
           child: Container(
-            constraints: BoxConstraints(
-              minWidth: width,
+            height: OffsetWidget.setSc(32),
+            padding: EdgeInsets.only(
+                left: OffsetWidget.setSc(20), right: OffsetWidget.setSc(20)),
+            decoration: BoxDecoration(
+              color: state == true ? Color(0xFF586883) : Color(0xFFF6F8F9),
+              borderRadius: BorderRadius.circular(OffsetWidget.setSc(21)),
             ),
-            child: Text(
-              item,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Color(0xFF000000),
-              ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  value,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color:
+                        state == true ? Color(0xFFFFFFFF) : Color(0xFF000000),
+                    fontSize: OffsetWidget.setSp(16),
+                    fontWeight: FontWightHelper.regular,
+                  ),
+                ),
+              ],
             ),
           ),
         ),
       );
     }
-    return values.length == 0
+    return verifingList.length == 0
         ? Container()
         : Container(
-            margin:
-                EdgeInsets.only(top: 15, left: leftoffset, right: leftoffset),
-            padding: EdgeInsets.only(
-                top: 15, left: leftoffset, bottom: 15, right: leftoffset),
-            alignment: Alignment.centerLeft,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8.0),
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                      color: Color(0xffD3D3D3),
-                      offset: Offset(3, 3),
-                      blurRadius: 3.0,
-                      spreadRadius: 1.0)
-                ]),
+            margin: EdgeInsets.only(
+                top: OffsetWidget.setSc(32), bottom: OffsetWidget.setSc(146)),
+            alignment: Alignment.topLeft,
             child: Wrap(
-              spacing: spacing, // 主轴(水平)方向间距
-              runSpacing: 11.0, // 纵轴（垂直）方向间距
-              alignment: WrapAlignment.start, //沿主轴方向居中
+              spacing: 8,
+              runSpacing: 12.0,
               children: singleTexts,
             ),
           );
   }
 
-  void _contentWidgetItemAction(String item) {
-    int count = verifiedList.length;
-
-    LogUtil.v("object  item $item" +
-        (originList.elementAt(count)) +
-        "originList = $originList");
-
-    if (originList.elementAt(count) == item) {
-      setState(() {
-        verifingList.remove(item);
-        verifingList.shuffle();
-        verifiedList.add(item);
-        verifyStatus = "";
-      });
-    } else {
-      // showSuccessToast("status");
-      setState(() {
-        verifyStatus = "create_verifyerrtip".local();
-      });
-    }
+  void _contentWidgetItemAction(MemoObject item) {
+    setState(() {
+      item.state = true;
+      verifiedList.add(item);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return CustomPageView(
-      child: Column(
-        children: <Widget>[
-          Center(
-            child: Padding(
-              padding: EdgeInsets.only(top: OffsetWidget.setSc(65)),
-              child: Image.asset(
-                Constant.ASSETS_IMG + "icon/create_memo.png",
-                width: OffsetWidget.setSc(50),
-                height: OffsetWidget.setSc(50),
-                fit: BoxFit.contain,
-              ),
-            ),
-          ),
-          OffsetWidget.vGap(15),
-          Text(
-            "create_verifymemo".local(),
-            style: TextStyle(
-                color: Color(0xFF000000),
-                fontSize: OffsetWidget.setSp(18),
-                fontWeight: FontWeight.w400),
-          ),
-          OffsetWidget.vGap(15),
-          Text(
-            verifyStatus,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                color: Color(0xFF1308FE),
-                fontSize: OffsetWidget.setSp(12),
-                fontWeight: FontWeight.w400),
-          ),
-          OffsetWidget.vGap(15),
-          Container(
-            padding: EdgeInsets.only(left: 20, right: 20),
-            child: Text(
+      title: CustomPageView.getDefaultTitle(
+        titleStr: "create_backupmemo".local(),
+        fontSize: 20,
+        fontWeight: FontWightHelper.semiBold,
+      ),
+      child: Container(
+        padding: EdgeInsets.only(
+            left: OffsetWidget.setSc(20),
+            right: OffsetWidget.setSc(20),
+            top: OffsetWidget.setSc(27)),
+        child: Column(
+          children: <Widget>[
+            Text(
               "create_verifymemodesc".local(),
-              textAlign: TextAlign.center,
               style: TextStyle(
-                  color: Color(0xff9B9B9B),
-                  fontSize: OffsetWidget.setSp(12),
-                  fontWeight: FontWeight.w400),
-            ),
-          ),
-          _getVerifyMemoContentWidget(),
-          OffsetWidget.vGap(12),
-          _getMemoContentWidget(),
-          OffsetWidget.vGap(20),
-          GestureDetector(
-            onTap: () => _createWallets(),
-            child: Container(
-              height: OffsetWidget.setSc(40),
-              width: OffsetWidget.setSc(162),
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(OffsetWidget.setSc(50)),
-                  color: Color(0xFF1308FE)),
-              child: Text(
-                "create_verifyok".local(),
-                style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: OffsetWidget.setSp(16),
-                    color: Colors.white),
+                color: Color(0xFFF15F4A),
+                fontSize: OffsetWidget.setSp(14),
+                fontWeight: FontWightHelper.regular,
               ),
             ),
-          ),
-        ],
+            _getVerifyMemoContentWidget(),
+            _getMemoContentWidget(),
+            GestureDetector(
+              onTap: () => _createWallets(),
+              child: Container(
+                height: OffsetWidget.setSc(40),
+                margin: EdgeInsets.only(
+                    bottom: OffsetWidget.setSc(120),
+                    left: OffsetWidget.setSc(22),
+                    right: OffsetWidget.setSc(22)),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Color(0xFF586883)),
+                child: Text(
+                  "create_verifyok".local(),
+                  style: TextStyle(
+                      fontWeight: FontWightHelper.regular,
+                      fontSize: OffsetWidget.setSp(18),
+                      color: Colors.white),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

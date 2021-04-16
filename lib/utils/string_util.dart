@@ -91,7 +91,7 @@ extension StringTranslateExtension on String {
 
   bool checkPassword() {
     //密码长度8位数以上，建议使用英文字母、数字和标点符号组成，不采用特殊字符
-    if (this.length < 8) {
+    if (this.length < 6 || this.length > 20) {
       return false;
     }
     String symbols = "\\s\\p{P}\n\r=+\$￥<>^`~|,./;'!@#^&*()_+"; //符号Unicode 编码
@@ -115,6 +115,9 @@ extension StringTranslateExtension on String {
         len = 64;
         break;
       case MCoinType.MCoinType_DOT:
+        len = 128;
+        break;
+      case MCoinType.MCoinType_KSM:
         len = 128;
         break;
       case MCoinType.MCoinType_BTC:

@@ -224,9 +224,9 @@ class _TransListPageState extends State<TransListPage> {
           smallTitle: wallet.fullName,
           bigTitle: tokens.token,
           placeholder: Constant.ASSETS_IMG +
-              "wallet/icon_" +
+              "wallet/logo_" +
               Constant.getChainSymbol(wallet.chainType).toLowerCase() +
-              "_token_default.png",
+              "_default.png",
         ),
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(0),

@@ -1,9 +1,11 @@
 import 'dart:collection';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_coinid/channel/channel_scan.dart';
 import 'package:flutter_coinid/models/tokens/collection_tokens.dart';
 import 'package:flutter_coinid/models/wallet/mh_wallet.dart';
 import 'package:flutter_coinid/pages/main/wallets_managet_sheet.dart';
+import 'package:flutter_coinid/utils/screenutil.dart';
 import 'package:flutter_coinid/utils/ver_upgrade_util.dart';
 import 'package:flutter_coinid/widgets/custom_network_image.dart';
 import 'package:provider/provider.dart';
@@ -42,41 +44,15 @@ class _MainPageState extends State<MainPage> {
   }
 
   _walletEditName() {
-    TextEditingController controller = TextEditingController();
-    showCupertinoDialog(
-        context: context,
-        builder: (context) {
-          return CupertinoAlertDialog(
-            title: Text("wallet_update_name".local()),
-            content: Column(
-              children: [
-                CupertinoTextField(
-                  maxLines: 1,
-                  controller: controller,
-                  autofocus: true,
-                ),
-              ],
-            ),
-            actions: <Widget>[
-              CupertinoDialogAction(
-                  child: Text("dialog_confirm".local()),
-                  onPressed: () {
-                    String text = controller.text;
-                    Navigator.pop(context);
-                    Provider.of<CurrentChooseWalletState>(context,
-                            listen: false)
-                        .updateWalletDescName(text);
-                  }),
-              CupertinoDialogAction(
-                child: Text("dialog_cancel".local()),
-                onPressed: () {
-                  controller.text = "";
-                  Navigator.pop(context);
-                },
-              )
-            ],
-          );
-        });
+    showMHInputAlertView(
+      context: context,
+      title: "wallet_update_name".local(),
+      obscureText: false,
+      confirmPressed: (value) => {
+        Provider.of<CurrentChooseWalletState>(context, listen: false)
+            .updateWalletDescName(value),
+      },
+    );
   }
 
   _receive() {
@@ -163,6 +139,7 @@ class _MainPageState extends State<MainPage> {
           },
           child: Container(
             padding: EdgeInsets.only(right: 5),
+            margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
             height: OffsetWidget.setSc(30),
             width: OffsetWidget.setSc(45),
             alignment: Alignment.centerRight,
@@ -189,9 +166,9 @@ class _MainPageState extends State<MainPage> {
     if (mwallet != null) {
       fromTypeImage = Constant.ASSETS_IMG + "wallet/wallettype_leadin.png";
       bgPath = Constant.ASSETS_IMG +
-          "background/bg_" +
+          "wallet/wallet_" +
           mwallet.symbol.toLowerCase() +
-          "_index.png";
+          "_largecard.png";
       chain = mwallet.symbol + " - ";
     }
     String name = mwallet != null &&
@@ -503,107 +480,104 @@ class _MainPageState extends State<MainPage> {
     }
     String iconPath = map.iconPath;
     String placeholderPath = Constant.ASSETS_IMG +
-        "wallet/icon_" +
+        "wallet/logo_" +
         map.coinType.toLowerCase() +
-        "_token_default.png";
+        "_default.png";
     String token = map.token;
 
-    return Container(
-      padding: EdgeInsets.only(
-          left: OffsetWidget.setSc(20), right: OffsetWidget.setSc(20)),
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () => {
-          _cellDidSelectRowAt(index),
-        },
-        child: Container(
-          padding: EdgeInsets.only(left: OffsetWidget.setSc(19)),
-          height: OffsetWidget.setSc(55),
-          // decoration: BoxDecoration(
-          //   border: Border(
-          //     bottom: BorderSide(
-          //       color: Color(0XFFEAEFF2),
-          //       width: 1,
-          //       style: BorderStyle.solid,
-          //     ),
-          //   ),
-          // ),
-          child: Row(
-            children: <Widget>[
-              LoadNetworkImage(
-                iconPath,
-                width: OffsetWidget.setSc(36),
-                height: OffsetWidget.setSc(36),
-                fit: BoxFit.contain,
-                scale: 2,
-                placeholder: placeholderPath,
-              ),
-              OffsetWidget.hGap(8),
-              Container(
-                width: OffsetWidget.setSc(120),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      token,
-                      style: TextStyle(
-                          fontWeight: FontWightHelper.semiBold,
-                          fontSize: OffsetWidget.setSp(18),
-                          color: Color(0XFF171F24)),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                    ),
-                    Text(
-                      token,
-                      style: TextStyle(
-                          fontWeight: FontWightHelper.medium,
-                          fontSize: OffsetWidget.setSp(10),
-                          color: Color(0xFFACBBCF)),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                    ),
-                  ],
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () => {
+        _cellDidSelectRowAt(index),
+      },
+      child: Container(
+        padding: EdgeInsets.only(
+            left: OffsetWidget.setSc(19), right: OffsetWidget.setSc(19)),
+        height: OffsetWidget.setSc(55),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Row(
+              children: [
+                LoadNetworkImage(
+                  iconPath,
+                  width: OffsetWidget.setSc(36),
+                  height: OffsetWidget.setSc(36),
+                  fit: BoxFit.contain,
+                  scale: 2,
+                  placeholder: placeholderPath,
                 ),
-              ),
-              Container(
-                alignment: Alignment.topRight,
-                width: OffsetWidget.setSc(100),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      balance,
-                      style: TextStyle(
-                          fontSize: OffsetWidget.setSp(18),
-                          fontWeight: FontWightHelper.regular,
-                          color: Color(0XFF171F24)),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                    ),
-                    Text(
-                      tokenAssets,
-                      style: TextStyle(
-                          fontWeight: FontWightHelper.medium,
-                          fontSize: OffsetWidget.setSp(10),
-                          color: Color(0xFF9B9B9B)),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                    ),
-                  ],
+                OffsetWidget.hGap(8),
+                Container(
+                  width: OffsetWidget.setSc(120),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        token,
+                        style: TextStyle(
+                            fontWeight: FontWightHelper.semiBold,
+                            fontSize: OffsetWidget.setSp(18),
+                            color: Color(0XFF171F24)),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
+                      Text(
+                        token,
+                        style: TextStyle(
+                            fontWeight: FontWightHelper.medium,
+                            fontSize: OffsetWidget.setSp(10),
+                            color: Color(0xFFACBBCF)),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Container(
-                padding: EdgeInsets.only(left: OffsetWidget.setSc(20)),
-                child: Image.asset(
-                  Constant.ASSETS_IMG + "icon/arrow_dian_right.png",
-                  fit: BoxFit.cover,
-                  scale: 2.0,
+              ],
+            ),
+            Row(
+              children: [
+                Container(
+                  alignment: Alignment.topRight,
+                  width: OffsetWidget.setSc(100),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        balance,
+                        style: TextStyle(
+                            fontSize: OffsetWidget.setSp(18),
+                            fontWeight: FontWightHelper.regular,
+                            color: Color(0XFF171F24)),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
+                      Text(
+                        tokenAssets,
+                        style: TextStyle(
+                            fontWeight: FontWightHelper.medium,
+                            fontSize: OffsetWidget.setSp(10),
+                            color: Color(0xFF9B9B9B)),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
+                Container(
+                  padding: EdgeInsets.only(left: OffsetWidget.setSc(20)),
+                  child: Image.asset(
+                    Constant.ASSETS_IMG + "icon/arrow_dian_right.png",
+                    fit: BoxFit.cover,
+                    scale: 2.0,
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
@@ -618,6 +592,7 @@ class _MainPageState extends State<MainPage> {
       hiddenLeading: true,
       backgroundColor: Color(0xFFF8F9FB),
       hiddenAppBar: true,
+      safeAreaTop: false,
       child: CustomRefresher(
           refreshController: refreshController,
           onRefresh: () {
@@ -632,6 +607,8 @@ class _MainPageState extends State<MainPage> {
           child: stateWallet == null
               ? Container()
               : Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     buildHeadView(),
                     Visibility(
@@ -678,6 +655,7 @@ class _MainPageState extends State<MainPage> {
                     ),
                     Expanded(
                       child: ListView.builder(
+                        padding: EdgeInsets.zero,
                         itemCount:
                             Provider.of<CurrentChooseWalletState>(context)
                                 .collectionTokens

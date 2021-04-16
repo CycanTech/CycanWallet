@@ -96,10 +96,7 @@ class _WalletUpdateTipsPageState extends State<WalletUpdateTipsPage> {
                 child: CustomTextField(
                   controller: tipsEC,
                   maxLines: 1,
-                  hiddenBorderSide: false,
                   obscureText: obscureText,
-                  fillColor: Colors.white,
-                  contentPadding: EdgeInsets.all(OffsetWidget.setSc(3)),
                 ),
               ),
               GestureDetector(

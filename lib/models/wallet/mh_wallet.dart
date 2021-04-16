@@ -368,69 +368,15 @@ class MHWallet extends BaseModel {
     @required VoidCallback wrong,
     String tips = "",
   }) {
-    TextEditingController controller = TextEditingController();
-    if (this.originType == MOriginType.MOriginType_Colds.index) {
-    } else {
-      showCupertinoDialog(
-          context: context,
-          builder: (context) {
-            return CupertinoAlertDialog(
-              title: Text("dialog_pwd".local()),
-              content: Column(
-                children: [
-                  Visibility(
-                      visible: StringUtil.isNotEmpty(tips),
-                      child: Column(
-                        children: [
-                          OffsetWidget.vGap(5),
-                          Text(tips),
-                          OffsetWidget.vGap(5),
-                        ],
-                      )),
-                  CupertinoTextField(
-                    maxLines: 1,
-                    controller: controller,
-                    obscureText: true,
-                    autofocus: true,
-                  ),
-                ],
-              ),
-              actions: <Widget>[
-                CupertinoDialogAction(
-                  child: Text(
-                    "dialog_cancel".local(),
-                    style: TextStyle(
-                      color: Color(0xFFACBBCF),
-                      fontSize: OffsetWidget.setSp(14),
-                      fontWeight: FontWightHelper.regular,
-                    ),
-                  ),
-                  onPressed: () {
-                    controller.text = "";
-                    Navigator.pop(context);
-                    if (cancle != null) {
-                      cancle();
-                    }
-                  },
-                ),
-                CupertinoDialogAction(
-                    child: Text(
-                      "dialog_confirm".local(),
-                      style: TextStyle(
-                        color: Color(0xFF586883),
-                        fontSize: OffsetWidget.setSp(14),
-                        fontWeight: FontWightHelper.medium,
-                      ),
-                    ),
-                    onPressed: () {
-                      String text = controller.text;
-                      Navigator.pop(context);
-                      lockPin(text: text, ok: ok, wrong: wrong);
-                    }),
-              ],
-            );
-          });
-    }
+    showMHInputAlertView(
+      context: context,
+      title: "dialog_pwd".local(),
+      placeholder: "wallet_inputpwd".local(),
+      cancelPressed: cancle,
+      confirmPressed: (value) => {
+        lockPin(text: value, ok: ok, wrong: wrong),
+      },
+    );
   }
 
   bool lockPin({
