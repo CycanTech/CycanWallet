@@ -29,16 +29,20 @@ showMHAlertView({
           ),
           content: Column(
             children: [
-              OffsetWidget.vGap(30),
+              SizedBox(
+                height: 27,
+              ),
               Text(
                 "memo_create_tip".local(),
                 style: TextStyle(
-                  color: Color(0xFF000000),
+                  color: Color(0xFF161D2D),
                   fontSize: OffsetWidget.setSp(16),
                   fontWeight: FontWightHelper.regular,
                 ),
               ),
-              OffsetWidget.vGap(13),
+              SizedBox(
+                height: 13,
+              ),
             ],
           ),
           actions: <Widget>[
@@ -47,7 +51,7 @@ showMHAlertView({
                 "dialog_cancel".local(),
                 style: TextStyle(
                   color: Color(0xFFACBBCF),
-                  fontSize: OffsetWidget.setSp(14),
+                  fontSize: OffsetWidget.setSp(20),
                   fontWeight: FontWightHelper.regular,
                 ),
               ),
@@ -63,8 +67,8 @@ showMHAlertView({
                   "dialog_confirm".local(),
                   style: TextStyle(
                     color: Color(0xFF586883),
-                    fontSize: OffsetWidget.setSp(14),
-                    fontWeight: FontWightHelper.medium,
+                    fontSize: OffsetWidget.setSp(18),
+                    fontWeight: FontWightHelper.semiBold,
                   ),
                 ),
                 onPressed: () {
@@ -109,7 +113,9 @@ showMHInputAlertView({
           ),
           content: Column(
             children: [
-              OffsetWidget.vGap(30),
+              SizedBox(
+                height: 27,
+              ),
               CupertinoTextField(
                 maxLines: 1,
                 controller: controller,
@@ -129,7 +135,9 @@ showMHInputAlertView({
                   border: Border.all(color: Color(0xFFEFF3F5), width: 1),
                 ),
               ),
-              OffsetWidget.vGap(13),
+              SizedBox(
+                height: 13,
+              ),
             ],
           ),
           actions: <Widget>[
@@ -138,7 +146,7 @@ showMHInputAlertView({
                 "dialog_cancel".local(),
                 style: TextStyle(
                   color: Color(0xFFACBBCF),
-                  fontSize: OffsetWidget.setSp(14),
+                  fontSize: OffsetWidget.setSp(20),
                   fontWeight: FontWightHelper.regular,
                 ),
               ),
@@ -154,8 +162,8 @@ showMHInputAlertView({
                   "dialog_confirm".local(),
                   style: TextStyle(
                     color: Color(0xFF586883),
-                    fontSize: OffsetWidget.setSp(14),
-                    fontWeight: FontWightHelper.medium,
+                    fontSize: OffsetWidget.setSp(18),
+                    fontWeight: FontWightHelper.semiBold,
                   ),
                 ),
                 onPressed: () {

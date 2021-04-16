@@ -176,7 +176,7 @@ class _BackupMemoPageState extends State<BackupMemoPage> {
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
-                    color: Color(0xFFC5D4E9)),
+                    color: Color(0xFF586883)),
                 child: Text(
                   "memo_been_copied".local(),
                   style: TextStyle(

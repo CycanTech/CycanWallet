@@ -72,7 +72,7 @@ class _VerifyMemoPageState extends State<VerifyMemoPage> {
           });
       return;
     }
-    String content = "";
+    String content = originList.join(" ");
     String pwd = password[0];
     String name = walletName[0];
     String tip = pwdTip[0];
@@ -143,7 +143,7 @@ class _VerifyMemoPageState extends State<VerifyMemoPage> {
                   style: TextStyle(
                     color: Color(0xFF000000),
                     fontSize: OffsetWidget.setSp(15),
-                    fontWeight: FontWightHelper.semiBold,
+                    fontWeight: FontWightHelper.regular,
                   ),
                 ),
               ],
@@ -224,8 +224,7 @@ class _VerifyMemoPageState extends State<VerifyMemoPage> {
     return verifingList.length == 0
         ? Container()
         : Container(
-            margin: EdgeInsets.only(
-                top: OffsetWidget.setSc(32), bottom: OffsetWidget.setSc(146)),
+            margin: EdgeInsets.only(top: OffsetWidget.setSc(32)),
             alignment: Alignment.topLeft,
             child: Wrap(
               spacing: 8,
@@ -250,29 +249,37 @@ class _VerifyMemoPageState extends State<VerifyMemoPage> {
         fontSize: 20,
         fontWeight: FontWightHelper.semiBold,
       ),
+      hiddenScrollView: true,
       child: Container(
+        alignment: Alignment.center,
         padding: EdgeInsets.only(
             left: OffsetWidget.setSc(20),
             right: OffsetWidget.setSc(20),
+            bottom: OffsetWidget.setSc(20),
             top: OffsetWidget.setSc(27)),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Text(
-              "create_verifymemodesc".local(),
-              style: TextStyle(
-                color: Color(0xFFF15F4A),
-                fontSize: OffsetWidget.setSp(14),
-                fontWeight: FontWightHelper.regular,
-              ),
+            Column(
+              children: [
+                Text(
+                  "create_verifymemodesc".local(),
+                  style: TextStyle(
+                    color: Color(0xFFF15F4A),
+                    fontSize: OffsetWidget.setSp(14),
+                    fontWeight: FontWightHelper.regular,
+                  ),
+                ),
+                _getVerifyMemoContentWidget(),
+                _getMemoContentWidget(),
+              ],
             ),
-            _getVerifyMemoContentWidget(),
-            _getMemoContentWidget(),
             GestureDetector(
               onTap: () => _createWallets(),
               child: Container(
                 height: OffsetWidget.setSc(40),
                 margin: EdgeInsets.only(
-                    bottom: OffsetWidget.setSc(120),
+                    bottom: OffsetWidget.setSc(22),
                     left: OffsetWidget.setSc(22),
                     right: OffsetWidget.setSc(22)),
                 alignment: Alignment.center,
