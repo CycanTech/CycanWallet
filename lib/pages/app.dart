@@ -22,10 +22,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool loadData = true;
-  bool skin = false;
-  bool walletCreated = false;
-
+  int state = 0; //0 load  1 skin, 2 create ,3 tabbar
   @override
   Future<void> initState() {
     super.initState();
@@ -43,19 +40,16 @@ class _MyAppState extends State<MyApp> {
       List<MHWallet> wallets = await MHWallet.findAllWallets();
       if (wallets != null && wallets.length > 0) {
         setState(() {
-          loadData = false;
-          walletCreated = true;
+          state = 3;
         });
       } else {
         setState(() {
-          loadData = false;
-          skin = isSkip;
+          state = 2;
         });
       }
     } else {
       setState(() {
-        loadData = false;
-        skin = isSkip;
+        state = 1;
       });
     }
     return Future.value(isSkip);
@@ -73,11 +67,11 @@ class _MyAppState extends State<MyApp> {
           ChangeNotifierProvider.value(value: MCreateWalletState()),
         ],
         child: CustomApp(
-          child: loadData == true
+          child: state == 0
               ? buildEmptyView()
-              : walletCreated == true
+              : state == 3
                   ? TabbarPage()
-                  : skin == true
+                  : state == 2
                       ? ChooseTypePage()
                       : GuidePage(),
           // child: ApplicationPage(),
