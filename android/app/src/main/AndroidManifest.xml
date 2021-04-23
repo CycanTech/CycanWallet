@@ -14,7 +14,7 @@
 
     <application
         android:name="com.fictitious.money.purse.App"
-        android:label="AllToken"
+        android:label="Cycan Wallet"
         android:icon="@mipmap/ic_launcher"
         tools:replace="label"
         >

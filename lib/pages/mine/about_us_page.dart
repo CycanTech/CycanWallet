@@ -158,7 +158,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
             ),
           ),
           OffsetWidget.vGap(8),
-          Text("AllToken",
+          Text("Cycan Wallet",
               style: TextStyle(
                   fontSize: OffsetWidget.setSp(15),
                   fontWeight: FontWightHelper.regular,

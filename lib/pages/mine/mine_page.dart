@@ -190,7 +190,7 @@ class _MinePageState extends State<MinePage> {
                   ),
                 ),
                 OffsetWidget.vGap(8),
-                Text("AllToken",
+                Text("Cycan Wallet",
                     style: TextStyle(
                         color: Color(0xFF171F24),
                         fontWeight: FontWightHelper.regular,

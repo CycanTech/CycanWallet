@@ -133,7 +133,7 @@ class _RecervePaymentPageState extends State<RecervePaymentPage> {
                       fit: BoxFit.contain,
                     ),
                   ),
-                  Text("AllToken",
+                  Text("Cycan Wallet",
                       style: TextStyle(
                           fontSize: OffsetWidget.setSp(15),
                           fontWeight: FontWightHelper.regular,

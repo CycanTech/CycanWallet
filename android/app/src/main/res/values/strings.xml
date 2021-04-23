@@ -1,5 +1,5 @@
 ﻿<resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">AllToken</string>
+    <string name="app_name">Cycan Wallet</string>
     <string name="tv_scan_code">扫码</string>
     <string name="tv_scan_qr_tip">请将镜头对准二维码进行扫描</string>
     <string name="openFlashlight">打开手电筒</string>
