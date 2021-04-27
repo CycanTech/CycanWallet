@@ -1,4 +1,4 @@
-# ALLToken - Wallet for all token
+# Cycan Wallet 
 
 
 
@@ -10,7 +10,7 @@ later...
 
 # Introduction
 
-ALLToken is an open source,cross-platform wallet, built with [Flutter](https://flutter.dev/),now it is support bitcoin,ethereum,polkadot,more chain well be support in the future.
+Cycan Wallet  is an open source,cross-platform wallet, built with [Flutter](https://flutter.dev/),now it is support bitcoin,ethereum,polkadot,more chain well be support in the future.
 
 <img src="docs/main.png" alt="main" width = "200" height = "300"/><img src="docs/manager.png" alt="manager" width = "200" height = "300" /><img src="docs/history.png" alt="history" width = "200" height = "300" />
 
