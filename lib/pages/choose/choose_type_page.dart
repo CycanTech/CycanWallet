@@ -66,19 +66,20 @@ class ChooseTypePageState extends State<ChooseTypePage> {
                   style: TextStyle(
                     color: Color(0xFF4F7BF2),
                     fontSize: OffsetWidget.setSp(24),
+                    fontFamily: "LantingSimplified",
                     fontWeight: FontWightHelper.semiBold,
                   ),
                 ),
               ),
               Container(
                 padding: EdgeInsets.only(
-                    top: OffsetWidget.setSc(13), left: 10, right: 10),
+                    top: OffsetWidget.setSc(16), left: 10, right: 10),
                 child: Text(
                   "choose_wallettip2".local(),
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Color(0xFF101010),
-                    fontSize: OffsetWidget.setSp(18),
+                    fontSize: OffsetWidget.setSp(14),
                     fontWeight: FontWightHelper.regular,
                   ),
                 ),
@@ -99,7 +100,7 @@ class ChooseTypePageState extends State<ChooseTypePage> {
                     child: Text(
                       "create_hote".local(),
                       style: TextStyle(
-                          fontSize: OffsetWidget.setSp(18),
+                          fontSize: OffsetWidget.setSp(15),
                           color: Color(0xFFFFFFFF),
                           fontWeight: FontWightHelper.regular),
                     ),
@@ -123,14 +124,14 @@ class ChooseTypePageState extends State<ChooseTypePage> {
                       Text(
                         "choose_existwallet".local() + "，",
                         style: TextStyle(
-                            fontSize: OffsetWidget.setSp(16),
+                            fontSize: OffsetWidget.setSp(15),
                             color: Color(0xFF101010),
                             fontWeight: FontWightHelper.regular),
                       ),
                       Text(
                         "import_hote".local(),
                         style: TextStyle(
-                            fontSize: OffsetWidget.setSp(16),
+                            fontSize: OffsetWidget.setSp(15),
                             color: Color(0xFF4F7BF2),
                             fontWeight: FontWightHelper.regular),
                       ),
