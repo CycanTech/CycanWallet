@@ -19,14 +19,15 @@ extension METHSign on MHWallet {
       @required MSignType signType,
       @required int decimal}) async {
     try {
+      LogUtil.v(
+          "nonce $nonce to $to   gasLimit $gasLimit decimal $decimal value $value data $data $chainID signType $signType");
       to = to.replaceAll("0x", "");
-      BigInt bigdecimal = BigInt.from(10).pow(decimal);
-      BigInt newValue = bigdecimal * BigInt.tryParse(value);
+      BigInt newValue = BigInt.from(double.tryParse(value) * pow(10, decimal));
       final String prvKey = await this.exportPrv(pin: pin);
       if (prvKey == null) {
         return null;
       }
-      BigInt newGas = BigInt.from(10).pow(9) * BigInt.tryParse(gasPrice);
+      BigInt newGas = BigInt.from(double.tryParse(gasPrice) * pow(10, 9));
       String sign;
       if (signType == MSignType.MSignType_Token) {
         contract = contract?.replaceAll("0x", "");
@@ -54,8 +55,6 @@ extension METHSign on MHWallet {
             chainId: chainID,
             prvKey: prvKey);
       }
-      LogUtil.v(
-          "nonce $nonce gasPrice $newGas   gasLimit $gasLimit to $to value $value data $data $chainID signType $signType");
       //只在主代币交易中校验有效性
       if (signType == MSignType.MSignType_Main ||
           signType == MSignType.MSignType_Token) {

@@ -136,6 +136,8 @@ class _VerifyMemoPageState extends State<VerifyMemoPage> {
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   item.value,
@@ -204,6 +206,8 @@ class _VerifyMemoPageState extends State<VerifyMemoPage> {
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   value,

@@ -81,7 +81,7 @@ class _SystemSetPageState extends State<SystemSetPage> {
                         "system_currency".local(context: context),
                         style: TextStyle(
                             color: Color(0xFF161D2D),
-                            fontSize: OffsetWidget.setSp(18),
+                            fontSize: OffsetWidget.setSp(15),
                             fontWeight: FontWightHelper.semiBold),
                       ),
                     ]),
@@ -91,7 +91,7 @@ class _SystemSetPageState extends State<SystemSetPage> {
                           amount == 0 ? "CNY" : "USD",
                           style: TextStyle(
                               color: Color(0xFFACBBCF),
-                              fontSize: OffsetWidget.setSp(18),
+                              fontSize: OffsetWidget.setSp(15),
                               fontWeight: FontWightHelper.regular),
                         ),
                         OffsetWidget.hGap(8),
@@ -137,7 +137,7 @@ class _SystemSetPageState extends State<SystemSetPage> {
                           "language".local(context: context),
                           style: TextStyle(
                             color: Color(0xFF161D2D),
-                            fontSize: OffsetWidget.setSp(18),
+                            fontSize: OffsetWidget.setSp(15),
                             fontWeight: FontWightHelper.semiBold,
                           ),
                         ),
@@ -151,7 +151,7 @@ class _SystemSetPageState extends State<SystemSetPage> {
                               : "system_en".local(context: context),
                           style: TextStyle(
                               color: Color(0xFFACBBCF),
-                              fontSize: OffsetWidget.setSp(18),
+                              fontSize: OffsetWidget.setSp(15),
                               fontWeight: FontWightHelper.regular),
                         ),
                         OffsetWidget.hGap(8),
@@ -192,7 +192,7 @@ class _SystemSetPageState extends State<SystemSetPage> {
                         "nodelist_title".local(context: context),
                         style: TextStyle(
                             color: Color(0xFF161D2D),
-                            fontSize: OffsetWidget.setSp(18),
+                            fontSize: OffsetWidget.setSp(15),
                             fontWeight: FontWightHelper.semiBold),
                       ),
                     ]),

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 
 import '../public.dart';
@@ -5,14 +7,9 @@ import '../public.dart';
 showMHAlertView({
   BuildContext context,
   String title,
-  TextStyle titleStyle = const TextStyle(
-    color: Color(0xFF161D2D),
-    fontSize: 20,
-    fontWeight: FontWightHelper.semiBold,
-  ),
   String content,
   TextStyle contentStyle = const TextStyle(
-    color: Color(0xFF000000),
+    color: Color(0xFF161D2D),
     fontSize: 16,
     fontWeight: FontWightHelper.regular,
   ),
@@ -25,7 +22,12 @@ showMHAlertView({
         return CupertinoAlertDialog(
           title: Text(
             title,
-            style: titleStyle,
+            style: TextStyle(
+              color: Color(0xFF161D2D),
+              fontSize: OffsetWidget.setSp(20),
+              fontWeight: FontWightHelper.semiBold,
+              fontFamily: Platform.isAndroid ? "SourceHanSans" : null,
+            ),
           ),
           content: Column(
             children: [
@@ -34,14 +36,10 @@ showMHAlertView({
               ),
               Text(
                 "memo_create_tip".local(),
-                style: TextStyle(
-                  color: Color(0xFF161D2D),
-                  fontSize: OffsetWidget.setSp(16),
-                  fontWeight: FontWightHelper.regular,
-                ),
+                style: contentStyle,
               ),
               SizedBox(
-                height: 13,
+                height: 21,
               ),
             ],
           ),
@@ -95,7 +93,7 @@ showMHInputAlertView({
   String content,
   bool obscureText = true,
   TextStyle contentStyle = const TextStyle(
-    color: Color(0xFF000000),
+    color: Color(0xFF161D2D),
     fontSize: 16,
     fontWeight: FontWightHelper.regular,
   ),
@@ -109,7 +107,12 @@ showMHInputAlertView({
         return CupertinoAlertDialog(
           title: Text(
             title,
-            style: titleStyle,
+            style: TextStyle(
+              color: Color(0xFF161D2D),
+              fontSize: OffsetWidget.setSp(20),
+              fontWeight: FontWightHelper.semiBold,
+              fontFamily: Platform.isAndroid ? "SourceHanSans" : null,
+            ),
           ),
           content: Column(
             children: [
@@ -136,7 +139,7 @@ showMHInputAlertView({
                 ),
               ),
               SizedBox(
-                height: 13,
+                height: 21,
               ),
             ],
           ),

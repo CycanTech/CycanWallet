@@ -246,5 +246,6 @@
     "choose_existwallet":"已有钱包",
     "copy_receiveaddress":"复制收款地址",
     "wallet_transdesc":"输入转账说明",
-    "wallettrans_copys":"粘贴"
+    "wallettrans_copys":"粘贴",
+    "main_totalassets":"总资产"
 }

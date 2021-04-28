@@ -246,5 +246,6 @@
     "choose_existwallet":"Already have a wallet",
     "copy_receiveaddress":"Copy the payment address",
     "wallet_transdesc":"Enter transfer instructions",
-    "wallettrans_copys":"Paste"
+    "wallettrans_copys":"Paste",
+    "main_totalassets":"Total Assets"
 }

@@ -24,7 +24,10 @@ class ChainServices {
   static const String _dotMainChain = "https://mainnet-dot.coinid.pro";
   static const String _doturl = isTestNode ? _dotTestChain : _dotMainChain;
 
-  static const String _bscurl = "http://54.169.100.174:8545";
+  static const String _bscTestChain =
+      "https://data-seed-prebsc-1-s1.binance.org:8545";
+  static const String _bscMainChain = "http://54.169.100.174:8545";
+  static const String _bscurl = isTestNode ? _bscTestChain : _bscMainChain;
 
   static const String regtestBtcSend = "/api/BTC/regtest/tx/send";
   static const String regtestBtcList = "/api/BTC/regtest";
@@ -347,14 +350,14 @@ class ChainServices {
     };
     String url = chainType == MCoinType.MCoinType_ETH.index ? _ethurl : _bscurl;
     RequestMethod().requestNetwork(Method.POST, url, (response, code) {
+      Map<String, dynamic> values = Map();
+      values["g"] = "23788";
+      values["v"] = "1";
+      if (contract.isValid()) {
+        values["g"] = "60000";
+      }
       if (code == 200) {
         if (response as List != null) {
-          Map<String, dynamic> values = Map();
-          values["g"] = "23788";
-          values["v"] = "1";
-          if (contract.isValid()) {
-            values["g"] = "60000";
-          }
           List datas = response as List;
           datas.forEach(
             (element) {
@@ -380,7 +383,7 @@ class ChainServices {
         }
       } else {
         if (block != null) {
-          block(null, 500);
+          block(values, 500);
         }
       }
     }, data: [gasPrice, nonce, version]);
@@ -684,7 +687,12 @@ class ChainServices {
     }
     if (neePrice == true) {
       Map<String, dynamic> priceResule = await WalletServices.requestTokenPrice(
-          token == null ? "ETH" : token, null);
+          token == null
+              ? chainType == MCoinType.MCoinType_ETH.index
+                  ? "ETH"
+                  : "BNB"
+              : token,
+          null);
       priceResule.forEach((key, value) {
         assetResult[key] = value;
       });
@@ -734,6 +742,7 @@ class ChainServices {
             value = value.replaceAll("0x", "");
             value = value.substring(16, value.length);
             int balance = InstructionDataFormat.littleConvertBigEndian(value);
+            LogUtil.v("InstructionDataFormat $balance value $value");
             double newBalance = balance / pow(10, 15);
             assetResult["c"] = newBalance.toString();
           }

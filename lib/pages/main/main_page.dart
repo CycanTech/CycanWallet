@@ -110,12 +110,11 @@ class _MainPageState extends State<MainPage> {
     MHWallet mwallet =
         Provider.of<CurrentChooseWalletState>(context, listen: false)
             .currentWallet;
-    if (mwallet.chainType == MCoinType.MCoinType_ETH.index) {
-      Map<String, dynamic> params = HashMap();
-      params["account"] = mwallet.walletAaddress;
-      params["symbol"] = mwallet.symbol.toUpperCase();
-      Routers.push(context, Routers.addAssetsPagePage, params: params);
-    }
+
+    Map<String, dynamic> params = HashMap();
+    params["account"] = mwallet.walletAaddress;
+    params["symbol"] = mwallet.symbol.toUpperCase();
+    Routers.push(context, Routers.addAssetsPagePage, params: params);
   }
 
   Widget getCustomAppBar() {
@@ -237,8 +236,8 @@ class _MainPageState extends State<MainPage> {
                                 Text(
                                   name,
                                   style: TextStyle(
-                                      fontWeight: FontWightHelper.medium,
-                                      fontSize: OffsetWidget.setSp(18),
+                                      fontWeight: FontWightHelper.semiBold,
+                                      fontSize: OffsetWidget.setSp(20),
                                       color: Color(0xFFFFFFFF)),
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -280,46 +279,44 @@ class _MainPageState extends State<MainPage> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            constraints: BoxConstraints(
-                              maxWidth: OffsetWidget.setSc(220),
+                      RichText(
+                        maxLines: 1,
+                        textAlign: TextAlign.start,
+                        overflow:TextOverflow.ellipsis,
+                        text: TextSpan(
+                          text: total,
+                          style: TextStyle(
+                              fontWeight: FontWightHelper.semiBold,
+                              fontSize: OffsetWidget.setSp(26),
+                              color: Color(0xFFFFFFFF)),
+                          children: [
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
+                              child: GestureDetector(
+                                behavior: HitTestBehavior.opaque,
+                                onTap: () {
+                                  Provider.of<CurrentChooseWalletState>(context,
+                                          listen: false)
+                                      .updateWalletAssetsState(!hiddenAssets);
+                                },
+                                child: LoadAssetsImage(
+                                  hiddenAssets == true
+                                      ? Constant.ASSETS_IMG +
+                                          "icon/icon_white_closeeyes.png"
+                                      : Constant.ASSETS_IMG +
+                                          "icon/icon_white_openeyes.png",
+                                  width: OffsetWidget.setSc(34),
+                                  height: OffsetWidget.setSc(22),
+                                  fit: null,
+                                  scale: 2,
+                                ),
+                              ),
                             ),
-                            child: Text(
-                              total,
-                              maxLines: 1,
-                              style: TextStyle(
-                                  fontWeight: FontWightHelper.medium,
-                                  fontSize: OffsetWidget.setSp(23),
-                                  color: Color(0xFFFFFFFF)),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          GestureDetector(
-                            behavior: HitTestBehavior.opaque,
-                            onTap: () {
-                              Provider.of<CurrentChooseWalletState>(context,
-                                      listen: false)
-                                  .updateWalletAssetsState(!hiddenAssets);
-                            },
-                            child: LoadAssetsImage(
-                              hiddenAssets == true
-                                  ? Constant.ASSETS_IMG +
-                                      "icon/icon_white_closeeyes.png"
-                                  : Constant.ASSETS_IMG +
-                                      "icon/icon_white_openeyes.png",
-                              width: OffsetWidget.setSc(40),
-                              height: OffsetWidget.setSc(40),
-                              fit: null,
-                              scale: 2,
-                            ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                       Text(
-                        "Total Assets",
+                        "main_totalassets".local(),
                         style: TextStyle(
                             fontWeight: FontWightHelper.regular,
                             fontSize: OffsetWidget.setSp(12),
@@ -367,7 +364,7 @@ class _MainPageState extends State<MainPage> {
                       style: TextStyle(
                           color: Color(0xFF161D2D),
                           fontSize: OffsetWidget.setSp(15),
-                          fontWeight: FontWightHelper.medium),
+                          fontWeight: FontWightHelper.semiBold),
                     ),
                   ],
                 ),
@@ -394,7 +391,7 @@ class _MainPageState extends State<MainPage> {
                       style: TextStyle(
                           color: Color(0xFF161D2D),
                           fontSize: OffsetWidget.setSp(15),
-                          fontWeight: FontWightHelper.medium),
+                          fontWeight: FontWightHelper.semiBold),
                     ),
                   ],
                 ),
@@ -420,7 +417,7 @@ class _MainPageState extends State<MainPage> {
                       style: TextStyle(
                           color: Color(0xFF161D2D),
                           fontSize: OffsetWidget.setSp(15),
-                          fontWeight: FontWightHelper.medium),
+                          fontWeight: FontWightHelper.semiBold),
                     ),
                   ],
                 ),
@@ -446,7 +443,7 @@ class _MainPageState extends State<MainPage> {
                       style: TextStyle(
                           color: Color(0xFF161D2D),
                           fontSize: OffsetWidget.setSp(15),
-                          fontWeight: FontWightHelper.medium),
+                          fontWeight: FontWightHelper.semiBold),
                     ),
                   ],
                 ),
@@ -611,29 +608,30 @@ class _MainPageState extends State<MainPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     buildHeadView(),
-                    Visibility(
-                      visible: stateWallet.chainType ==
-                          MCoinType.MCoinType_ETH.index,
-                      child: Container(
-                        height: OffsetWidget.setSc(50),
-                        padding: EdgeInsets.only(
-                            left: OffsetWidget.setSc(20),
-                            right: OffsetWidget.setSc(20)),
-                        child: Column(
-                          children: [
-                            Expanded(
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "main_assets".local(context: context),
-                                    style: TextStyle(
-                                        fontSize: OffsetWidget.setSp(14),
-                                        fontWeight: FontWightHelper.medium,
-                                        color: Color(0xFF4A4A4A)),
-                                  ),
-                                  GestureDetector(
+                    Container(
+                      height: OffsetWidget.setSc(50),
+                      padding: EdgeInsets.only(
+                          left: OffsetWidget.setSc(20),
+                          right: OffsetWidget.setSc(20)),
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "main_assets".local(context: context),
+                                  style: TextStyle(
+                                      fontSize: OffsetWidget.setSp(15),
+                                      fontWeight: FontWightHelper.semiBold,
+                                      color: Color(0xFF4A4A4A)),
+                                ),
+                                Visibility(
+                                  visible: stateWallet.chainType ==
+                                          MCoinType.MCoinType_ETH.index ||
+                                      stateWallet.chainType ==
+                                          MCoinType.MCoinType_BSC.index,
+                                  child: GestureDetector(
                                     onTap: () => _addAssetsList(),
                                     child: Visibility(
                                         visible: true,
@@ -645,12 +643,12 @@ class _MainPageState extends State<MainPage> {
                                           fit: BoxFit.contain,
                                         )),
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                            OffsetWidget.vLineWhitColor(1, Color(0xFFEAEFF2)),
-                          ],
-                        ),
+                          ),
+                          OffsetWidget.vLineWhitColor(1, Color(0xFFEAEFF2)),
+                        ],
                       ),
                     ),
                     Expanded(

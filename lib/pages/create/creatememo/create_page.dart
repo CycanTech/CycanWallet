@@ -119,7 +119,7 @@ class _CreatePageState extends State<CreatePage> {
                   titleText,
                   style: TextStyle(
                       color: Color(0xFF161D2D),
-                      fontSize: OffsetWidget.setSp(18),
+                      fontSize: OffsetWidget.setSp(15),
                       fontWeight: FontWightHelper.regular),
                 ),
               ),
@@ -129,14 +129,14 @@ class _CreatePageState extends State<CreatePage> {
                 maxLength: maxLength,
                 style: TextStyle(
                   color: Color(0xFF000000),
-                  fontSize: OffsetWidget.setSp(18),
+                  fontSize: OffsetWidget.setSp(15),
                   fontWeight: FontWightHelper.regular,
                 ),
                 decoration: CustomTextField.getUnderLineDecoration(
                   hintText: hintText,
                   hintStyle: TextStyle(
                     color: Color(0xFFACBBCF),
-                    fontSize: OffsetWidget.setSp(16),
+                    fontSize: OffsetWidget.setSp(15),
                     fontWeight: FontWightHelper.regular,
                   ),
                 ),
@@ -257,7 +257,7 @@ class _CreatePageState extends State<CreatePage> {
                   "create_wallet".local(),
                   style: TextStyle(
                       fontWeight: FontWightHelper.semiBold,
-                      fontSize: OffsetWidget.setSp(18),
+                      fontSize: OffsetWidget.setSp(15),
                       color: Colors.white),
                 ),
               ),
@@ -275,7 +275,7 @@ class _CreatePageState extends State<CreatePage> {
                   "restore_wallet".local(),
                   style: TextStyle(
                       fontWeight: FontWightHelper.semiBold,
-                      fontSize: OffsetWidget.setSp(18),
+                      fontSize: OffsetWidget.setSp(15),
                       color: Color(0xFF4F7BF2)),
                 ),
               ),
