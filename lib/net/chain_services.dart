@@ -11,11 +11,13 @@ import '../public.dart';
 class ChainServices {
   static const bool isTestNode = true;
 
-  static const String _ethTestChain = "http://103.46.128.21:26082";
+  static const String _ethTestChain = "http://43.128.27.130:8545";
+
   static String ethMainChain = "https://mainnet-eth.coinid.pro";
   static String _ethurl = isTestNode ? _ethTestChain : ethMainChain;
 
-  static const String _btcTestChain = "http://c181e88770.51vip.biz";
+  static const String _btcTestChain = "http://43.128.27.130:8200";
+
   // static String btcMainChain = "https://api.bitcore.io";
   static String btcMainChain = "https://btc-api.coinid.pro";
   static String _btcurl = isTestNode ? _btcTestChain : btcMainChain;

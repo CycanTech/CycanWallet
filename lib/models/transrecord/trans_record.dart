@@ -1,5 +1,8 @@
+import 'package:flutter_coinid/db/database.dart';
 import 'package:flutter_coinid/utils/json_util.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+import '../base_model.dart';
 
 part 'trans_record.g.dart';
 
@@ -54,5 +57,11 @@ class MHTransRecordModel {
     // TODO: implement toString
 
     return JsonUtil.encodeObj(this.toJson());
+  }
+
+  static Future<List<MHTransRecordModel>> findTransListWithDB() async {
+    FlutterDatabase database = await BaseModel.getDataBae();
+
+    return null;
   }
 }

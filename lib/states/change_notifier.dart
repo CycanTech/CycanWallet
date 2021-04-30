@@ -208,10 +208,12 @@ class CurrentChooseWalletState with ChangeNotifier {
 }
 
 class TransListState with ChangeNotifier {
-  List<MHTransRecordModel> _pendingDatas;
   List<MHTransRecordModel> _transDats;
 
-  void initData() {
+  void loadDatas() async {
+    List<MHTransRecordModel> cacheDatas =
+        await MHTransRecordModel.findTransListWithDB();
+
     notifyListeners();
   }
 
@@ -228,7 +230,7 @@ class MCreateWalletState with ChangeNotifier {
   MCoinType _coinType;
   MLeadType _mLeadType;
   MOriginType _mOriginType;
-  
+
   String get content => _content;
   String get password => _password;
   String get pwdTip => _pwdTip;
