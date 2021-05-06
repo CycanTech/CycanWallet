@@ -1,6 +1,7 @@
 //空视图
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_coinid/pages/application/application_search.dart';
 import 'package:flutter_coinid/pages/choose/choose_cointype.dart';
 // import 'package:flutter_coinid/pages/choose/choose_create_type_page.dart';
 import 'package:flutter_coinid/pages/choose/choose_type_page.dart';
@@ -251,4 +252,9 @@ var systemPageHandler =
     Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
   return MyMsgPage();
   // return MsgTransPage();
+});
+
+var appListSearchHandler =
+    Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
+  return ApplicationSearch();
 });

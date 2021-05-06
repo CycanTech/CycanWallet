@@ -48,6 +48,7 @@ class Routers {
   static String currencyMarketInfoPage = "currencyMarketInfoPage";
   static String marketSearchPage = "marketSearchPage";
   static String systemPage = "systemPage";
+  static String appListSearch = "appListSearch";
 
 //配置路由
   static void configureRoutes(FluroRouter router) {
@@ -99,6 +100,7 @@ class Routers {
     //     handler: currencyMarketInfoPageHandler);
     // router.define(marketSearchPage, handler: marketSearchPageHandler);
     router.define(systemPage, handler: systemPageHandler);
+    router.define(appListSearch, handler: appListSearchHandler);
   }
 
   static Future<dynamic> push(BuildContext context, String path,

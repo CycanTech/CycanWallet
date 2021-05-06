@@ -132,7 +132,8 @@ class _WalletsSheetPageState extends State<WalletsSheetPage> {
     MCoinType.MCoinType_BTC,
     MCoinType.MCoinType_ETH,
     MCoinType.MCoinType_DOT,
-    MCoinType.MCoinType_BSC,MCoinType.MCoinType_KSM,
+    MCoinType.MCoinType_BSC,
+    MCoinType.MCoinType_KSM,
   ];
   List<MHWallet> datas = [];
   MCoinType currentType = MCoinType.MCoinType_All;

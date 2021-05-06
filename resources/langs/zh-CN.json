@@ -251,5 +251,9 @@
     "applic_recentused":"最近使用",
     "applic_search":"搜索或输入DApp 地址",
     "applic_newproduct":"新品",
-    "applic_popular":"热门"
+    "applic_popular":"热门",
+    "applic_popularsearch":"热门搜索",
+    "applic_historysearch":"历史搜索",
+    "applic_nomoredata":"没有更多了～",
+    "applic_delhistory":"删除记录"
 }

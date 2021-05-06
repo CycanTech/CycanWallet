@@ -33,9 +33,9 @@ class ChooseTypePageState extends State<ChooseTypePage> {
         await MHWallet.findWalletsByType(MOriginType.MOriginType_Create.index);
     List restores =
         await MHWallet.findWalletsByType(MOriginType.MOriginType_Restore.index);
-    setState(() {
-      visibleAppWallet = (creates.length + restores.length) > 0 ? false : true;
-    });
+    // setState(() {
+    //   visibleAppWallet = (creates.length + restores.length) > 0 ? false : true;
+    // });
   }
 
   @override
