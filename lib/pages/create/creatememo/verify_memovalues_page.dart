@@ -253,7 +253,7 @@ class _VerifyMemoPageState extends State<VerifyMemoPage> {
         fontSize: 20,
         fontWeight: FontWightHelper.semiBold,
       ),
-      hiddenScrollView: true,
+      // hiddenScrollView: true,
       child: Container(
         alignment: Alignment.center,
         padding: EdgeInsets.only(
@@ -283,7 +283,7 @@ class _VerifyMemoPageState extends State<VerifyMemoPage> {
               child: Container(
                 height: OffsetWidget.setSc(40),
                 margin: EdgeInsets.only(
-                    bottom: OffsetWidget.setSc(22),
+                    top: OffsetWidget.setSc(100),
                     left: OffsetWidget.setSc(22),
                     right: OffsetWidget.setSc(22)),
                 alignment: Alignment.center,
