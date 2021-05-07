@@ -72,6 +72,7 @@ flutter:
     - assets/images/wallet/
     - assets/images/tabbar/
     - assets/images/background/
+    - assets/images/dapp/
     - resources/langs/zh-CN.json
     - resources/langs/en-US.json
   # An image asset can refer to one or more resolution-specific "variants", see

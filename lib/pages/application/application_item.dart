@@ -13,6 +13,8 @@ class ApplicationItem extends StatelessWidget {
     String name = params["name"];
     String desc = params["desc"];
     String owners = params["owners"];
+    String holder = params["image"];
+    String bgPath = Constant.ASSETS_IMG + "dapp/dapp_itembg.png";
 
     return Row(
       children: [
@@ -20,7 +22,7 @@ class ApplicationItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
           child: LoadNetworkImage(
             url,
-            placeholder: "",
+            placeholder: holder,
             fit: BoxFit.cover,
             scale: 1,
             width: OffsetWidget.setSc(62),
@@ -40,14 +42,30 @@ class ApplicationItem extends StatelessWidget {
                 fontSize: OffsetWidget.setSp(15),
               ),
             ),
-            Text(
-              desc,
-              style: TextStyle(
-                color: Color(0xFFFFA703),
-                fontWeight: FontWightHelper.regular,
-                fontSize: OffsetWidget.setSp(12),
+            OffsetWidget.vGap(7),
+            Container(
+              padding: EdgeInsets.only(
+                left: 10,
+                right: 10,
+              ),
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(
+                    bgPath,
+                  ),
+                  fit: BoxFit.fitWidth,
+                ),
+              ),
+              child: Text(
+                desc,
+                style: TextStyle(
+                  color: Color(0xFFFFA703),
+                  fontWeight: FontWightHelper.regular,
+                  fontSize: OffsetWidget.setSp(12),
+                ),
               ),
             ),
+             OffsetWidget.vGap(3),
             Text(
               owners,
               style: TextStyle(

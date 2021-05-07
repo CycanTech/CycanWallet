@@ -28,7 +28,7 @@ class ChainServices {
 
   static const String _bscTestChain =
       "https://data-seed-prebsc-1-s1.binance.org:8545";
-  static const String _bscMainChain = "http://54.169.100.174:8545";
+  static const String _bscMainChain = "https://bsc-dataseed.binance.org";
   static const String _bscurl = isTestNode ? _bscTestChain : _bscMainChain;
 
   static const String regtestBtcSend = "/api/BTC/regtest/tx/send";

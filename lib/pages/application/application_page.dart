@@ -13,12 +13,34 @@ class ApplicationPage extends StatefulWidget {
 
 class _ApplicationPageState extends State<ApplicationPage> {
   List<Map> _imageUrls = [
-    {
-      "linkImage":
-          "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fyouimg1.c-ctrip.com%2Ftarget%2Ftg%2F035%2F063%2F726%2F3ea4031f045945e1843ae5156749d64c.jpg&refer=http%3A%2F%2Fyouimg1.c-ctrip.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1622339396&t=4a4f88f41d046c201f60d0f38bfdcb88"
-    }
+    {"linkImage": ""}
   ];
-  List<Map> _items = [{}, {}];
+  List<Map<String, dynamic>> _dappItems = [
+    {
+      "url": "",
+      "name": "ELP-DPT LP",
+      "desc": "Cycan Defi项目",
+      "owners": "由Cycan.network 开发",
+      "image": Constant.ASSETS_IMG + "dapp/elp.png"
+    },
+    {
+      "url": "",
+      "name": "Pancakeswap",
+      "desc": "币安智能链 AMM SWAP",
+      "owners": "由 pancakeswap.finance 开发",
+      "image": Constant.ASSETS_IMG + "dapp/Pancakeswap.png"
+    },
+    {
+      "url": "",
+      "name": "BscPreject",
+      "desc": "浏览所有基于Binance Smart Chain的项目",
+      "owners": "由bscproject.org 开发",
+      "image": Constant.ASSETS_IMG + "dapp/BscPreject.png"
+    },
+  ];
+
+  List<Map<String, dynamic>> _dappHistoryItems = [];
+
   @override
   void initState() {
     // TODO: implement initState
@@ -40,8 +62,7 @@ class _ApplicationPageState extends State<ApplicationPage> {
     //读取数据库根据dapp标识判断是否已经确认
     showMHAlertView(
         context: context,
-        content:
-            "applic_agreementinfo".local(),
+        content: "applic_agreementinfo".local(),
         contentStyle: TextStyle(
             color: Color(0xFF161D2D),
             fontSize: OffsetWidget.setSp(14),
@@ -124,10 +145,11 @@ class _ApplicationPageState extends State<ApplicationPage> {
                       right: OffsetWidget.setSc(20),
                     ),
                     child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Expanded(
                           child: ListView.builder(
-                            itemCount: 5,
+                            itemCount: 0,
                             itemBuilder: (BuildContext context, int index) {
                               return Container(
                                 decoration: BoxDecoration(
@@ -169,7 +191,6 @@ class _ApplicationPageState extends State<ApplicationPage> {
   }
 
   Widget _buildHistoryItem(int index) {
-    // Map map = _items[index];
     String url =
         "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fyouimg1.c-ctrip.com%2Ftarget%2Ftg%2F035%2F063%2F726%2F3ea4031f045945e1843ae5156749d64c.jpg&refer=http%3A%2F%2Fyouimg1.c-ctrip.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1622339396&t=4a4f88f41d046c201f60d0f38bfdcb88";
     return Container(
@@ -188,25 +209,12 @@ class _ApplicationPageState extends State<ApplicationPage> {
   }
 
   Widget _buildItem(int index) {
-    // Map map = _items[index];
-    String url =
-        "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fyouimg1.c-ctrip.com%2Ftarget%2Ftg%2F035%2F063%2F726%2F3ea4031f045945e1843ae5156749d64c.jpg&refer=http%3A%2F%2Fyouimg1.c-ctrip.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1622339396&t=4a4f88f41d046c201f60d0f38bfdcb88";
-    String name = "ELP-DPT LP";
-    String desc = "Cycan Defi项目";
-    String owners = "由 pancakeswap.finance 开发";
-
-    Map<String, dynamic> map = {
-      "url": url,
-      "name": name,
-      "desc": desc,
-      "owners": owners
-    };
-
+    Map<String, dynamic> map = _dappItems[index];
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () => _tapItem(index),
       child: Container(
-          height: OffsetWidget.setSc(62),
+          height: OffsetWidget.setSc(65),
           margin: EdgeInsets.only(bottom: OffsetWidget.setSc(18)),
           child: ApplicationItem(
             params: map,
@@ -274,14 +282,16 @@ class _ApplicationPageState extends State<ApplicationPage> {
                   return GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () {
-                      ChannelDapp.pushUrl(_imageUrls[index]["linkUrl"]);
+                      // ChannelDapp.pushUrl(_imageUrls[index]["linkUrl"]);
                     },
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8),
                       child: Container(
-                        child: Image.network(
+                        child: LoadNetworkImage(
                           _imageUrls[index]["linkImage"],
-                          fit: BoxFit.cover,
+                          placeholder: Constant.ASSETS_IMG + "dapp/banner.png",
+                          scale: 1,
+                          fit: BoxFit.contain,
                         ),
                       ),
                     ),
@@ -324,15 +334,18 @@ class _ApplicationPageState extends State<ApplicationPage> {
                       ],
                     ),
                   ),
-                  Container(
-                    alignment: Alignment.center,
-                    height: OffsetWidget.setSc(40),
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 10,
-                      itemBuilder: (BuildContext context, int index) {
-                        return _buildHistoryItem(index);
-                      },
+                  Visibility(
+                    visible: _dappHistoryItems.length == 0 ? false : true,
+                    child: Container(
+                      alignment: Alignment.center,
+                      height: OffsetWidget.setSc(40),
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: _dappHistoryItems.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return _buildHistoryItem(index);
+                        },
+                      ),
                     ),
                   ),
                 ],
@@ -378,7 +391,7 @@ class _ApplicationPageState extends State<ApplicationPage> {
             ),
             Expanded(
               child: ListView.builder(
-                itemCount: 10,
+                itemCount: _dappItems.length,
                 itemBuilder: (BuildContext context, int index) {
                   return _buildItem(index);
                 },

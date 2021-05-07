@@ -16,7 +16,7 @@ class WalletManager extends StatefulWidget {
 class _WalletManagerState extends State<WalletManager> {
   final List<MCoinType> coinDatas = [
     MCoinType.MCoinType_All,
-    MCoinType.MCoinType_BTC,
+    // MCoinType.MCoinType_BTC,
     MCoinType.MCoinType_ETH,
     MCoinType.MCoinType_DOT,
     MCoinType.MCoinType_BSC,

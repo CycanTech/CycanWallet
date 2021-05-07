@@ -170,12 +170,12 @@ class _ApplicationSearchState extends State<ApplicationSearch> {
                   getCustomAppBar(),
                   getPopularWidget(
                     popularList,
-                    "icon/icon_goback.png",
+                    "dapp/popular_search.png",
                     "applic_popularsearch".local(),
                   ),
                   getPopularWidget(
                     historyList,
-                    "icon/icon_goback.png",
+                    "dapp/history_search.png",
                     "applic_historysearch".local(),
                   ),
                 ],

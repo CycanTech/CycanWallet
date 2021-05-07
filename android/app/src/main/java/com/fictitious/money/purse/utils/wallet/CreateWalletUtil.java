@@ -187,7 +187,7 @@ public class CreateWalletUtil {
 //                        map.put("masterPubKey", masterPubKey);
 //                        wallets.add(map);
 //                    }
-
+/*
                     if (chainType == Constants.COIN_TYPE.TYPE_ALL || chainType == Constants.COIN_TYPE.TYPE_BTC) {
                         //btc
                         if (common == Constants.LEAD_TYPE.STANDARMEMO) {
@@ -218,7 +218,7 @@ public class CreateWalletUtil {
                         map.put("masterPubKey", masterPubKey);
                         wallets.add(map);
                     }
-
+                    */
                     if (chainType == Constants.COIN_TYPE.TYPE_ALL || chainType == Constants.COIN_TYPE.TYPE_ETH) {
                         //eth
                         if (common == Constants.LEAD_TYPE.STANDARMEMO) {

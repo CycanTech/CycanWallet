@@ -156,10 +156,11 @@
     int index = object.index ;
     NSString * PIN = object.pin ;
     NSLog(@"content %@ PIN %@ coinType %d leadType %d",content,PIN,coinType,leadType);
-    if (coinType == MCoinType_All||coinType == MCoinType_BTC) {
+   /* if (coinType == MCoinType_All||coinType == MCoinType_BTC) {
         
         [datas addObject:[self importBTCWallet:object]];
     }
+    */
     if (coinType == MCoinType_All||coinType == MCoinType_ETH) {
         
         [datas addObject:[self importETHWallet:object]];

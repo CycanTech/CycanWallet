@@ -129,7 +129,7 @@ class WalletsSheetPage extends StatefulWidget {
 class _WalletsSheetPageState extends State<WalletsSheetPage> {
   final List<MCoinType> coinDatas = [
     MCoinType.MCoinType_All,
-    MCoinType.MCoinType_BTC,
+    // MCoinType.MCoinType_BTC,
     MCoinType.MCoinType_ETH,
     MCoinType.MCoinType_DOT,
     MCoinType.MCoinType_BSC,

@@ -9,11 +9,11 @@ class ChooseCoinTypePage extends StatefulWidget {
 
 class _ChooseCoinTypePageState extends State<ChooseCoinTypePage> {
   List _datas = [
-    {
-      "image": "wallet_btc.png",
-      "name": "BTC-Wallet",
-      "type": MCoinType.MCoinType_BTC
-    },
+    // {
+    //   "image": "wallet_btc.png",
+    //   "name": "BTC-Wallet",
+    //   "type": MCoinType.MCoinType_BTC
+    // },
     {
       "image": "wallet_eth.png",
       "name": "ETH-Wallet",

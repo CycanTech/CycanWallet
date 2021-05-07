@@ -67,7 +67,7 @@ class RequestMethod {
     _dio = Dio(_options);
     _dio.interceptors.add(LogsInterceptors()); //添加日志拦截器
     if (!Constant.inProduction) {
-      _setupPROXY(_dio); //添加转发代理
+      // _setupPROXY(_dio); //添加转发代理
     }
   }
 
