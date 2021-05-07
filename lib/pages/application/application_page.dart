@@ -37,7 +37,18 @@ class _ApplicationPageState extends State<ApplicationPage> {
   }
 
   void _tapItem(int index) {
-    LogUtil.v("_tapItem " + index.toString());
+    //读取数据库根据dapp标识判断是否已经确认
+    showMHAlertView(
+        context: context,
+        content:
+            "applic_agreementinfo".local(),
+        contentStyle: TextStyle(
+            color: Color(0xFF161D2D),
+            fontSize: OffsetWidget.setSp(14),
+            fontWeight: FontWightHelper.regular),
+        confirmPressed: () {
+          LogUtil.v("_tapItem " + index.toString());
+        });
   }
 
   void _tapHistory() {
@@ -257,7 +268,8 @@ class _ApplicationPageState extends State<ApplicationPage> {
               height: OffsetWidget.setSc(156),
               child: Swiper(
                 itemCount: _imageUrls.length,
-                autoplay: _imageUrls.length > 1 ? true : false,
+                autoplay: true,
+                autoplayDelay: 3000,
                 itemBuilder: (BuildContext context, int index) {
                   return GestureDetector(
                     behavior: HitTestBehavior.opaque,

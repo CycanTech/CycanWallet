@@ -9,7 +9,7 @@ import 'package:flutter_coinid/utils/json_util.dart';
 import '../public.dart';
 
 class ChainServices {
-  static const bool isTestNode = true;
+  static const bool isTestNode = false;
 
   static const String _ethTestChain = "http://43.128.27.130:8545";
 

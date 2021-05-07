@@ -28,7 +28,8 @@ class _ChooseCoinTypePageState extends State<ChooseCoinTypePage> {
       "image": "wallet_bnb.png",
       "name": "BSC-Wallet",
       "type": MCoinType.MCoinType_BSC,
-    }, {
+    },
+    {
       "image": "wallet_ksm.png",
       "name": "KSM-Wallet",
       "type": MCoinType.MCoinType_KSM,
@@ -74,12 +75,8 @@ class _ChooseCoinTypePageState extends State<ChooseCoinTypePage> {
   Widget build(BuildContext context) {
     return CustomPageView(
       hiddenScrollView: true,
-      title: Text(
-        "import_page".local() + "import_wallet".local(),
-        style: TextStyle(
-            color: Color(0xFF000000),
-            fontSize: OffsetWidget.setSp(18),
-            fontWeight: FontWeight.w400),
+      title: CustomPageView.getDefaultTitle(
+        titleStr: "import_page".local() + "import_wallet".local(),
       ),
       child: Container(
         padding: EdgeInsets.only(top: OffsetWidget.setSc(60)),

@@ -15,10 +15,6 @@ class _CreatePageState extends State<CreatePage> {
   final TextEditingController _passwordEC = new TextEditingController();
   final TextEditingController _againPasswordEC = new TextEditingController();
   final TextEditingController _passwordTipEC = new TextEditingController();
-  // EdgeInsets padding = EdgeInsets.only(
-  //     left: OffsetWidget.setSc(20),
-  //     right: OffsetWidget.setSc(20),
-  //     top: OffsetWidget.setSc(20));
   bool eyeisOpen = false;
   bool isAgreement = false;
 

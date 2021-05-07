@@ -20,22 +20,24 @@ showMHAlertView({
       context: context,
       builder: (context) {
         return CupertinoAlertDialog(
-          title: Text(
-            title,
-            style: TextStyle(
-              color: Color(0xFF161D2D),
-              fontSize: OffsetWidget.setSp(20),
-              fontWeight: FontWightHelper.semiBold,
-              fontFamily: Platform.isAndroid ? "SourceHanSans" : null,
-            ),
-          ),
+          title: title == null
+              ? null
+              : Text(
+                  title,
+                  style: TextStyle(
+                    color: Color(0xFF161D2D),
+                    fontSize: OffsetWidget.setSp(20),
+                    fontWeight: FontWightHelper.semiBold,
+                    fontFamily: Platform.isAndroid ? "SourceHanSans" : null,
+                  ),
+                ),
           content: Column(
             children: [
               SizedBox(
                 height: 27,
               ),
               Text(
-                "memo_create_tip".local(),
+                content,
                 style: contentStyle,
               ),
               SizedBox(

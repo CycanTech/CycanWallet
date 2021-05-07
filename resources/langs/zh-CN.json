@@ -255,5 +255,6 @@
     "applic_popularsearch":"热门搜索",
     "applic_historysearch":"历史搜索",
     "applic_nomoredata":"没有更多了～",
-    "applic_delhistory":"删除记录"
+    "applic_delhistory":"删除记录",
+    "applic_agreementinfo":"您即将跳转至第三方DApp页面，您在第三方DApp上的使用行为将适用在第三方DApp的《用户协议》和《隐私政策》，由该第三方DApp直接并单独向您承担责任。"
 }

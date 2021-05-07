@@ -17,23 +17,21 @@ class RestorePage extends StatefulWidget {
 
 class _RestorePageState extends State<RestorePage> {
   MLeadType memoType = MLeadType.MLeadType_StandardMemo; //当前默认通用
-  final TextEditingController _memoEC = new TextEditingController();
-  final TextEditingController _nameEC = new TextEditingController();
-  final TextEditingController _pwdEC = new TextEditingController();
-  final TextEditingController _pwdAgantEC = new TextEditingController();
-  final TextEditingController _pwdTipEC = new TextEditingController();
+  final TextEditingController _memoEC = TextEditingController();
+  final TextEditingController _nameEC = TextEditingController();
+  final TextEditingController _pwdEC = TextEditingController();
+  final TextEditingController _pwdAgantEC = TextEditingController();
+  final TextEditingController _pwdTipEC = TextEditingController();
   EdgeInsets padding = EdgeInsets.only(
       left: OffsetWidget.setSc(20),
       right: OffsetWidget.setSc(20),
       top: OffsetWidget.setSc(20));
-  EdgeInsets contentPadding = EdgeInsets.only(left: 10, right: 10);
+  EdgeInsets contentPadding = EdgeInsets.only(left: 0, right: 0);
   bool eyeisOpen = false;
   bool isAgreement = false;
   @override
   void initState() {
     super.initState();
-
-    if (Constant.inProduction == false) {}
   }
 
   @override
@@ -123,204 +121,201 @@ class _RestorePageState extends State<RestorePage> {
     }
   }
 
+  Widget _getInputTextField({
+    TextEditingController controller,
+    String hintText,
+    String titleText,
+    bool obscureText = false,
+    EdgeInsetsGeometry padding = const EdgeInsets.only(top: 22),
+    int maxLength,
+  }) {
+    return Padding(
+        padding: padding,
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                child: Text(
+                  titleText,
+                  style: TextStyle(
+                      color: Color(0xFF161D2D),
+                      fontSize: OffsetWidget.setSp(15),
+                      fontWeight: FontWightHelper.regular),
+                ),
+              ),
+              CustomTextField(
+                controller: controller,
+                obscureText: obscureText,
+                maxLength: maxLength,
+                style: TextStyle(
+                  color: Color(0xFF000000),
+                  fontSize: OffsetWidget.setSp(15),
+                  fontWeight: FontWightHelper.regular,
+                ),
+                decoration: CustomTextField.getUnderLineDecoration(
+                  hintText: hintText,
+                  hintStyle: TextStyle(
+                    color: Color(0xFFACBBCF),
+                    fontSize: OffsetWidget.setSp(15),
+                    fontWeight: FontWightHelper.regular,
+                  ),
+                ),
+              ),
+            ]));
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomPageView(
-      title: Text(
-        "restore_wallet".local(),
-        style: TextStyle(
-            color: Color(0xFF000000),
-            fontSize: OffsetWidget.setSp(18),
-            fontWeight: FontWeight.w400),
+      title: CustomPageView.getDefaultTitle(
+        titleStr: "restore_wallet".local(),
       ),
-      child: Column(
-        children: <Widget>[
-          CustomTextField(
-            padding: padding,
-            controller: _memoEC,
-            maxLines: 5,
-            contentPadding: contentPadding,
-            style: TextStyle(
-              color: Color(0xFF000000),
-              fontSize: OffsetWidget.setSp(14),
-              fontWeight: FontWeight.w500,
-            ),
-            decoration: CustomTextField.getBorderLineDecoration(
-              hintText: "import_plainmemo".local(),
-              hintStyle: TextStyle(
-                color: Color(0xFFC1C1C1),
-                fontSize: OffsetWidget.setSp(12),
-                fontWeight: FontWeight.w400,
+      child: Container(
+        padding: EdgeInsets.only(
+            left: OffsetWidget.setSc(20),
+            right: OffsetWidget.setSc(20),
+            top: OffsetWidget.setSc(27)),
+        child: Column(
+          children: <Widget>[
+            Container(
+              height: OffsetWidget.setSc(106),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: Color(0xFFF6F8F9),
+                border: Border.all(
+                  color: Color(0XFFEFF3F5),
+                ),
               ),
-            ),
-          ),
-          CustomTextField(
-            padding: padding,
-            controller: _nameEC,
-            contentPadding: contentPadding,
-            style: TextStyle(
-              color: Color(0xFF000000),
-              fontSize: OffsetWidget.setSp(14),
-              fontWeight: FontWeight.w500,
-            ),
-            decoration: CustomTextField.getUnderLineDecoration(
-              hintText: "import_walletname".local(),
-              hintStyle: TextStyle(
-                color: Color(0xFFCFCFCF),
-                fontSize: OffsetWidget.setSp(14),
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-          ),
-          CustomTextField(
-            padding: padding,
-            controller: _pwdEC,
-            contentPadding: contentPadding,
-            obscureText: !eyeisOpen,
-            style: TextStyle(
-              color: Color(0xFF000000),
-              fontSize: OffsetWidget.setSp(14),
-              fontWeight: FontWeight.w500,
-            ),
-            decoration: CustomTextField.getUnderLineDecoration(
-              hintText: "import_pwd".local(),
-              helperText: "import_pwddetail".local(),
-              helperStyle: TextStyle(
-                color: Color(0xFF4A4A4A),
-                fontSize: OffsetWidget.setSp(10),
-                fontWeight: FontWeight.w400,
-              ),
-              hintStyle: TextStyle(
-                color: Color(0xFFCFCFCF),
-                fontSize: OffsetWidget.setSp(14),
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-          ),
-          CustomTextField(
-            padding: padding,
-            controller: _pwdAgantEC,
-            obscureText: !eyeisOpen,
-            style: TextStyle(
-              color: Color(0xFF000000),
-              fontSize: OffsetWidget.setSp(14),
-              fontWeight: FontWeight.w500,
-            ),
-            decoration: CustomTextField.getUnderLineDecoration(
-              hintText: "import_pwdagain".local(),
-              hintStyle: TextStyle(
-                color: Color(0xFFCFCFCF),
-                fontSize: OffsetWidget.setSp(14),
-                fontWeight: FontWeight.w400,
-              ),
-              suffixIcon: GestureDetector(
-                onTap: () => updateEyesState(),
-                child: LoadAssetsImage(
-                  eyeisOpen == false
-                      ? Constant.ASSETS_IMG + "icon/eyes_close.png"
-                      : Constant.ASSETS_IMG + "icon/eyes_open.png",
-                  width: OffsetWidget.setSc(24),
-                  height: OffsetWidget.setSc(24),
-                  // fit: BoxFit.cover,
+              child: CustomTextField(
+                controller: _memoEC,
+                maxLines: 3,
+                style: TextStyle(
+                  color: Color(0xFF161D2D),
+                  fontSize: OffsetWidget.setSp(16),
+                  fontWeight: FontWightHelper.regular,
+                ),
+                decoration: CustomTextField.getBorderLineDecoration(
+                  hintText: "import_plainmemo".local(),
+                  fillColor: Color(0xFFF6F8F9),
+                  borderColor: Colors.transparent,
+                  contentPadding: EdgeInsets.only(
+                    left: OffsetWidget.setSc(10),
+                    right: OffsetWidget.setSc(10),
+                    top: OffsetWidget.setSc(8),
+                  ),
+                  helperStyle: TextStyle(
+                    color: Color(0xFF171F24),
+                    fontWeight: FontWightHelper.regular,
+                    fontSize: OffsetWidget.setSp(12),
+                  ),
+                  hintStyle: TextStyle(
+                      color: Color(0xFFACBBCF),
+                      fontWeight: FontWightHelper.regular,
+                      fontSize: OffsetWidget.setSp(18)),
                 ),
               ),
             ),
-          ),
-          CustomTextField(
-            padding: padding,
-            controller: _pwdTipEC,
-            contentPadding: contentPadding,
-            style: TextStyle(
-              color: Color(0xFF000000),
-              fontSize: OffsetWidget.setSp(14),
-              fontWeight: FontWeight.w500,
+            _getInputTextField(
+                controller: _nameEC,
+                hintText: "import_walletname".local(),
+                titleText: "wallet_name".local(),
+                maxLength: 25,
+                padding: EdgeInsets.only(top: 14)),
+            _getInputTextField(
+              controller: _pwdEC,
+              obscureText: !eyeisOpen,
+              hintText: "import_pwddetail".local(),
+              titleText: "import_pwd".local(),
             ),
-            decoration: CustomTextField.getUnderLineDecoration(
+            _getInputTextField(
+              controller: _pwdAgantEC,
+              obscureText: !eyeisOpen,
+              hintText: "confirm_password".local(),
+              titleText: "import_pwdagain".local(),
+            ),
+            _getInputTextField(
+              controller: _pwdTipEC,
               hintText: "import_pwddesc".local(),
-              hintStyle: TextStyle(
-                color: Color(0xFFCFCFCF),
-                fontSize: OffsetWidget.setSp(14),
-                fontWeight: FontWeight.w400,
-              ),
+              titleText: "wallet_update_tip_title".local(),
             ),
-          ),
-          GestureDetector(
-            onTap: jumpToAgreement,
-            child: Container(
-              padding: EdgeInsets.only(
-                  top: OffsetWidget.setSc(36),
-                  left: OffsetWidget.setSc(20),
-                  right: OffsetWidget.setSc(20)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  GestureDetector(
-                    onTap: updateAgreement,
-                    child: Image.asset(
-                      isAgreement == false
-                          ? Constant.ASSETS_IMG + "icon/icon_unselect.png"
-                          : Constant.ASSETS_IMG + "icon/icon_select.png",
-                      fit: BoxFit.cover,
-                      width: 16,
-                      height: 16,
-                    ),
-                  ),
-                  OffsetWidget.hGap(5),
-                  Container(
-                    constraints:
-                        BoxConstraints(maxWidth: OffsetWidget.setSc(300)),
-                    child: RichText(
-                      maxLines: 10,
-                      textAlign: TextAlign.left,
-                      text: TextSpan(
-                        text: 'readagrementinfo'.local(),
-                        style: TextStyle(
-                          color: Color(0xFF979797),
-                          fontSize: OffsetWidget.setSp(12),
-                          fontWeight: FontWeight.w400,
-                        ),
-                        children: <TextSpan>[
-                          TextSpan(
-                              text: 'agrementinfo'.local(),
-                              style: TextStyle(
-                                color: Color(0xFF4A4A4A),
-                                fontSize: OffsetWidget.setSp(13),
-                                fontWeight: FontWeight.w400,
-                              )),
-                        ],
+            GestureDetector(
+              onTap: jumpToAgreement,
+              child: Container(
+                padding: EdgeInsets.only(
+                    top: OffsetWidget.setSc(36),
+                    // left: OffsetWidget.setSc(20),
+                    right: OffsetWidget.setSc(20)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: updateAgreement,
+                      child: Image.asset(
+                        isAgreement == false
+                            ? Constant.ASSETS_IMG + "icon/icon_unselect.png"
+                            : Constant.ASSETS_IMG + "icon/icon_select.png",
+                        fit: BoxFit.cover,
+                        width: 16,
+                        height: 16,
                       ),
                     ),
-                  ),
-                ],
+                    OffsetWidget.hGap(5),
+                    Container(
+                      constraints:
+                          BoxConstraints(maxWidth: OffsetWidget.setSc(300)),
+                      child: RichText(
+                        maxLines: 10,
+                        textAlign: TextAlign.left,
+                        text: TextSpan(
+                          text: 'readagrementinfo'.local(),
+                          style: TextStyle(
+                            color: Color(0xFF979797),
+                            fontSize: OffsetWidget.setSp(12),
+                            fontWeight: FontWeight.w400,
+                          ),
+                          children: <TextSpan>[
+                            TextSpan(
+                                text: 'agrementinfo'.local(),
+                                style: TextStyle(
+                                  color: Color(0xFF4A4A4A),
+                                  fontSize: OffsetWidget.setSp(13),
+                                  fontWeight: FontWeight.w400,
+                                )),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          OffsetWidget.vGap(24),
-          GestureDetector(
-            onTap: _restoreWallets,
-            child: Container(
-              margin: EdgeInsets.only(
-                left: OffsetWidget.setSc(30),
-                top: OffsetWidget.setSc(30),
-                right: OffsetWidget.setSc(30),
-                bottom: OffsetWidget.setSc(30),
-              ),
-              height: OffsetWidget.setSc(50),
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(OffsetWidget.setSc(50)),
-                  color: Color(0xFF1308FE)),
-              child: Text(
-                "restore_data".local(),
-                style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: OffsetWidget.setSp(16),
-                    color: Colors.white),
+            OffsetWidget.vGap(24),
+            GestureDetector(
+              onTap: _restoreWallets,
+              child: Container(
+                margin: EdgeInsets.only(
+                    left: OffsetWidget.setSc(42),
+                    top: OffsetWidget.setSc(36),
+                    right: OffsetWidget.setSc(42)),
+                height: OffsetWidget.setSc(40),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Color(0xFF586883)),
+                child: Text(
+                  "restore_data".local(),
+                  style: TextStyle(
+                      fontWeight: FontWightHelper.semiBold,
+                      fontSize: OffsetWidget.setSp(15),
+                      color: Colors.white),
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
